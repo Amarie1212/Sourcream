@@ -36,7 +36,6 @@
 				
 				<!-- Back Button -->
 				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='<%= typeof animeSlug !== 'undefined' && animeSlug ? '/anime/' + animeSlug : '/' %>'" 
-						class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all font-black group shadow-xs cursor-pointer">
 						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all font-black uppercase text-[11px] sm:text-xs tracking-wider group hover:scale-105 active:scale-95 cursor-pointer">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -113,7 +112,6 @@
 						<% } %>
 
 						<!-- Jump to Episodes Center Button -->
-						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-[#FACC15] text-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-violet-600 hover:text-white transition-all hover:scale-105">
 						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider bg-[#FACC15] hover:bg-violet-600 text-black hover:text-white border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:scale-105 transition-all">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 							  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
