@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<title><%= site_title %></title>
+	<meta name="description" content="<%= site_desc %>">
+	<meta name="keywords" content="<%= site_keyword %>">
+	<meta property="og:title" content="<%= site_title %>">
+	<meta property="og:description" content="<%= site_desc %>">
+	<meta property="og:url" content="https://<%= site_url %>">
+	<meta property="og:image" content="https://<%= site_url %>/assets/images/og.png">
+	<%- include('partials/head'); %>
+	<style>
+		.neo-card {
+			transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+		.neo-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+		}
+		.dark .neo-card:hover {
+			box-shadow: 6px 6px 0px 0px rgba(250, 204, 21, 0.35);
+		}
+	</style>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+	<%- include('partials/header'); %>
+	
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
+		
+		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
+		<div class="w-full flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-4 py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+			
+			<div class="flex items-center gap-2.5 flex-wrap min-w-0">
+				<!-- Back Button -->
+				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='/'" 
+						class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all font-black group shadow-xs cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+					</svg>
+					<span>Kembali</span>
+				</button>
+
+				<span class="text-neutral-300 dark:text-neutral-700 hidden sm:inline select-none">|</span>
+
+				<!-- Explorer Path -->
+				<nav aria-label="Directory Path" class="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[11px] sm:text-xs overflow-x-auto py-0.5 max-w-full">
+					<a href="/" class="flex items-center gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500">
+						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
+						</svg>
+						<span>main</span>
+					</a>
+					
+					<span class="text-neutral-400 select-none">/</span>
+					
+					<a href="/" class="hover:text-black dark:hover:text-white transition-colors flex-shrink-0">
+						anime
+					</a>
+					
+					<span class="text-neutral-400 select-none">/</span>
+
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[180px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+						pencarian <%= typeof query !== 'undefined' && query ? `"${query}"` : '' %>
+					</span>
+				</nav>
+			</div>
+
+		</div>
+
+		<!-- SEARCH HEADER & INPUT BOX -->
+		<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-6">
+			
+			<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b-2 border-black dark:border-white/10">
+				<div class="flex items-center gap-3">
+					<div class="w-10 h-10 rounded-2xl bg-[#FACC15] text-black border-2 border-black flex items-center justify-center font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+						</svg>
+					</div>
+					<div>
+						<h1 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-black dark:text-white">
+							Pencarian Anime 🔥
+						</h1>
+						<p class="text-xs text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
+							<% if (typeof query !== 'undefined' && query) { %>
+								Hasil pencarian untuk kata kunci <span class="text-black dark:text-[#FACC15] font-black underline decoration-amber-400 decoration-2">"<%= query %>"</span>
+							<% } else { %>
+								Cari anime favoritmu berdasarkan judul atau kata kunci
+							<% } %>
+						</p>
+					</div>
+				</div>
+
+				<% if (data && data.length > 0) { %>
+					<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono font-bold self-start md:self-auto">
+						<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+						<span><%= data.length %> Judul Ditemukan</span>
+					</div>
+				<% } %>
+			</div>
+
+			<!-- Search Bar In-Page -->
+			<form action="/pencarian" method="GET" class="w-full flex flex-col sm:flex-row gap-3">
+				<div class="relative flex-1">
+					<input 
+						type="text" 
+						name="q" 
+						value="<%= typeof query !== 'undefined' ? query : '' %>" 
+						placeholder="Ketik judul anime (contoh: Naruto, One Piece, Jujutsu Kaisen)..." 
+						class="w-full px-4 py-3 pl-11 rounded-2xl bg-[#F5F3EF] dark:bg-[#121317] border-2 border-black dark:border-white/20 text-black dark:text-white placeholder-neutral-400 text-sm font-bold focus:outline-none focus:border-[#FACC15] dark:focus:border-[#FACC15] focus:bg-white dark:focus:bg-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]"
+					/>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+					</svg>
+				</div>
+				<button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#FACC15] hover:bg-black hover:text-[#FACC15] dark:hover:bg-white dark:hover:text-black text-black font-black text-xs uppercase tracking-wider border-2 border-black dark:border-white/20 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all cursor-pointer">
+					<span>Cari Anime</span>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+					</svg>
+				</button>
+			</form>
+
+		</section>
+
+		<!-- SEARCH RESULTS GRID -->
+		<section class="w-full flex flex-col gap-4">
+			<% if (data && data.length > 0) { %>
+				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+					<% data.forEach((item, index) => { %>
+						<a href="/anime/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<!-- Poster Image Frame -->
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<!-- Episode Badge -->
+								<% if (item.episodes) { %>
+									<div class="absolute top-2 right-2 px-2 py-0.5 rounded-lg bg-black/80 text-[#FACC15] text-[10px] font-mono font-bold uppercase border border-black/50 backdrop-blur-xs shadow-xs">
+										<%= item.episodes %>
+									</div>
+								<% } %>
+
+								<!-- Play Hover Overlay -->
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5">
+										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Title & Meta Footer -->
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span class="truncate">Anime</span>
+									<span class="text-black dark:text-white font-bold flex-shrink-0">Tonton →</span>
+								</div>
+							</div>
+						</a>
+					<% }); %>
+				</div>
+			<% } else { %>
+				<!-- Empty Search State Neo-Brutalist -->
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center justify-center gap-4 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]">
+					<div class="w-16 h-16 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center text-amber-500 text-2xl font-black">
+						🔍
+					</div>
+					<div class="flex flex-col gap-1 max-w-md">
+						<h3 class="text-lg sm:text-xl font-black text-black dark:text-white">
+							Tidak Ada Anime Ditemukan
+						</h3>
+						<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed">
+							<% if (typeof query !== 'undefined' && query) { %>
+								Tidak ada hasil yang cocok untuk kata kunci <strong>"<%= query %>"</strong>. Coba periksa ejaan atau gunakan kata kunci yang lebih umum.
+							<% } else { %>
+								Silakan ketik kata kunci pada kotak pencarian di atas untuk menemukan anime favoritmu.
+							<% } %>
+						</p>
+					</div>
+					<div class="flex items-center gap-3 mt-2">
+						<a href="/" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-black dark:bg-white text-white dark:text-black font-extrabold text-xs uppercase tracking-wider hover:bg-[#FACC15] hover:text-black dark:hover:bg-[#FACC15] dark:hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]">
+							Kembali ke Beranda
+						</a>
+						<a href="/populer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white dark:bg-[#121317] border-2 border-black dark:border-white/20 text-black dark:text-white font-extrabold text-xs uppercase tracking-wider hover:bg-[#FACC15] hover:text-black transition-all">
+							Lihat Populer
+						</a>
+					</div>
+				</div>
+			<% } %>
+		</section>
+
+		<!-- Neo-Brutalist Pagination -->
+		<% if (prevPage || nextPage) { %>
+		<div class="w-full flex justify-center items-center py-6">
+			<nav aria-label="Page Navigation" class="inline-flex items-center gap-2 p-1.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)]">
+				<% if (prevPage) { %>
+					<a href="<%= prevPage %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+						</svg>
+						<span>Sebelumnya</span>
+					</a>
+				<% } else { %>
+					<span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 font-black text-xs cursor-not-allowed opacity-50">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+						</svg>
+						<span>Sebelumnya</span>
+					</span>
+				<% } %>
+
+				<span class="px-3 py-1 text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400">
+					Halaman <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
+				</span>
+
+				<% if (nextPage) { %>
+					<a href="<%= nextPage %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
+						<span>Selanjutnya</span>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+						</svg>
+					</a>
+				<% } else { %>
+					<span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 font-black text-xs cursor-not-allowed opacity-50">
+						<span>Selanjutnya</span>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+						</svg>
+					</span>
+				<% } %>
+			</nav>
+		</div>
+		<% } %>
+
+	</main>
+
+	<%- include('partials/footer'); %>
+	<%- include('partials/script'); %>
+</body>
+</html>

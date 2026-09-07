@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<title><%= site_title %></title>
+	<meta name="description" content="<%= site_desc %>">
+	<meta name="keywords" content="<%= site_keyword %>">
+	<meta property="og:title" content="<%= site_title %>">
+	<meta property="og:description" content="<%= site_desc %>">
+	<meta property="og:url" content="https://<%= site_url %>">
+	<meta property="og:image" content="https://<%= site_url %>/assets/images/og.png">
+	<%- include('partials/head'); %>
+	<style>
+		.neo-card {
+			transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+		.neo-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+		}
+		.dark .neo-card:hover {
+			box-shadow: 6px 6px 0px 0px rgba(250, 204, 21, 0.35);
+		}
+	</style>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+	<%- include('partials/header-komik'); %>
+	
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
+		
+		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
+		<div class="w-full flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-4 py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+			<div class="flex items-center gap-2.5 flex-wrap min-w-0">
+				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='/komik'" 
+						class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all font-black group shadow-xs cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+					</svg>
+					<span>Kembali</span>
+				</button>
+				<span class="text-neutral-300 dark:text-neutral-700 hidden sm:inline select-none">|</span>
+				<nav aria-label="Directory Path" class="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[11px] sm:text-xs overflow-x-auto py-0.5 max-w-full">
+					<a href="/komik" class="flex items-center gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500">
+						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
+						</svg>
+						<span>main</span>
+					</a>
+					<span class="text-neutral-400 select-none">/</span>
+					<a href="/komik" class="hover:text-black dark:hover:text-white transition-colors flex-shrink-0">
+						komik
+					</a>
+					<span class="text-neutral-400 select-none">/</span>
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[180px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+						terbaru
+					</span>
+				</nav>
+			</div>
+		</div>
+
+		<!-- PAGE HEADER CARD -->
+		<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+			<div class="flex items-center gap-3.5">
+				<div class="w-12 h-12 rounded-2xl bg-amber-500 text-black border-2 border-black flex items-center justify-center font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-xl">
+					🔥
+				</div>
+				<div>
+					<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
+						Komik Rilis Terbaru
+					</h1>
+					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
+						Daftar judul komik, manga, dan manhwa yang baru saja ditambahkan
+					</p>
+				</div>
+			</div>
+			<% if (data && data.length > 0) { %>
+				<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono font-bold self-start md:self-auto">
+					<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+					<span>Fresh Releases</span>
+				</div>
+			<% } %>
+		</section>
+
+		<!-- KOMIK GRID -->
+		<section class="w-full flex flex-col gap-4">
+			<% if (data && data.length > 0) { %>
+				<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+					<% data.forEach((item, index) => { %>
+						<a href="/komik/detail/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<!-- Poster Image Frame -->
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<!-- Type Tag Badge -->
+								<% if (item.type) { %>
+									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
+										<%= item.type %>
+									</div>
+								<% } %>
+
+								<!-- Latest Chapter Badge -->
+								<% if (item.latestChapter) { %>
+									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
+										<%= item.latestChapter %>
+									</div>
+								<% } %>
+
+								<!-- Hover play overlay -->
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-amber-400 text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Card Footer / Title -->
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-amber-500 transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span class="truncate max-w-[90px]"><%= item.genre || item.type || 'Manga' %></span>
+									<span class="text-black dark:text-white font-bold flex-shrink-0">Baca →</span>
+								</div>
+							</div>
+
+						</a>
+					<% }) %>
+				</div>
+
+				<!-- BRUTALIST PAGINATION -->
+				<div class="w-full flex items-center justify-center gap-2 mt-8">
+					<% if (prevPage) { %>
+						<a href="?page=<%= prevPage %>" class="px-4 py-2 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 hover:bg-[#FACC15] hover:text-black text-black dark:text-white font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-0.5 flex items-center gap-1.5 cursor-pointer">
+							<span>←</span>
+							<span>Sebelumnya</span>
+						</a>
+					<% } else { %>
+						<button disabled class="px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 border-2 border-black/20 dark:border-white/10 text-neutral-400 font-bold text-xs cursor-not-allowed">
+							← Sebelumnya
+						</button>
+					<% } %>
+
+					<div class="px-4 py-2 rounded-xl bg-[#FACC15] text-black border-2 border-black font-mono font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+						Halaman <%= currentPage %>
+					</div>
+
+					<% if (nextPage) { %>
+						<a href="?page=<%= nextPage %>" class="px-4 py-2 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 hover:bg-[#FACC15] hover:text-black text-black dark:text-white font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-0.5 flex items-center gap-1.5 cursor-pointer">
+							<span>Berikutnya</span>
+							<span>→</span>
+						</a>
+					<% } else { %>
+						<button disabled class="px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 border-2 border-black/20 dark:border-white/10 text-neutral-400 font-bold text-xs cursor-not-allowed">
+							Berikutnya →
+						</button>
+					<% } %>
+				</div>
+
+			<% } else { %>
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-12 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col items-center gap-3">
+					<div class="w-16 h-16 rounded-3xl bg-amber-100 dark:bg-neutral-800 border-2 border-black flex items-center justify-center text-3xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+						📭
+					</div>
+					<h3 class="text-xl font-black uppercase text-black dark:text-white mt-2">
+						Tidak Ada Komik Ditemukan
+					</h3>
+					<p class="text-xs sm:text-sm text-neutral-500 max-w-md font-semibold">
+						Belum ada rilis komik terbaru saat ini. Silakan cek kembali beberapa saat lagi.
+					</p>
+				</div>
+			<% } %>
+		</section>
+
+	</main>
+
+	<%- include('partials/footer-komik'); %>
+	<%- include('partials/script'); %>
+</body>
+</html>
+

@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#theme-toggle {
+  transition: transform 0.3s ease;
+}
+
+/* ==========================================================================
+   CYBER NEO-BRUTALIST CUSTOM SCROLLBAR
+   ========================================================================== */
+
+/* Global Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EAE7DE;
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.dark ::-webkit-scrollbar-track,
+html.dark::-webkit-scrollbar-track {
+  background: #111216;
+  border-left: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FACC15;
+  border: 2px solid #000000;
+  border-radius: 9999px;
+  box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+  transition: all 0.2s ease;
+}
+
+.dark ::-webkit-scrollbar-thumb,
+html.dark::-webkit-scrollbar-thumb {
+  background: #FACC15;
+  border: 2px solid #000000;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #EAB308;
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover,
+html.dark::-webkit-scrollbar-thumb:hover {
+  background: #FDE047;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.7);
+}
+
+/* Firefox scrollbar support */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #FACC15 #EAE7DE;
+}
+
+html.dark {
+  scrollbar-color: #FACC15 #111216;
+}
+
+/* Utility to hide scrollbars on horizontal tab bars while retaining touch/mouse scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom aesthetic scrollbar for episode lists and modals */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 8px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #2D303E;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #FACC15;
+}

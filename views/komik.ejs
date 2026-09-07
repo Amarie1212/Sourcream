@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<title><%= site_title %></title>
+	<meta name="description" content="<%= site_desc %>">
+	<meta name="keywords" content="<%= site_keyword %>">
+	<meta property="og:title" content="<%= site_title %>">
+	<meta property="og:description" content="<%= site_desc %>">
+	<meta property="og:url" content="https://<%= site_url %>">
+	<meta property="og:image" content="https://<%= site_url %>/assets/images/og.png">
+	<%- include('partials/head'); %>
+	<style>
+		@keyframes spin-slow {
+			from { transform: rotate(0deg); }
+			to { transform: rotate(360deg); }
+		}
+		.animate-spin-slow {
+			animation: spin-slow 20s linear infinite;
+		}
+		.neo-card {
+			transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+		.neo-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+		}
+		.dark .neo-card:hover {
+			box-shadow: 6px 6px 0px 0px rgba(226, 248, 76, 0.3);
+		}
+	</style>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+	<%- include('partials/header-komik'); %>
+		
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col gap-10">
+
+		<!-- HERO SECTION: CINEMATIC SPOTLIGHT SLIDER -->
+		<% if (data.date && data.date.length > 0) { %>
+		<section class="w-full relative rounded-3xl overflow-hidden border-2 border-black/30 dark:border-white/20 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] bg-[#111216] group">
+			
+			<!-- Slides Container -->
+			<div id="heroSlider" class="relative w-full h-[360px] sm:h-[420px] md:h-[480px]">
+				<% data.date.slice(0, 8).forEach((item, idx) => { %>
+					<div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out <%= idx === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none' %>" data-slide-index="<%= idx %>">
+						<!-- Full Cover Background Image -->
+						<img src="<%= item.image %>" alt="<%= item.title %>" class="w-full h-full object-cover object-center transform scale-105 group-hover:scale-100 transition-transform duration-1000" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+						
+						<!-- Cinematic Gradients -->
+						<div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent"></div>
+						<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+						<div class="absolute inset-0 bg-black/25"></div>
+
+						<!-- Slide Text Content -->
+						<div class="absolute inset-0 flex flex-col justify-end px-6 sm:px-8 pb-16 pt-6 max-w-3xl z-20 gap-2.5 sm:gap-3">
+							
+							<!-- Spotlight Rank Tag -->
+							<div class="flex items-center gap-2">
+								<span class="w-2.5 h-2.5 rounded-full bg-[#FACC15] border border-black animate-pulse"></span>
+								<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-[#FACC15] text-black border border-black shadow-xs">
+									★ SPOTLIGHT KOMIK #<%= idx + 1 %>
+								</span>
+								<span class="text-xs font-bold text-neutral-300">
+									Rekomendasi Komik Hari Ini
+								</span>
+							</div>
+
+							<!-- Title -->
+							<h1 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight leading-snug line-clamp-2 drop-shadow-md">
+								<%= item.title %>
+							</h1>
+
+							<!-- Badges Row -->
+							<div class="flex flex-wrap items-center gap-2 text-xs font-extrabold">
+								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-amber-400 backdrop-blur-xs font-black">
+									HOT
+								</span>
+								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-[#FACC15] backdrop-blur-xs font-black">
+									HD
+								</span>
+								<% if (item.type) { %>
+									<span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-black font-black backdrop-blur-xs uppercase text-[10px]">
+										<%= item.type %>
+									</span>
+								<% } %>
+								<span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-xs">
+									Sub Indo
+								</span>
+							</div>
+
+							<!-- Synopsis Excerpt -->
+							<p class="text-xs sm:text-sm text-neutral-300 line-clamp-2 leading-relaxed max-w-2xl hidden sm:block">
+								Baca komik <%= item.title %> online gratis update chapter terbaru subtitle bahasa Indonesia di Sourcream Komik.
+							</p>
+
+							<!-- READ NOW CTA Button -->
+							<div class="flex items-center gap-2.5 pt-1">
+								<a href="/komik/detail/<%= item.slug %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-black text-xs sm:text-sm shadow-md shadow-amber-500/30 hover:scale-105 transition-all duration-200">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+									  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+									</svg>
+									<span>BACA SEKARANG</span>
+								</a>
+								<a href="/komik/detail/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-xs backdrop-blur-md border border-white/20 transition-all">
+									<span>Detail Komik</span>
+									<span>→</span>
+								</a>
+							</div>
+
+						</div>
+					</div>
+				<% }); %>
+			</div>
+
+			<!-- Navigation Controls (Prev / Next Buttons Right Bottom) -->
+			<div class="absolute bottom-5 right-6 sm:right-8 z-30 flex items-center gap-2">
+				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-amber-500 hover:text-black text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+					❮
+				</button>
+				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-amber-500 hover:text-black text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+					❯
+				</button>
+			</div>
+
+			<!-- Pagination Dots (Bottom Left) -->
+			<div id="heroDots" class="absolute bottom-5 left-6 sm:left-8 z-30 flex items-center gap-2">
+				<% data.date.slice(0, 8).forEach((_, idx) => { %>
+					<button class="hero-dot transition-all duration-300 rounded-full <%= idx === 0 ? 'w-6 h-2 bg-amber-400' : 'w-2 h-2 bg-white/40 hover:bg-white/70' %>" data-slide="<%= idx %>" aria-label="Go to slide <%= idx + 1 %>"></button>
+				<% }); %>
+			</div>
+		</section>
+		<% } %>
+
+		<!-- SECTION 1: RILIS TERBARU 🔥 -->
+		<section class="w-full flex flex-col gap-4">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="w-3.5 h-3.5 bg-amber-400 border border-black inline-block"></span>
+					<h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
+						Rilis Terbaru 🔥
+					</h2>
+				</div>
+				<a href="/komik/terbaru" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-black uppercase bg-white dark:bg-neutral-800 border-2 border-black dark:border-white text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all">
+					<span>Lihat Semua</span>
+					<span>→</span>
+				</a>
+			</div>
+
+			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+				<% if (data.date && data.date.length > 0) { %>
+					<% data.date.forEach((item, index) => { %>
+						<a href="/komik/detail/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<!-- Thumbnail Wrapper -->
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<!-- Type Tag Badge -->
+								<% if (item.type) { %>
+									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
+										<%= item.type %>
+									</div>
+								<% } %>
+
+								<!-- Hover play/read overlay -->
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-amber-400 text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Card Footer / Title -->
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-amber-500 transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span><%= item.type || 'Manga' %></span>
+									<span class="text-black dark:text-white font-bold">Baca →</span>
+								</div>
+							</div>
+						</a>
+					<% }); %>
+				<% } else { %>
+					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
+						Tidak ada data komik terbaru saat ini.
+					</div>
+				<% } %>
+			</div>
+		</section>
+
+		<!-- SECTION 2: UPDATE TERBARU ⚡ -->
+		<section class="w-full flex flex-col gap-4">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="w-3.5 h-3.5 bg-indigo-500 border border-black inline-block"></span>
+					<h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
+						Update Terbaru ⚡
+					</h2>
+				</div>
+				<a href="/komik/terupdate" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-black uppercase bg-white dark:bg-neutral-800 border-2 border-black dark:border-white text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all">
+					<span>Lihat Semua</span>
+					<span>→</span>
+				</a>
+			</div>
+
+			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+				<% if (data.modified && data.modified.length > 0) { %>
+					<% data.modified.forEach((item, index) => { %>
+						<a href="/komik/detail/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<% if (item.type) { %>
+									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
+										<%= item.type %>
+									</div>
+								<% } %>
+
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-indigo-500 text-white border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span><%= item.type || 'Komik' %></span>
+									<span class="text-black dark:text-white font-bold">Baca →</span>
+								</div>
+							</div>
+						</a>
+					<% }); %>
+				<% } else { %>
+					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
+						Tidak ada data update komik saat ini.
+					</div>
+				<% } %>
+			</div>
+		</section>
+
+		<!-- SECTION 3: TERPOPULER / PERINGKAT 🏆 -->
+		<section class="w-full flex flex-col gap-4">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
+					<h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
+						Terpopuler / Peringkat 🏆
+					</h2>
+				</div>
+				<a href="/komik/peringkat" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-black uppercase bg-white dark:bg-neutral-800 border-2 border-black dark:border-white text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all">
+					<span>Lihat Semua</span>
+					<span>→</span>
+				</a>
+			</div>
+
+			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+				<% if (data.meta_value_num && data.meta_value_num.length > 0) { %>
+					<% data.meta_value_num.forEach((item, index) => { %>
+						<a href="/komik/detail/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<!-- Rank Badge -->
+								<div class="absolute top-2 left-2 w-6 h-6 rounded-md flex items-center justify-center font-black text-xs border border-black <%= index === 0 ? 'bg-[#FACC15] text-black shadow-xs' : (index === 1 ? 'bg-slate-300 text-black' : (index === 2 ? 'bg-amber-600 text-white' : 'bg-black text-white')) %>">
+									#<%= index + 1 %>
+								</div>
+
+								<% if (item.type) { %>
+									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
+										<%= item.type %>
+									</div>
+								<% } %>
+
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-rose-500 text-white border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-rose-500 transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span>★ Top Rank</span>
+									<span class="text-black dark:text-white font-bold">Baca →</span>
+								</div>
+							</div>
+						</a>
+					<% }); %>
+				<% } else { %>
+					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
+						Tidak ada data peringkat saat ini.
+					</div>
+				<% } %>
+			</div>
+		</section>
+
+		<!-- SECTION 4: KOMIK REKOMENDASI ACAK 🎲 -->
+		<section class="w-full flex flex-col gap-4">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="w-3.5 h-3.5 bg-emerald-500 border border-black inline-block"></span>
+					<h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
+						Rekomendasi Acak 🎲
+					</h2>
+				</div>
+				<a href="/komik/acak" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-black uppercase bg-white dark:bg-neutral-800 border-2 border-black dark:border-white text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all">
+					<span>Acak Lagi 🔄</span>
+				</a>
+			</div>
+
+			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+				<% if (data.rand && data.rand.length > 0) { %>
+					<% data.rand.forEach((item, index) => { %>
+						<a href="/komik/detail/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
+							
+							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+								
+								<% if (item.type) { %>
+									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
+										<%= item.type %>
+									</div>
+								<% } %>
+
+								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+									<div class="w-10 h-10 rounded-full bg-emerald-500 text-white border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-emerald-500 transition-colors">
+									<%= item.title %>
+								</h3>
+								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+									<span><%= item.type || 'Komik' %></span>
+									<span class="text-black dark:text-white font-bold">Baca →</span>
+								</div>
+							</div>
+						</a>
+					<% }); %>
+				<% } else { %>
+					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
+						Tidak ada data rekomendasi komik saat ini.
+					</div>
+				<% } %>
+			</div>
+		</section>
+
+		<!-- SECTION 5: INDEKS KOMIK A - Z 🔤 -->
+		<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl p-5 sm:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)]">
+			<div class="flex items-center justify-between mb-5 pb-3 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="text-xl">🔤</span>
+					<h3 class="text-lg font-black uppercase tracking-wider text-black dark:text-white">
+						Indeks Komik A - Z
+					</h3>
+				</div>
+				<span class="text-xs font-extrabold uppercase text-neutral-500 dark:text-neutral-400">
+					Filter Abjad
+				</span>
+			</div>
+
+			<div class="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5">
+				<% if (typeof alphabet !== 'undefined' && alphabet && alphabet.length > 0) { %>
+					<% alphabet.forEach(item => { %>
+						<a href="/komik/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:-translate-y-1 transition-all">
+							<%= item.title %>
+						</a>
+					<% }) %>
+				<% } else { %>
+					<% ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'].forEach(letter => { %>
+						<a href="/komik/alphabet?show=<%= letter %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:-translate-y-1 transition-all">
+							<%= letter %>
+						</a>
+					<% }) %>
+				<% } %>
+			</div>
+		</section>
+
+	</main>
+	
+	<%- include('partials/footer-komik'); %>
+	<%- include('partials/script'); %>
+	<script>
+		(function() {
+			const slides = document.querySelectorAll('.hero-slide');
+			const dots = document.querySelectorAll('.hero-dot');
+			const prevBtn = document.getElementById('heroPrevBtn');
+			const nextBtn = document.getElementById('heroNextBtn');
+			if (!slides.length) return;
+
+			let currentSlide = 0;
+			const total = slides.length;
+			let autoSlideTimer = null;
+
+			function showSlide(index) {
+				currentSlide = (index + total) % total;
+				slides.forEach((slide, i) => {
+					if (i === currentSlide) {
+						slide.classList.remove('opacity-0', 'pointer-events-none', 'z-0');
+						slide.classList.add('opacity-100', 'pointer-events-auto', 'z-10');
+					} else {
+						slide.classList.remove('opacity-100', 'pointer-events-auto', 'z-10');
+						slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+					}
+				});
+				dots.forEach((dot, i) => {
+					if (i === currentSlide) {
+						dot.className = 'hero-dot transition-all duration-300 rounded-full w-6 h-2 bg-amber-400';
+					} else {
+						dot.className = 'hero-dot transition-all duration-300 rounded-full w-2 h-2 bg-white/40 hover:bg-white/70';
+					}
+				});
+			}
+
+			function nextSlide() {
+				showSlide(currentSlide + 1);
+			}
+
+			function prevSlide() {
+				showSlide(currentSlide - 1);
+			}
+
+			function startAutoSlide() {
+				stopAutoSlide();
+				autoSlideTimer = setInterval(nextSlide, 5000);
+			}
+
+			function stopAutoSlide() {
+				if (autoSlideTimer) clearInterval(autoSlideTimer);
+			}
+
+			if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
+			if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
+
+			dots.forEach((dot, i) => {
+				dot.addEventListener('click', () => {
+					showSlide(i);
+					startAutoSlide();
+				});
+			});
+
+			const sliderContainer = document.getElementById('heroSlider');
+			if (sliderContainer) {
+				sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+				sliderContainer.addEventListener('mouseleave', startAutoSlide);
+
+				let touchStartX = 0;
+				sliderContainer.addEventListener('touchstart', (e) => {
+					touchStartX = e.touches[0].clientX;
+				}, { passive: true });
+				sliderContainer.addEventListener('touchend', (e) => {
+					const touchEndX = e.changedTouches[0].clientX;
+					if (touchStartX - touchEndX > 50) {
+						nextSlide();
+						startAutoSlide();
+					} else if (touchEndX - touchStartX > 50) {
+						prevSlide();
+						startAutoSlide();
+					}
+				}, { passive: true });
+			}
+
+			startAutoSlide();
+		})();
+	</script>
+</body>
+</html>

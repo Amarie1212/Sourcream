@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title><%= site_title %></title>
+    <meta name="description" content="<%= site_desc %>">
+    <meta name="keywords" content="<%= site_keyword %>">
+    <meta property="og:title" content="<%= site_title %>">
+    <meta property="og:description" content="<%= site_desc %>">
+    <meta property="og:url" content="https://<%= site_url %>">
+    <meta property="og:image" content="https://<%= site_url %>/assets/images/og.png">
+
+    <%- include('partials/head'); %>
+	<style>
+		.neo-card {
+			transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+		.neo-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+		}
+		.dark .neo-card:hover {
+			box-shadow: 3px 3px 0px 0px rgba(250, 204, 21, 0.3);
+		}
+	</style>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+    <%- include('partials/header'); %>
+
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
+		
+		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
+		<div class="w-full flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-4 py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+			
+			<!-- Left: Back Button & Path -->
+			<div class="flex items-center gap-2.5 flex-wrap min-w-0">
+				
+				<!-- Back Button -->
+				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='<%= typeof animeSlug !== 'undefined' && animeSlug ? '/anime/' + animeSlug : '/' %>'" 
+						class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all font-black group shadow-xs cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+					</svg>
+					<span>Kembali</span>
+				</button>
+
+				<span class="text-neutral-300 dark:text-neutral-700 hidden sm:inline select-none">|</span>
+
+				<!-- Explorer Path -->
+				<nav aria-label="Directory Path" class="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[11px] sm:text-xs overflow-x-auto py-0.5 max-w-full">
+					<a href="/" class="flex items-center gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500">
+						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
+						</svg>
+						<span>main</span>
+					</a>
+					
+					<span class="text-neutral-400 select-none">/</span>
+					
+					<% if (typeof animeSlug !== 'undefined' && animeSlug) { %>
+						<a href="/anime/<%= animeSlug %>" class="hover:text-violet-600 dark:hover:text-[#FACC15] transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug %>">
+							<%= typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug %>
+						</a>
+						<span class="text-neutral-400 select-none">/</span>
+					<% } %>
+
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[150px] sm:max-w-[260px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+						<%= data.title.replace(/^nonton\s+/i, '') %>
+					</span>
+				</nav>
+
+			</div>
+
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+			
+			<!-- MAIN VIDEO & PLAYER AREA (8 cols on lg) -->
+			<article class="lg:col-span-8 flex flex-col gap-6">
+				
+				<!-- Video Embed Card -->
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)]">
+					
+					<!-- Video Aspect Ratio Frame -->
+					<div class="relative w-full aspect-video bg-black flex items-center justify-center">
+						<iframe src="<%= data.videoEmbedUrl %>" id="my-video" class="w-full h-full border-0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+					</div>
+
+					<!-- Player Navigation & Controls Bar -->
+					<div class="flex items-center justify-between px-4 sm:px-6 py-4 bg-[#F5F3EF] dark:bg-[#14151b] border-t-2 border-black dark:border-white/10 gap-3">
+						
+						<!-- Prev Episode Button -->
+						<% if (data.prevEpisode) { %>
+							<a href="/episode/<%= data.prevEpisode %>" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-white dark:bg-neutral-800 text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all hover:-translate-x-0.5">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+								</svg>
+								<span>Sebelumnya</span>
+							</a>
+						<% } else { %>
+							<span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 cursor-not-allowed">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+								</svg>
+								<span>Sebelumnya</span>
+							</span>
+						<% } %>
+
+						<!-- Jump to Episodes Center Button -->
+						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase bg-black text-[#FACC15] border border-black hover:bg-violet-600 hover:text-white transition-colors">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+							</svg>
+							<span>Episode List (<%= episodes.length %>)</span>
+						</a>
+
+						<!-- Next Episode Button -->
+						<% if (data.nextEpisode) { %>
+							<a href="/episode/<%= data.nextEpisode %>" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-violet-600 hover:bg-violet-700 text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5">
+								<span>Selanjutnya</span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+								</svg>
+							</a>
+						<% } else { %>
+							<span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 cursor-not-allowed">
+								<span>Selanjutnya</span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+								</svg>
+							</span>
+						<% } %>
+					</div>
+				</div>
+
+				<!-- Anime Title & Sinopsis Card -->
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-4">
+					
+					<div class="flex flex-wrap items-center justify-between gap-2">
+						<div class="flex flex-wrap items-center gap-2">
+							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-[#FACC15] text-black border border-black shadow-xs">
+								✨ Full HD
+							</span>
+							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-violet-600 text-white">
+								💬 Sub Indo
+							</span>
+							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
+								⚡ Fast Stream
+							</span>
+						</div>
+
+						<% if (typeof animeSlug !== 'undefined' && animeSlug) { %>
+							<a href="/anime/<%= animeSlug %>" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all">
+								<span>Detail Anime</span>
+								<span>→</span>
+							</a>
+						<% } %>
+					</div>
+
+					<h1 class="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-black dark:text-white leading-snug">
+						<%= data.title %>
+					</h1>
+
+					<!-- Cleaned Synopsis Content -->
+					<% 
+						let displayDesc = '';
+						if (typeof animeDetail !== 'undefined' && animeDetail && animeDetail.description) {
+							displayDesc = animeDetail.description;
+						} else if (data.description && data.description !== '-') {
+							// Clean up boilerplate SEO phrases if present
+							displayDesc = data.description
+								.replace(/Nonton streaming & download Nonton/gi, 'Nonton')
+								.replace(/Download & streaming anime gratis bebas iklan pop-up sampah dan tampilan nyaman untuk penikmat anime online hanya di Sourcream\./gi, '')
+								.replace(/Animasu/gi, 'Sourcream')
+								.trim();
+						}
+					%>
+
+					<% if (displayDesc) { %>
+						<div class="pt-3 border-t-2 border-black/10 dark:border-white/10">
+							<h3 class="text-[10px] uppercase tracking-wider font-black text-neutral-500 dark:text-neutral-400 mb-2">Sinopsis Anime</h3>
+							<div id="synopsis-box" class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed max-h-24 overflow-hidden relative transition-all duration-300">
+								<p><%- displayDesc %></p>
+								<div id="synopsis-gradient" class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white dark:from-[#181920] to-transparent pointer-events-none"></div>
+							</div>
+							<button id="toggle-synopsis" type="button" class="mt-2 text-xs font-black text-violet-600 dark:text-[#FACC15] hover:underline inline-flex items-center gap-1">
+								<span>Selengkapnya</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 transition-transform duration-200" id="synopsis-arrow">
+								  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+								</svg>
+							</button>
+						</div>
+					<% } %>
+				</div>
+
+				<!-- Episode Navigator Card -->
+				<section id="episode-section" class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-5">
+					
+					<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b-2 border-black dark:border-white/20">
+						<div class="flex items-center gap-2">
+							<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
+							<h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-black dark:text-white">
+								Pilih Episode
+							</h2>
+							<span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-black text-[#FACC15] border border-black">
+								<%= episodes.length %> Total
+							</span>
+						</div>
+
+						<!-- Episode Controls Toolbar -->
+						<div class="flex flex-wrap items-center gap-2">
+							<!-- Search filter -->
+							<div class="relative">
+								<input type="text" id="epSearchInput" placeholder="Cari episode..." class="w-32 sm:w-40 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+								</svg>
+							</div>
+							
+							<!-- Sort Order Toggle -->
+							<button id="btnSortOrder" type="button" class="px-2.5 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-xs font-black text-black dark:text-white hover:bg-[#FACC15] hover:text-black transition-all flex items-center gap-1" title="Urutkan Episode">
+								<span id="sortOrderLabel">1 → <%= episodes.length %></span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+								  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+								</svg>
+							</button>
+
+							<!-- View Mode Toggle (Grid vs List) -->
+							<div class="flex items-center rounded-xl bg-[#F5F3EF] dark:bg-[#121317] p-1 border border-black/20 dark:border-white/20 text-xs font-black">
+								<button id="btnGridMode" class="px-2.5 py-1 rounded-lg bg-black text-[#FACC15] shadow-xs transition-all" title="Tampilan Grid Nomor">
+									Grid
+								</button>
+								<button id="btnListMode" class="px-2.5 py-1 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all" title="Tampilan List Lengkap">
+									List
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- Range / Chunk Pagination Tabs for Large Episode Count (Skat-skat) -->
+					<% 
+						const EP_CHUNK_SIZE = 50;
+						const totalEpChunks = Math.ceil(episodes.length / EP_CHUNK_SIZE);
+						
+						// Find current episode number to set initial active range
+						let currentEpNum = 1;
+						if (typeof currentSlug !== 'undefined') {
+							const curMatch = currentSlug.match(/\d+(\.\d+)?/);
+							if (curMatch) currentEpNum = parseFloat(curMatch[0]);
+						}
+						const activeChunkIdx = Math.floor((currentEpNum - 1) / EP_CHUNK_SIZE);
+					%>
+
+					<% if (episodes.length > EP_CHUNK_SIZE) { %>
+						<div id="rangeTabsEpisodeContainer" class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
+							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 flex-shrink-0 mr-1">
+								Pilih Range:
+							</span>
+							<% for (let c = 0; c < totalEpChunks; c++) { 
+								const startEp = c * EP_CHUNK_SIZE + 1;
+								const endEp = Math.min((c + 1) * EP_CHUNK_SIZE, episodes.length);
+								const isInitActive = (c === activeChunkIdx) || (activeChunkIdx < 0 && c === 0);
+							%>
+								<button type="button" 
+										data-start="<%= startEp %>" 
+										data-end="<%= endEp %>"
+										class="ep-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all <%= isInitActive ? 'bg-violet-600 text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-[#FACC15] hover:text-black' %>">
+									<%= startEp %> - <%= endEp %>
+								</button>
+							<% } %>
+							<button type="button" 
+									data-start="all" 
+									data-end="all"
+									class="ep-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-[#FACC15] hover:text-black">
+								Semua
+							</button>
+						</div>
+					<% } %>
+
+					<% if (episodes.length > 0) { %>
+						<!-- Grid Mode (Clean, Unified Modern Tiles) -->
+						<div id="episodesGrid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2.5 max-h-80 overflow-y-auto pr-1.5 custom-scrollbar">
+							<% episodes.forEach((episode, idx) => { 
+								const isCurrent = typeof currentSlug !== 'undefined' && (currentSlug === episode.slug || (data.slug && data.slug === episode.slug));
+								const epNumMatch = episode.title.match(/\d+(\.\d+)?/);
+								const epNum = epNumMatch ? parseFloat(epNumMatch[0]) : (idx + 1);
+							%>
+								<a href="/episode/<%= episode.slug %>" 
+								   data-title="<%= episode.title.toLowerCase() %>"
+								   data-ep="<%= epNum %>"
+								   data-order="<%= idx %>"
+								   class="ep-item group flex flex-col items-center justify-center py-2.5 px-2 rounded-xl text-center border-2 transition-all duration-200 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
+									<span class="text-sm font-black <%= isCurrent ? 'text-white' : '' %>"><%= epNum %></span>
+									<% if (isCurrent) { %>
+										<span class="text-[9px] font-black text-[#FACC15] uppercase tracking-wider flex items-center gap-0.5 mt-0.5">
+											<span class="w-1 h-1 rounded-full bg-[#FACC15] animate-ping"></span>
+											Playing
+										</span>
+									<% } else { %>
+										<span class="text-[9px] opacity-60 uppercase font-bold group-hover:opacity-100">Ep</span>
+									<% } %>
+								</a>
+							<% }) %>
+						</div>
+
+						<!-- List Mode (Detailed Title List) -->
+						<div id="episodesList" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-96 overflow-y-auto pr-1.5 custom-scrollbar">
+							<% episodes.forEach((episode, idx) => { 
+								const isCurrent = typeof currentSlug !== 'undefined' && (currentSlug === episode.slug || (data.slug && data.slug === episode.slug));
+								const epNumMatch = episode.title.match(/\d+(\.\d+)?/);
+								const epNum = epNumMatch ? parseFloat(epNumMatch[0]) : (idx + 1);
+							%>
+								<a href="/episode/<%= episode.slug %>" 
+								   data-title="<%= episode.title.toLowerCase() %>"
+								   data-ep="<%= epNum %>"
+								   data-order="<%= idx %>"
+								   class="ep-item flex items-center gap-3 p-3 rounded-2xl border-2 transition-all duration-200 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
+									<div class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs flex-shrink-0 <%= isCurrent ? 'bg-black text-[#FACC15]' : 'bg-black/10 dark:bg-white/10 text-black dark:text-white' %>">
+										<%= epNum %>
+									</div>
+									<div class="flex-1 min-w-0">
+										<h3 class="text-xs sm:text-sm font-bold truncate">
+											<%= episode.title %>
+										</h3>
+										<% if (isCurrent) { %>
+											<span class="text-[10px] font-black text-[#FACC15] flex items-center gap-1 mt-0.5">
+												<span class="w-1.5 h-1.5 rounded-full bg-[#FACC15] animate-ping"></span>
+												Sedang Diputar
+											</span>
+										<% } %>
+									</div>
+									<div class="text-current opacity-70">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+										  <path fill-rule="evenodd" d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm6.39-2.908a.75.75 0 0 1 .766.027l3.5 2.25a.75.75 0 0 1 0 1.262l-3.5 2.25A.75.75 0 0 1 8 12.25v-4.5a.75.75 0 0 1 .39-.658Z" clip-rule="evenodd" />
+										</svg>
+									</div>
+								</a>
+							<% }) %>
+						</div>
+					<% } else { %>
+						<div class="py-8 text-center text-neutral-500 text-sm font-bold">
+							Belum ada episode tersedia untuk anime ini.
+						</div>
+					<% } %>
+				</section>
+
+			</article>
+
+			<!-- SIDEBAR AREA (Right) -->
+			<aside class="lg:col-span-4 w-full flex flex-col gap-4 lg:sticky lg:top-24">
+				
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-4">
+					
+					<div class="flex items-center justify-between pb-3 border-b-2 border-black dark:border-white/20">
+						<div class="flex items-center gap-2">
+							<span class="w-3 h-3 bg-violet-600 border border-black inline-block"></span>
+							<h3 class="text-base font-black uppercase text-black dark:text-white">
+								Populer Minggu Ini 🔥
+							</h3>
+						</div>
+					</div>
+
+					<% if (Array.isArray(getDataSidebar) && getDataSidebar.length > 0) { %>
+						<div class="flex flex-col gap-3">
+							<% getDataSidebar.forEach((anime, idx) => { %>
+								<a href="/anime/<%= anime.slug %>" class="group flex items-center gap-3 p-2.5 rounded-2xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white/30 hover:bg-violet-50 dark:hover:bg-neutral-800 transition-all duration-200">
+									<div class="relative w-12 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-black/20 dark:border-white/20 bg-neutral-200 dark:bg-neutral-800">
+										<img src="<%= anime.image %>" alt="<%= anime.title %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<span class="absolute top-0.5 left-0.5 w-4 h-4 rounded text-[9px] font-black flex items-center justify-center <%= idx === 0 ? 'bg-[#FACC15] text-black' : (idx === 1 ? 'bg-slate-300 text-black' : (idx === 2 ? 'bg-amber-700 text-white' : 'bg-black/70 text-white')) %>">
+											<%= idx + 1 %>
+										</span>
+									</div>
+									<div class="flex-1 min-w-0">
+										<h4 class="text-xs font-bold text-black dark:text-white group-hover:text-violet-600 dark:group-hover:text-[#FACC15] truncate leading-snug">
+											<%= anime.title %>
+										</h4>
+										<div class="flex items-center gap-1.5 mt-1 text-[10px] text-neutral-500 dark:text-neutral-400">
+											<span class="px-1.5 py-0.2 rounded bg-black/10 dark:bg-white/10 font-bold uppercase">
+												<%= anime.type || 'TV' %>
+											</span>
+											<span class="truncate">
+												<%= anime.episodes || anime.status || 'Ongoing' %>
+											</span>
+										</div>
+									</div>
+								</a>
+							<% }) %>
+						</div>
+					<% } else { %>
+						<p class="text-neutral-500 text-xs text-center py-4">Belum ada anime populer tersedia.</p>
+					<% } %>
+
+				</div>
+
+			</aside>
+
+		</div>
+
+	</main>
+
+    <%- include('partials/footer'); %>
+    <%- include('partials/script'); %>
+
+    <script>
+        // Synopsis toggle
+        const toggleBtn = document.getElementById('toggle-synopsis');
+        const synopsisBox = document.getElementById('synopsis-box');
+        const synopsisGradient = document.getElementById('synopsis-gradient');
+        const synopsisArrow = document.getElementById('synopsis-arrow');
+
+        if (toggleBtn && synopsisBox) {
+            let expanded = false;
+            toggleBtn.addEventListener('click', () => {
+                expanded = !expanded;
+                if (expanded) {
+                    synopsisBox.classList.remove('max-h-24');
+                    synopsisGradient?.classList.add('hidden');
+                    toggleBtn.querySelector('span').textContent = 'Sembunyikan';
+                    synopsisArrow?.classList.add('rotate-180');
+                } else {
+                    synopsisBox.classList.add('max-h-24');
+                    synopsisGradient?.classList.remove('hidden');
+                    toggleBtn.querySelector('span').textContent = 'Selengkapnya';
+                    synopsisArrow?.classList.remove('rotate-180');
+                }
+            });
+        }
+
+        // Episode Grid vs List toggle
+        const btnGrid = document.getElementById('btnGridMode');
+        const btnList = document.getElementById('btnListMode');
+        const gridView = document.getElementById('episodesGrid');
+        const listView = document.getElementById('episodesList');
+
+        if (btnGrid && btnList && gridView && listView) {
+            btnGrid.addEventListener('click', () => {
+                gridView.classList.remove('hidden');
+                listView.classList.add('hidden');
+                btnGrid.className = 'px-2.5 py-1 rounded-lg bg-black text-[#FACC15] shadow-xs transition-all';
+                btnList.className = 'px-2.5 py-1 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all';
+            });
+
+            btnList.addEventListener('click', () => {
+                listView.classList.remove('hidden');
+                gridView.classList.add('hidden');
+                btnList.className = 'px-2.5 py-1 rounded-lg bg-black text-[#FACC15] shadow-xs transition-all';
+                btnGrid.className = 'px-2.5 py-1 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all';
+            });
+        }
+
+        // Sort order toggle (Ascending 1->N vs Descending N->1)
+        const btnSortOrder = document.getElementById('btnSortOrder');
+        const sortOrderLabel = document.getElementById('sortOrderLabel');
+        let isAscending = true;
+
+        if (btnSortOrder && sortOrderLabel) {
+            const totalEps = <%= episodes.length %>;
+            btnSortOrder.addEventListener('click', () => {
+                isAscending = !isAscending;
+                sortOrderLabel.textContent = isAscending ? `1 → ${totalEps}` : `${totalEps} → 1`;
+
+                [gridView, listView].forEach(container => {
+                    if (!container) return;
+                    const items = Array.from(container.querySelectorAll('.ep-item'));
+                    items.reverse();
+                    items.forEach(item => container.appendChild(item));
+                });
+            });
+        }
+
+        // Range chunk tabs & search filtering
+        const tabs = document.querySelectorAll('.ep-chunk-tab');
+        const epSearchInput = document.getElementById('epSearchInput');
+        const allItems = Array.from(document.querySelectorAll('.ep-item'));
+
+		let activeTab = Array.from(tabs).find(t => t.classList.contains('bg-violet-600'));
+		let activeStart = activeTab ? activeTab.getAttribute('data-start') : '1';
+		let activeEnd = activeTab ? activeTab.getAttribute('data-end') : '50';
+
+		if (activeStart !== 'all') activeStart = parseFloat(activeStart);
+		if (activeEnd !== 'all') activeEnd = parseFloat(activeEnd);
+
+		function filterEpisodeItems() {
+			const query = epSearchInput ? epSearchInput.value.trim().toLowerCase() : '';
+
+			allItems.forEach(item => {
+				const ep = parseFloat(item.getAttribute('data-ep')) || 0;
+				const title = item.getAttribute('data-title') || '';
+
+				let matchRange = true;
+				if (query === '' && activeStart !== 'all') {
+					matchRange = ep >= activeStart && ep <= activeEnd;
+				}
+
+				let matchQuery = true;
+				if (query) {
+					matchQuery = title.includes(query) || ep.toString() === query || ep.toString().includes(query);
+				}
+
+				if (matchRange && matchQuery) {
+					item.classList.remove('hidden');
+				} else {
+					item.classList.add('hidden');
+				}
+			});
+		}
+
+		tabs.forEach(tab => {
+			tab.addEventListener('click', () => {
+				tabs.forEach(t => {
+					t.className = 'ep-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-[#FACC15] hover:text-black';
+				});
+				tab.className = 'ep-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-violet-600 text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]';
+
+				const rawStart = tab.getAttribute('data-start');
+				const rawEnd = tab.getAttribute('data-end');
+
+				if (rawStart === 'all') {
+					activeStart = 'all';
+					activeEnd = 'all';
+				} else {
+					activeStart = parseFloat(rawStart);
+					activeEnd = parseFloat(rawEnd);
+				}
+
+				if (epSearchInput) epSearchInput.value = '';
+				filterEpisodeItems();
+			});
+		});
+
+        if (epSearchInput) {
+            epSearchInput.addEventListener('input', () => {
+                filterEpisodeItems();
+            });
+        }
+
+		// Handle mouse wheel horizontal scroll on range tabs
+		const rangeTabsContainer = document.getElementById('rangeTabsEpisodeContainer');
+		if (rangeTabsContainer) {
+			rangeTabsContainer.addEventListener('wheel', (e) => {
+				if (e.deltaY !== 0) {
+					e.preventDefault();
+					rangeTabsContainer.scrollLeft += e.deltaY;
+				}
+			}, { passive: false });
+		}
+
+		// Initial filter
+		if (tabs.length > 0) {
+			filterEpisodeItems();
+		}
+    </script>
+</body>
+</html>
