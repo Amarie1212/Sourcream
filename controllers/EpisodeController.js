@@ -27,13 +27,17 @@ exports.index = async (req, res) => {
         }
 
         let animeDetail = null;
+        let animeTitle = animeSlug ? animeSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
         if (animeSlug) {
             try {
                 const animeRes = await axios.get(`${process.env.BASE_URL}/v1/detail/${animeSlug}`, {
                     headers: { 'x-api-key': process.env.API_KEY },
                     timeout: 4000
                 });
-                animeDetail = animeRes.data?.data || null;
+                if (animeRes.data?.data) {
+                    animeDetail = animeRes.data.data;
+                    animeTitle = animeDetail.title.replace(/\s*sub\s*indo/i, '').trim();
+                }
             } catch (err) {
                 // fallback gracefully
             }
@@ -66,6 +70,7 @@ exports.index = async (req, res) => {
 			data, 
 			animeDetail,
 			animeSlug,
+			animeTitle,
 			episodes: sortedEpisodes, 
 			getDataSidebar,
 			currentSlug: slug

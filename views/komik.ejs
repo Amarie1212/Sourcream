@@ -29,7 +29,7 @@
 		}
 	</style>
 </head>
-<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
 	<%- include('partials/header-komik'); %>
 		
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col gap-10">
@@ -92,15 +92,15 @@
 								Baca komik <%= item.title %> online gratis update chapter terbaru subtitle bahasa Indonesia di Sourcream Komik.
 							</p>
 
-							<!-- READ NOW CTA Button -->
-							<div class="flex items-center gap-2.5 pt-1">
-								<a href="/komik/detail/<%= item.slug %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-black text-xs sm:text-sm shadow-md shadow-amber-500/30 hover:scale-105 transition-all duration-200">
+							<!-- READ NOW & DETAIL KOMIK CTA Buttons -->
+							<div class="flex items-center gap-3 pt-1">
+								<a href="/komik/detail/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FACC15] hover:bg-amber-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 									  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
 									</svg>
 									<span>BACA SEKARANG</span>
 								</a>
-								<a href="/komik/detail/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1 px-3.5 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-xs backdrop-blur-md border border-white/20 transition-all">
+								<a href="/komik/detail/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-black/80 hover:bg-black text-white font-black text-xs uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
 									<span>Detail Komik</span>
 									<span>→</span>
 								</a>

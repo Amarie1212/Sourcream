@@ -1,6 +1,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<script>
+	(function() {
+		try {
+			const saved = localStorage.getItem('theme');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (saved === 'dark' || (!saved && prefersDark)) {
+				document.documentElement.classList.add('dark');
+				document.documentElement.setAttribute('data-theme', 'dark');
+				document.documentElement.style.backgroundColor = '#111216';
+			} else {
+				document.documentElement.classList.remove('dark');
+				document.documentElement.setAttribute('data-theme', 'light');
+				document.documentElement.style.backgroundColor = '#EAE7DE';
+			}
+		} catch (e) {}
+	})();
+</script>
+
 <link rel="icon" type="image/png" href="/assets/images/logo.ico">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="I-As.Dev">

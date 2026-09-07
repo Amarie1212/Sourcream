@@ -21,6 +21,12 @@ exports.index = async (req, res) => {
 
         const { title, data } = response.data;
 
+        const comicSlug = slug.replace(/-chapter-.*$/i, '');
+        let comicTitle = (title || '').replace(/\s*Chapter\s*\d+.*$/i, '').trim();
+        if (!comicTitle || comicTitle === title) {
+            comicTitle = comicSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+
         const responseSidebar = await axios.get(`${process.env.BASE_URL}/v1/komik/list?order=rand`, {
             headers: { 'x-api-key': process.env.API_KEY }
         });
@@ -37,6 +43,8 @@ exports.index = async (req, res) => {
 
         res.render('komik-chapter', { 
             data,
+            comicSlug,
+            comicTitle,
             getDataSidebar 
         });
     } catch (error) {

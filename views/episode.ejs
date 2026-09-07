@@ -23,7 +23,7 @@
 		}
 	</style>
 </head>
-<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white transition-colors duration-200 min-h-screen flex flex-col font-sans">
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
     <%- include('partials/header'); %>
 
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
@@ -37,6 +37,7 @@
 				<!-- Back Button -->
 				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='<%= typeof animeSlug !== 'undefined' && animeSlug ? '/anime/' + animeSlug : '/' %>'" 
 						class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all font-black group shadow-xs cursor-pointer">
+						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all font-black uppercase text-[11px] sm:text-xs tracking-wider group hover:scale-105 active:scale-95 cursor-pointer">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
@@ -55,10 +56,16 @@
 					</a>
 					
 					<span class="text-neutral-400 select-none">/</span>
+
+					<a href="/terbaru" class="hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						anime
+					</a>
+
+					<span class="text-neutral-400 select-none">/</span>
 					
 					<% if (typeof animeSlug !== 'undefined' && animeSlug) { %>
-						<a href="/anime/<%= animeSlug %>" class="hover:text-violet-600 dark:hover:text-[#FACC15] transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug %>">
-							<%= typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug %>
+						<a href="/anime/<%= animeSlug %>" class="hover:text-violet-600 dark:hover:text-[#FACC15] transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= typeof animeTitle !== 'undefined' && animeTitle ? animeTitle : (typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug) %>">
+							<%= typeof animeTitle !== 'undefined' && animeTitle ? animeTitle : (typeof animeDetail !== 'undefined' && animeDetail ? animeDetail.title : animeSlug) %>
 						</a>
 						<span class="text-neutral-400 select-none">/</span>
 					<% } %>
@@ -90,14 +97,14 @@
 						
 						<!-- Prev Episode Button -->
 						<% if (data.prevEpisode) { %>
-							<a href="/episode/<%= data.prevEpisode %>" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-white dark:bg-neutral-800 text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:text-black transition-all hover:-translate-x-0.5">
+							<a href="/episode/<%= data.prevEpisode %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 hover:bg-black text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:scale-105 transition-all">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 								</svg>
 								<span>Sebelumnya</span>
 							</a>
 						<% } else { %>
-							<span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 cursor-not-allowed">
+							<span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border-2 border-neutral-300 dark:border-neutral-800 cursor-not-allowed opacity-60">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 								</svg>
@@ -106,8 +113,9 @@
 						<% } %>
 
 						<!-- Jump to Episodes Center Button -->
-						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase bg-black text-[#FACC15] border border-black hover:bg-violet-600 hover:text-white transition-colors">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-[#FACC15] text-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-violet-600 hover:text-white transition-all hover:scale-105">
+						<a href="#episode-section" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider bg-[#FACC15] hover:bg-violet-600 text-black hover:text-white border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:scale-105 transition-all">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 							  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 							</svg>
 							<span>Episode List (<%= episodes.length %>)</span>
@@ -115,14 +123,14 @@
 
 						<!-- Next Episode Button -->
 						<% if (data.nextEpisode) { %>
-							<a href="/episode/<%= data.nextEpisode %>" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-violet-600 hover:bg-violet-700 text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5">
+							<a href="/episode/<%= data.nextEpisode %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:scale-105 transition-all">
 								<span>Selanjutnya</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
 								</svg>
 							</a>
 						<% } else { %>
-							<span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 cursor-not-allowed">
+							<span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider text-neutral-400 dark:text-neutral-600 bg-neutral-100 dark:bg-neutral-900 border-2 border-neutral-300 dark:border-neutral-800 cursor-not-allowed opacity-60">
 								<span>Selanjutnya</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -288,7 +296,7 @@
 								   data-title="<%= episode.title.toLowerCase() %>"
 								   data-ep="<%= epNum %>"
 								   data-order="<%= idx %>"
-								   class="ep-item group flex flex-col items-center justify-center py-2.5 px-2 rounded-xl text-center border-2 transition-all duration-200 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
+								   class="ep-item group flex flex-col items-center justify-center py-2.5 px-2 rounded-xl text-center border-2 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
 									<span class="text-sm font-black <%= isCurrent ? 'text-white' : '' %>"><%= epNum %></span>
 									<% if (isCurrent) { %>
 										<span class="text-[9px] font-black text-[#FACC15] uppercase tracking-wider flex items-center gap-0.5 mt-0.5">
@@ -313,7 +321,7 @@
 								   data-title="<%= episode.title.toLowerCase() %>"
 								   data-ep="<%= epNum %>"
 								   data-order="<%= idx %>"
-								   class="ep-item flex items-center gap-3 p-3 rounded-2xl border-2 transition-all duration-200 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
+								   class="ep-item flex items-center gap-3 p-3 rounded-2xl border-2 <%= isCurrent ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30' : 'bg-[#F5F3EF] dark:bg-[#14151c] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-black/15 dark:border-white/10 hover:border-black' %>">
 									<div class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs flex-shrink-0 <%= isCurrent ? 'bg-black text-[#FACC15]' : 'bg-black/10 dark:bg-white/10 text-black dark:text-white' %>">
 										<%= epNum %>
 									</div>
@@ -362,7 +370,7 @@
 					<% if (Array.isArray(getDataSidebar) && getDataSidebar.length > 0) { %>
 						<div class="flex flex-col gap-3">
 							<% getDataSidebar.forEach((anime, idx) => { %>
-								<a href="/anime/<%= anime.slug %>" class="group flex items-center gap-3 p-2.5 rounded-2xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white/30 hover:bg-violet-50 dark:hover:bg-neutral-800 transition-all duration-200">
+								<a href="/anime/<%= anime.slug %>" class="group flex items-center gap-3 p-2.5 rounded-2xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white/30 hover:bg-violet-50 dark:hover:bg-neutral-800 ">
 									<div class="relative w-12 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-black/20 dark:border-white/20 bg-neutral-200 dark:bg-neutral-800">
 										<img src="<%= anime.image %>" alt="<%= anime.title %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
 										<span class="absolute top-0.5 left-0.5 w-4 h-4 rounded text-[9px] font-black flex items-center justify-center <%= idx === 0 ? 'bg-[#FACC15] text-black' : (idx === 1 ? 'bg-slate-300 text-black' : (idx === 2 ? 'bg-amber-700 text-white' : 'bg-black/70 text-white')) %>">
