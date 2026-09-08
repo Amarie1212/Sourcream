@@ -3,19 +3,34 @@
 
 <script>
 	(function() {
-		try {
-			const saved = localStorage.getItem('theme');
-			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			if (saved === 'dark' || (!saved && prefersDark)) {
-				document.documentElement.classList.add('dark');
-				document.documentElement.setAttribute('data-theme', 'dark');
-				document.documentElement.style.backgroundColor = '#111216';
+		function applyTheme() {
+			try {
+				const saved = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				if (saved === 'dark' || (!saved && prefersDark)) {
+					document.documentElement.classList.add('dark');
+					document.documentElement.setAttribute('data-theme', 'dark');
+					document.documentElement.style.backgroundColor = '#111216';
+				} else {
+					document.documentElement.classList.remove('dark');
+					document.documentElement.setAttribute('data-theme', 'light');
+					document.documentElement.style.backgroundColor = '#EAE7DE';
+				}
+			} catch (e) {}
+		}
+		applyTheme();
+		window.addEventListener('pageshow', applyTheme);
+		window.addEventListener('storage', applyTheme);
+
+		window.goBack = function(fallbackUrl) {
+			if (document.referrer && document.referrer.startsWith(window.location.origin) && document.referrer !== window.location.href) {
+				window.history.back();
+			} else if (fallbackUrl) {
+				window.location.href = fallbackUrl;
 			} else {
-				document.documentElement.classList.remove('dark');
-				document.documentElement.setAttribute('data-theme', 'light');
-				document.documentElement.style.backgroundColor = '#EAE7DE';
+				window.location.href = '/';
 			}
-		} catch (e) {}
+		};
 	})();
 </script>
 
