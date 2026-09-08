@@ -124,13 +124,13 @@
 							<!-- Action Button: Start Watching -->
 							<% if (episodes.length > 0) { %>
 								<div class="flex flex-wrap items-center gap-3 pt-1">
-									<a href="/episode/<%= episodes[0].slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer">
+									<a href="/episode/<%= episodes[0].slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-xs sm:text-sm uppercase tracking-wider cursor-pointer">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
 										</svg>
 										<span>Tonton Episode 1</span>
 									</a>
-									<a href="/episode/<%= episodes[episodes.length - 1].slug %>" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer">
+									<a href="/episode/<%= episodes[episodes.length - 1].slug %>" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer">
 										<span>Episode Terakhir</span>
 										<span>→</span>
 									</a>
