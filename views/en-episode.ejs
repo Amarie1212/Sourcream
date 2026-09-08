@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title><%= site_title %></title>
+	<meta name="description" content="<%= site_desc %>">
+	<meta name="keywords" content="<%= site_keyword %>">
+	<meta property="og:title" content="<%= site_title %>">
+	<meta property="og:description" content="<%= site_desc %>">
+	<meta property="og:url" content="https://<%= site_url %>/en/episode/<%= data.slug %>">
+	<%- include('partials/head'); %>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
+	<%- include('partials/header'); %>
+		
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col gap-6">
+
+		<!-- BREADCRUMB BAR (Single line on mobile) -->
+		<div class="w-full flex items-center justify-between pb-3 border-b-2 border-black/10 dark:border-white/10 gap-3">
+			<div class="flex items-center gap-2 min-w-0 flex-1">
+				<button type="button" onclick="history.back()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.2)] flex-shrink-0 cursor-pointer" title="Back">
+					<span class="text-sm">←</span>
+					<span class="hidden sm:inline">Back</span>
+				</button>
+
+				<nav class="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
+					<a href="/en" class="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+					<a href="/" class="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0">
+						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
+						</svg>
+						<span>English Anime</span>
+						<span>Home</span>
+					</a>
+					
+					<span class="text-neutral-400 select-none flex-shrink-0">/</span>
+
+					<% if (animeSlug) { %>
+						<a href="/en/anime/<%= animeSlug %>" class="hover:text-amber-500 transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= animeTitle || animeSlug %>">
+						<a href="/anime/<%= animeSlug %>" class="hover:text-amber-500 transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= animeTitle || animeSlug %>">
+							<%= animeTitle || animeSlug %>
+						</a>
+						<span class="text-neutral-400 select-none flex-shrink-0">/</span>
+					<% } %>
+
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[130px] sm:max-w-[260px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+						<%= data.title %>
+					</span>
+				</nav>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+			
+			<!-- MAIN VIDEO PLAYER AREA (8 cols) -->
+			<article class="lg:col-span-8 flex flex-col gap-6">
+				
+				<!-- Video Card -->
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)]">
+					
+					<!-- Video Iframe -->
+					<div class="relative w-full aspect-video bg-black flex items-center justify-center">
+						<iframe src="<%= data.videoEmbedUrl %>" id="my-video" class="w-full h-full border-0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+					</div>
+
+					<!-- Navigation Bar Below Video -->
+					<div class="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-[#F5F3EF] dark:bg-[#14151b] border-t-2 border-black dark:border-white/10 gap-2 sm:gap-3">
+						
+						<!-- Prev Episode Button (Arrows only on mobile) -->
+						<% if (data.prevEpisode) { %>
+							<a href="/en/episode/<%= data.prevEpisode %>" class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white dark:bg-[#1e2029] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
+							<a href="/episode/<%= data.prevEpisode %>" class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white dark:bg-[#1e2029] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
+								<span class="text-sm">←</span>
+								<span class="hidden sm:inline">Prev Episode</span>
+							</a>
+						<% } else { %>
+							<span class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-xs font-black uppercase text-neutral-400 border-2 border-black/10 dark:border-white/10 cursor-not-allowed">
+								<span class="text-sm">←</span>
+								<span class="hidden sm:inline">Prev Episode</span>
+							</span>
+						<% } %>
+
+						<!-- Center Indicator / Anime Link -->
+						<div class="flex items-center gap-2 text-center min-w-0">
+							<% if (animeSlug) { %>
+								<a href="/en/anime/<%= animeSlug %>" class="px-3 py-1.5 rounded-xl bg-amber-400 text-black border-2 border-black text-xs font-black uppercase shadow-xs hover:bg-black hover:text-white transition-all truncate">
+								<a href="/anime/<%= animeSlug %>" class="px-3 py-1.5 rounded-xl bg-amber-400 text-black border-2 border-black text-xs font-black uppercase shadow-xs hover:bg-black hover:text-white transition-all truncate">
+									All Episodes
+								</a>
+							<% } %>
+						</div>
+
+						<!-- Next Episode Button (Arrows only on mobile) -->
+						<% if (data.nextEpisode) { %>
+							<a href="/en/episode/<%= data.nextEpisode %>" class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white dark:bg-[#1e2029] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
+							<a href="/episode/<%= data.nextEpisode %>" class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white dark:bg-[#1e2029] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
+								<span class="hidden sm:inline">Next Episode</span>
+								<span class="text-sm">→</span>
+							</a>
+						<% } else { %>
+							<span class="inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-xs font-black uppercase text-neutral-400 border-2 border-black/10 dark:border-white/10 cursor-not-allowed">
+								<span class="hidden sm:inline">Next Episode</span>
+								<span class="text-sm">→</span>
+							</span>
+						<% } %>
+
+					</div>
+
+				</div>
+
+				<!-- Episode Title & Info -->
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-5 sm:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-3">
+					<div class="flex flex-wrap items-center gap-2">
+						<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-amber-400 text-black border border-black">
+							ENGLISH STREAM
+						</span>
+						<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-violet-600 text-white">
+							HD 1080P
+						</span>
+					</div>
+					<h1 class="text-lg sm:text-2xl font-black text-black dark:text-white uppercase tracking-tight">
+						<%= data.title %>
+					</h1>
+					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed bg-[#F5F3EF] dark:bg-[#121317] p-3.5 rounded-xl border border-black/10 dark:border-white/10">
+						<%= data.description || 'Enjoy watching this anime episode in high definition.' %>
+					</p>
+				</div>
+
+			</article>
+
+			<!-- SIDEBAR: EPISODE SELECTOR (4 cols) -->
+			<aside class="lg:col-span-4 flex flex-col gap-5">
+				
+				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-4">
+					<div class="flex items-center justify-between pb-3 border-b-2 border-black/10 dark:border-white/10">
+						<h2 class="text-sm sm:text-base font-black uppercase tracking-tight text-black dark:text-white flex items-center gap-2">
+							<span class="w-2.5 h-2.5 bg-amber-400 border border-black inline-block"></span>
+							Episodes List
+						</h2>
+						<% if (episodes && episodes.length > 0) { %>
+							<span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-black text-[#FACC15]">
+								<%= episodes.length %> EP
+							</span>
+						<% } %>
+					</div>
+
+					<!-- Search Episode Filter -->
+					<div class="relative">
+						<input type="text" id="sideEpSearch" placeholder="Find episode..." class="w-full text-xs px-3 py-2 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+						</svg>
+					</div>
+
+					<!-- Scrollable Episode List -->
+					<div id="sideEpList" class="max-h-[460px] overflow-y-auto pr-1 flex flex-col gap-1.5 custom-scrollbar">
+						<% if (episodes && episodes.length > 0) { %>
+							<% episodes.forEach(ep => { 
+								const isCurrent = ep.slug === data.slug;
+							%>
+								<a href="/en/episode/<%= ep.slug %>" class="side-ep-item flex items-center justify-between px-3 py-2 rounded-xl border text-xs font-black transition-all <%= isCurrent ? 'bg-amber-400 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-[#F5F3EF] dark:bg-[#121317] text-neutral-800 dark:text-neutral-200 border-black/10 dark:border-white/10 hover:border-black hover:bg-amber-300 hover:text-black' %>">
+								<a href="/episode/<%= ep.slug %>" class="side-ep-item flex items-center justify-between px-3 py-2 rounded-xl border text-xs font-black transition-all <%= isCurrent ? 'bg-amber-400 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-[#F5F3EF] dark:bg-[#121317] text-neutral-800 dark:text-neutral-200 border-black/10 dark:border-white/10 hover:border-black hover:bg-amber-300 hover:text-black' %>">
+									<span class="truncate"><%= ep.title %></span>
+									<% if (isCurrent) { %>
+										<span class="text-[10px] uppercase font-black">Playing ▶</span>
+									<% } %>
+								</a>
+							<% }); %>
+						<% } else { %>
+							<div class="py-6 text-center text-xs text-neutral-500 font-bold">
+								No episodes listed.
+							</div>
+						<% } %>
+					</div>
+				</div>
+
+			</aside>
+
+		</div>
+
+	</main>
+
+	<script>
+		const sideEpSearch = document.getElementById('sideEpSearch');
+		const sideEpItems = document.querySelectorAll('.side-ep-item');
+		if (sideEpSearch) {
+			sideEpSearch.addEventListener('input', (e) => {
+				const val = e.target.value.toLowerCase().trim();
+				sideEpItems.forEach(item => {
+					const text = item.textContent.toLowerCase();
+					item.style.display = text.includes(val) ? '' : 'none';
+				});
+			});
+		}
+	</script>
+
+	<%- include('partials/footer'); %>
+</body>
+</html>

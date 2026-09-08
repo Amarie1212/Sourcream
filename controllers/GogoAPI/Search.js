@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const cheerio = require('cheerio');
 const https = require('https');
 const { setCache } = require('../../middlewares/CacheAPI');
@@ -8,15 +8,12 @@ const GOGO_BASE = 'https://ww4.gogoanimes.fi';
 
 exports.index = async (req, res) => {
   try {
-    const q = req.query.q || req.query.keyword || '';
-    const page = parseInt(req.query.page) || 1;
-
+    const { q = '', page = 1 } = req.query;
     if (!q) {
       return res.json({ success: true, data: [] });
     }
 
     const url = `${GOGO_BASE}/search.html?keyword=${encodeURIComponent(q)}&page=${page}`;
-
     const response = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -29,33 +26,32 @@ exports.index = async (req, res) => {
     const results = [];
 
     $('.last_episodes ul.items li').each((i, el) => {
-      const rawTitle = $(el).find('.name a').attr('title') || $(el).find('.name a').text().trim();
-      const rawHref = $(el).find('.name a').attr('href') || '';
-      const slug = rawHref.replace(/^\/?category\//, '').replace(/^\//, '').trim();
-
+      const title = $(el).find('.name a').attr('title') || $(el).find('.name a').text().trim();
+      const href = $(el).find('.name a').attr('href') || '';
+      const slug = href.replace(/^\/?category\//, '').replace(/^\//, '').trim();
       let image = $(el).find('.img img').attr('src') || '';
       if (image && !image.startsWith('http')) {
         image = `${GOGO_BASE}${image.startsWith('/') ? '' : '/'}${image}`;
       }
       const released = $(el).find('.released').text().trim();
-      const isDub = rawTitle.toLowerCase().includes('(dub)');
+      const isDub = title.toLowerCase().includes('(dub)');
 
       results.push({
-        title: rawTitle,
+        title,
         slug,
         image,
-        episodes: released || 'Anime Series',
-        status: isDub ? 'Dub' : 'Sub',
+        episodes: released || 'Anime',
+        status: 'Available',
         type: isDub ? 'DUB' : 'SUB'
       });
     });
 
-    const responseData = { success: true, data: results };
+    const responseData = { success: true, data: results, query: q, page };
     setCache(res.cacheKey, responseData);
     res.json(responseData);
 
   } catch (error) {
-    console.error('AnimeAPI Search Error:', error.message);
-    res.status(500).json({ success: false, message: 'Gagal mencari anime' });
+    console.error('GogoAPI Search Error:', error.message);
+    res.status(500).json({ success: false, message: 'Gagal mencari anime dari Gogoanime' });
   }
 };

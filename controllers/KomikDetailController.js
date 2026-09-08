@@ -18,10 +18,10 @@ exports.index = async (req, res) => {
         const response = await axios.get(apiUrl, {
             headers: { 'x-api-key': process.env.API_KEY }
         });
-        const { data } = response.data;
+        const { data, chapters } = response.data;
 		
         // Sort chapters ascending (1 to N)
-        const rawChapters = data.chapters || [];
+        const rawChapters = chapters || data?.chapters || [];
         const sortedChapters = [...rawChapters].sort((a, b) => {
             const matchA = a.title ? a.title.match(/\d+(\.\d+)?/) : null;
             const matchB = b.title ? b.title.match(/\d+(\.\d+)?/) : null;

@@ -1,31 +1,30 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
 const { setCache } = require('../../middlewares/CacheAPI');
-const { ProtocolFallback } = require('../../helpers/ProtocolHelper');
 
 exports.index = async (req, res) => {
   try {
-	const url = `komiku.org/pustaka/`;
-    const html = await ProtocolFallback(url);
-    const $ = cheerio.load(html);
+    const data = [
+      { slug: "", title: "Semua Genre" },
+      { slug: "action", title: "Action" },
+      { slug: "adventure", title: "Adventure" },
+      { slug: "comedy", title: "Comedy" },
+      { slug: "drama", title: "Drama" },
+      { slug: "fantasy", title: "Fantasy" },
+      { slug: "horror", title: "Horror" },
+      { slug: "mystery", title: "Mystery" },
+      { slug: "psychological", title: "Psychological" },
+      { slug: "romance", title: "Romance" },
+      { slug: "sci-fi", title: "Sci-Fi" },
+      { slug: "slice-of-life", title: "Slice of Life" },
+      { slug: "sports", title: "Sports" },
+      { slug: "supernatural", title: "Supernatural" },
+      { slug: "thriller", title: "Thriller" },
+      { slug: "isekai", title: "Isekai" }
+    ];
 
-    const order = [];
-    $('select[name="genre"] option').each((i, element) => {
-      const title = $(element).text().trim();
-      const slug = $(element).attr('value').trim() || '';
-
-      order.push({ title, slug });
-    });
-
-    if (order.length > 0) {
-      order[0].title = 'Tidak Ada';
-    }
-
-    const responseData = { success: true, data: order };
+    const responseData = { success: true, data };
     setCache(res.cacheKey, responseData);
     res.json(responseData);
   } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).json({ success: false, message: 'Failed to load order.' });
+    res.status(500).json({ success: false, message: 'Failed to load genres.' });
   }
 };

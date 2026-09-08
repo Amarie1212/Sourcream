@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const cheerio = require('cheerio');
 const https = require('https');
 const { setCache } = require('../../middlewares/CacheAPI');
@@ -13,9 +13,7 @@ exports.index = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Slug episode diperlukan' });
     }
 
-    const cleanSlug = slug.replace(/^nonton-/, '').trim();
-    const url = `${GOGO_BASE}/${cleanSlug}`;
-
+    const url = `${GOGO_BASE}/${slug}`;
     const response = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -26,17 +24,17 @@ exports.index = async (req, res) => {
 
     const $ = cheerio.load(response.data);
 
-    const title = $('h1').text().trim() || cleanSlug.replace(/-/g, ' ').toUpperCase();
+    const title = $('h1').text().trim();
     let videoEmbedUrl = $('div.play-video iframe').attr('src') || '';
     if (videoEmbedUrl.startsWith('//')) {
       videoEmbedUrl = `https:${videoEmbedUrl}`;
     }
 
     const description = $('.description').text().trim() || $('.anime_video_body p').text().trim() || '-';
-
+    
     // Extract anime series reference
     const rawAnimeHref = $('.anime-info a').attr('href') || $('a[href*="/category/"]').attr('href') || '';
-    const animeSlug = rawAnimeHref.replace(/^\/?category\//, '').replace(/^\//, '').trim() || cleanSlug.replace(/-episode-\d+.*$/, '');
+    const animeSlug = rawAnimeHref.replace(/^\/?category\//, '').replace(/^\//, '').trim() || slug.replace(/-episode-\d+.*$/, '');
     const animeTitle = $('.anime-info a').text().trim() || $('a[href*="/category/"]').first().text().trim() || animeSlug.replace(/-/g, ' ').toUpperCase();
 
     // Extract servers
@@ -45,15 +43,15 @@ exports.index = async (req, res) => {
       let vUrl = $(el).attr('data-video') || '';
       if (vUrl.startsWith('//')) vUrl = `https:${vUrl}`;
       servers.push({
-        title: $(el).text().replace('Choose this server', '').trim() || `Server ${i + 1}`,
-        link: vUrl
+        name: $(el).text().replace('Choose this server', '').trim(),
+        url: vUrl
       });
     });
 
     // Compute prev and next episode
     let prevEpisode = null;
     let nextEpisode = null;
-    const epMatch = cleanSlug.match(/^(.*)-episode-(\d+(\.\d+)?)$/i);
+    const epMatch = slug.match(/^(.*)-episode-(\d+(\.\d+)?)$/i);
     if (epMatch) {
       const prefix = epMatch[1];
       const epNum = parseFloat(epMatch[2]);
@@ -63,30 +61,16 @@ exports.index = async (req, res) => {
       nextEpisode = `${prefix}-episode-${epNum + 1}`;
     }
 
-    // Extract episode list directly from episode page if available
-    const episodesList = [];
-    $('#episode_related li a').each((i, el) => {
-      const epName = $(el).find('.name').text().trim() || `Episode ${i + 1}`;
-      const epHref = $(el).attr('href')?.replace(/^\//, '').trim() || '';
-      if (epHref) {
-        episodesList.push({
-          title: epName.toUpperCase().startsWith('EP') ? epName.replace(/^EP\s*/i, 'Episode ') : epName,
-          slug: epHref
-        });
-      }
-    });
-
     const results = {
       title,
-      slug: cleanSlug,
+      slug,
       animeSlug,
       animeTitle,
       description,
       videoEmbedUrl,
-      serverOptions: servers,
+      servers,
       prevEpisode,
-      nextEpisode,
-      episodesList
+      nextEpisode
     };
 
     const responseData = { success: true, data: results };
@@ -94,7 +78,7 @@ exports.index = async (req, res) => {
     res.json(responseData);
 
   } catch (error) {
-    console.error('AnimeAPI Episode Error:', error.message);
-    res.status(500).json({ success: false, message: 'Gagal mengambil episode' });
+    console.error('GogoAPI Episode Error:', error.message);
+    res.status(500).json({ success: false, message: 'Gagal mengambil episode dari Gogoanime' });
   }
 };

@@ -1,7 +1,5 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
 const { setCache } = require('../../middlewares/CacheAPI');
-const { ProtocolFallback } = require('../../helpers/ProtocolHelper');
+const { getMangaDetail } = require('../../helpers/MangaDexHelper');
 
 exports.index = async (req, res) => {
   const { slug } = req.params;
@@ -11,89 +9,22 @@ exports.index = async (req, res) => {
   }
 
   try {
-	const url = `komiku.org/manga/${slug}`;
-    const html = await ProtocolFallback(url);
-    const $ = cheerio.load(html);
+    const result = await getMangaDetail(slug);
 
-    const title = $('h1 span[itemprop="name"]').text().trim();
-    const image = $('img[itemprop="image"]').attr('src');
-    const description = $('p[itemprop="description"]').text().trim();
-    const oldChapter = $('.new1.sd.rd').first().find('a').text().trim().replace('Awal:', '').trim();
-    const oldChapterLink = $('.new1.sd.rd').first().find('a').attr('href')?.replace(/^\//, '').replace(/\/$/, '') || '#';
-    const latestChapter = $('.new1.sd.rd').last().find('a').text().trim().replace('Terbaru:', '').trim();
-    const latestChapterLink = $('.new1.sd.rd').last().find('a').attr('href')?.replace(/^\//, '').replace(/\/$/, '') || '#';
+    if (!result) {
+      return res.status(404).json({ success: false, message: 'Komik tidak ditemukan' });
+    }
 
-    const infoTable = $('.inftable tbody tr');
-    const genres = [];
-
-    $('.genre a span[itemprop="genre"]').each((i, el) => {
-      genres.push($(el).text().trim());
-    });
-
-    const infoMap = {
-      "Judul Komik": "title",
-      "Judul Indonesia": "title_id",
-      "Jenis Komik": "type",
-      "Konsep Cerita": "story",
-      "Pengarang": "author",
-      "Status": "status",
-      "Umur Pembaca": "age",
-      "Cara Baca": "read"
+    const responseData = {
+      success: true,
+      data: result.data,
+      chapters: result.chapters
     };
-
-    const info = {};
-    infoTable.each((i, row) => {
-      const key = $(row).find('td').first().text().trim();
-      const value = $(row).find('td').last().text().trim();
-      if (infoMap[key]) {
-        info[infoMap[key]] = value;
-      }
-    });
-
-    const chapters = [];
-    $('#daftarChapter tr').each((i, row) => {
-      if (i === 0) return;
-      const chapterNumber = $(row).find('.judulseries a span').text().trim();
-      const chapterLink = $(row).find('.judulseries a').attr('href').replace(/^\//, '').replace(/\/$/, '') || '#';
-      const views = $(row).find('.pembaca i').text().trim();
-      const date = $(row).find('.tanggalseries').text().trim();
-
-      if (chapterNumber && chapterLink) {
-        chapters.push({
-          title: chapterNumber,
-          slug: chapterLink,
-          views,
-          date
-        });
-      }
-    });
-
-    const results = {
-      title: title || '-',
-      image: image || '',
-      description: description || '-',
-      oldChapter: oldChapter || '-',
-      oldChapterLink: oldChapterLink || '#',
-      latestChapter: latestChapter || '-',
-      latestChapterLink: latestChapterLink || '#',
-      status: info.status || '-',
-      type: info.type || '-',
-      story: info.story || '-',
-      read: info.read || '-',
-      age: info.age || '-',
-      author: info.author || '-',
-      title_id: info.title_id || '-',
-      ...info,
-      genres: Array.isArray(genres) && genres.length > 0 ? genres.join(', ') : (info.genre || '-'),
-      chapters: chapters || []
-    };
-
-    const responseData = { success: true, data: results };
 
     setCache(res.cacheKey, responseData);
     res.json(responseData);
   } catch (error) {
-    console.error('Error fetching data:', error.message);
-    res.status(500).json({ success: false, message: 'Gagal mengambil data dari sumber' });
+    console.error('KomikAPI Detail Error:', error.message);
+    res.status(500).json({ success: false, message: 'Gagal mengambil detail komik' });
   }
 };

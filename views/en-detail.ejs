@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title><%= site_title %></title>
+	<meta name="description" content="<%= site_desc %>">
+	<meta name="keywords" content="<%= site_keyword %>">
+	<meta property="og:title" content="<%= site_title %>">
+	<meta property="og:description" content="<%= site_desc %>">
+	<meta property="og:url" content="https://<%= site_url %>/en/anime/<%= data.slug %>">
+	<meta property="og:image" content="<%= data.imageUrl %>">
+	<%- include('partials/head'); %>
+</head>
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
+	<%- include('partials/header'); %>
+		
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col gap-6">
+
+		<!-- BREADCRUMB BAR (Clean single row on mobile) -->
+		<div class="w-full flex items-center justify-between pb-3 border-b-2 border-black/10 dark:border-white/10 gap-3">
+			<div class="flex items-center gap-2 min-w-0 flex-1">
+				<button type="button" onclick="history.back()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 text-xs font-black uppercase text-black dark:text-white hover:bg-amber-400 hover:text-black transition-all shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.2)] flex-shrink-0 cursor-pointer" title="Back">
+					<span class="text-sm">←</span>
+					<span class="hidden sm:inline">Back</span>
+				</button>
+
+				<nav class="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
+					<a href="/en" class="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+					<a href="/" class="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0">
+						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
+						</svg>
+						<span>English Anime</span>
+						<span>Home</span>
+					</a>
+					
+					<span class="text-neutral-400 select-none flex-shrink-0">/</span>
+
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[140px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+						<%= data.title %>
+					</span>
+				</nav>
+			</div>
+		</div>
+
+		<!-- HERO CARD -->
+		<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] relative overflow-hidden">
+			<div class="flex flex-col sm:flex-row gap-6 md:gap-8 items-center sm:items-start">
+				
+				<!-- Poster -->
+				<div class="w-48 sm:w-56 md:w-64 flex-shrink-0 relative group">
+					<div class="w-full aspect-[3/4] rounded-2xl overflow-hidden border-2 border-black dark:border-white/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] bg-neutral-200 dark:bg-neutral-800">
+						<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="<%= data.imageUrl %>" alt="<%= data.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+					</div>
+					<% if (data.status) { %>
+						<div class="mt-3 text-center">
+							<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase <%= data.status.toLowerCase().includes('completed') ? 'bg-slate-200 text-slate-800 border border-slate-400' : 'bg-[#FACC15] text-black border border-black shadow-xs' %>">
+								<span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+								<%= data.status %>
+							</span>
+						</div>
+					<% } %>
+				</div>
+
+				<!-- Details & Actions -->
+				<div class="flex-1 flex flex-col gap-4 w-full">
+					<div>
+						<div class="flex flex-wrap items-center gap-2 mb-2">
+							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase <%= data.type.includes('DUB') ? 'bg-rose-500 text-white' : 'bg-black text-[#FACC15]' %> border border-black">
+								<%= data.type %>
+							</span>
+							<% if (episodes.length > 0) { %>
+								<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-violet-600 text-white">
+									<%= episodes.length %> Episodes
+								</span>
+							<% } %>
+							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
+								English Audio / Sub
+							</span>
+						</div>
+
+						<h1 class="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-black dark:text-white leading-tight">
+							<%= data.title %>
+						</h1>
+					</div>
+
+					<!-- Hero Action Buttons (Responsive side-by-side) -->
+					<% if (episodes.length > 0) { %>
+						<div class="flex items-center gap-2 sm:gap-3 pt-1 w-full sm:w-auto">
+							<a href="/en/episode/<%= episodes[0].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap min-w-0">
+							<a href="/episode/<%= episodes[0].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap min-w-0">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0">
+								  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+								</svg>
+								<span><span class="hidden sm:inline">Watch </span>Episode 1</span>
+							</a>
+							<a href="/en/episode/<%= episodes[episodes.length - 1].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap min-w-0">
+							<a href="/episode/<%= episodes[episodes.length - 1].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap min-w-0">
+								<span><span class="sm:hidden">Ep </span><span class="hidden sm:inline">Latest </span>Episode</span>
+								<span class="flex-shrink-0">→</span>
+							</a>
+						</div>
+					<% } %>
+
+					<!-- Synopsis -->
+					<div class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed bg-[#F5F3EF] dark:bg-[#121317] p-4 rounded-2xl border-2 border-black/10 dark:border-white/10">
+						<%= data.description || 'No synopsis available.' %>
+					</div>
+
+					<!-- Metadata -->
+					<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+						<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
+							<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Released</span>
+							<span class="font-bold text-black dark:text-white truncate block"><%= data.releaseDate %></span>
+						</div>
+						<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
+							<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Status</span>
+							<span class="font-bold text-black dark:text-white truncate block"><%= data.status %></span>
+						</div>
+						<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
+							<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Episodes</span>
+							<span class="font-bold text-black dark:text-white truncate block"><%= episodes.length %></span>
+						</div>
+						<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
+							<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Source</span>
+							<span class="font-bold text-amber-500 truncate block">GogoAnime</span>
+						</div>
+					</div>
+
+					<!-- Genres -->
+					<% if (data.genres) { %>
+						<div class="flex flex-wrap items-center gap-1.5 pt-1">
+							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 mr-1">Genres:</span>
+							<% data.genres.split(',').forEach(g => { if (g.trim()) { %>
+								<span class="px-2.5 py-1 rounded-lg bg-[#FACC15] text-black border border-black font-black text-[11px] shadow-xs">
+									<%= g.trim() %>
+								</span>
+							<% } }); %>
+						</div>
+					<% } %>
+
+				</div>
+			</div>
+		</section>
+
+		<!-- EPISODE LIST -->
+		<section class="w-full flex flex-col gap-4">
+			<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b-2 border-black dark:border-white/20">
+				<div class="flex items-center gap-2">
+					<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
+					<h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-black dark:text-white">
+						All Episodes 🔥
+					</h2>
+					<span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-black text-[#FACC15] border border-black">
+						<%= episodes.length %> Total
+					</span>
+				</div>
+
+				<!-- Search Input -->
+				<div class="relative">
+					<input type="text" id="epSearch" placeholder="Search episode..." class="w-full sm:w-56 text-xs px-3 py-2 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#181920] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+					</svg>
+				</div>
+			</div>
+
+			<!-- Episodes Grid -->
+			<div id="episodesGrid" class="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
+				<% if (episodes.length > 0) { %>
+					<% episodes.forEach((ep) => { %>
+						<a href="/en/episode/<%= ep.slug %>" class="ep-item flex items-center justify-center p-2.5 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 hover:border-black hover:bg-amber-400 hover:text-black dark:hover:bg-amber-400 dark:hover:text-black text-black dark:text-white font-black text-xs text-center transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.15)] cursor-pointer truncate" title="<%= ep.title %>">
+						<a href="/episode/<%= ep.slug %>" class="ep-item flex items-center justify-center p-2.5 rounded-xl bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 hover:border-black hover:bg-amber-400 hover:text-black dark:hover:bg-amber-400 dark:hover:text-black text-black dark:text-white font-black text-xs text-center transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.15)] cursor-pointer truncate" title="<%= ep.title %>">
+							<%= ep.title %>
+						</a>
+					<% }); %>
+				<% } else { %>
+					<div class="col-span-full py-8 text-center text-neutral-500 font-bold">
+						No episodes found for this anime.
+					</div>
+				<% } %>
+			</div>
+		</section>
+
+	</main>
+
+	<script>
+		const epSearch = document.getElementById('epSearch');
+		const epItems = document.querySelectorAll('.ep-item');
+		if (epSearch) {
+			epSearch.addEventListener('input', (e) => {
+				const val = e.target.value.toLowerCase().trim();
+				epItems.forEach(item => {
+					const text = item.textContent.toLowerCase();
+					item.style.display = text.includes(val) ? '' : 'none';
+				});
+			});
+		}
+	</script>
+
+	<%- include('partials/footer'); %>
+</body>
+</html>

@@ -1,26 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// --- 1. Anime Web Routes (Original UI Views powered by Gogoanime) ---
 const HomePage = require('../controllers/HomeController');
 router.get('/', HomePage.index);
-
-const NewsPage = require('../controllers/NewsController');
-router.get('/terbaru', NewsPage.index);
-
-const PopularPage = require('../controllers/PopularController');
-router.get('/populer', PopularPage.index);
-
-const OldPage = require('../controllers/OldController');
-router.get('/terlama', OldPage.index);
-
-const RangkingPage = require('../controllers/RangkingController');
-router.get('/peringkat', RangkingPage.index);
-
-const SearchPage = require('../controllers/SearchController');
-router.get('/pencarian', SearchPage.index);
-
-const FilterPage = require('../controllers/FilterController');
-router.get('/filter', FilterPage.index);
 
 const DetailPage = require('../controllers/DetailController');
 router.get('/anime/:slug', DetailPage.index);
@@ -28,17 +11,67 @@ router.get('/anime/:slug', DetailPage.index);
 const EpisodePage = require('../controllers/EpisodeController');
 router.get('/episode/:slug', EpisodePage.index);
 
+const SearchPage = require('../controllers/SearchController');
+router.get('/pencarian', SearchPage.index);
+router.get('/search', SearchPage.index);
+
+const NewsPage = require('../controllers/NewsController');
+router.get('/terbaru', NewsPage.index);
+router.get('/musim-baru', (req, res, next) => {
+    req.query.order = 'season';
+    NewsPage.index(req, res, next);
+});
+
+const PopularPage = require('../controllers/PopularController');
+router.get('/populer', PopularPage.index);
+
+const MoviePage = require('../controllers/MovieController');
+router.get('/movies', MoviePage.index);
+router.get('/movie', MoviePage.index);
+
+const OldPage = require('../controllers/OldController');
+router.get('/terlama', OldPage.index);
+
+const RangkingPage = require('../controllers/RangkingController');
+router.get('/peringkat', RangkingPage.index);
+
+const FilterPage = require('../controllers/FilterController');
+router.get('/filter', FilterPage.index);
+
 const Alphabet = require('../controllers/AlphabetController');
 router.get('/alphabet', Alphabet.index);
 
 const DocsPage = require('../controllers/DocsController');
 router.get('/docs', DocsPage.index);
 
+// Redirect /en aliases to root
+router.get('/en', (req, res) => res.redirect('/'));
+router.get('/en/anime/:slug', (req, res) => res.redirect(`/anime/${req.params.slug}`));
+router.get('/en/episode/:slug', (req, res) => res.redirect(`/episode/${req.params.slug}`));
+router.get('/en/search', (req, res) => res.redirect(`/search?q=${encodeURIComponent(req.query.q || '')}`));
+
+// --- 2. Komik Web Routes (MangaDex) ---
+const KomikProxy = require('../controllers/KomikProxyController');
+router.get('/komik/cover/:mangaId/:fileName', KomikProxy.cover);
+router.get('/komik/page-proxy', KomikProxy.pageProxy);
+
 const KomikPage = require('../controllers/KomikController');
 router.get('/komik', KomikPage.index);
 
 const KomikNewsPage = require('../controllers/KomikNewsController');
 router.get('/komik/terbaru', KomikNewsPage.index);
+router.get('/komik/baru', (req, res, next) => {
+    req.query.order = 'baru';
+    KomikNewsPage.index(req, res, next);
+});
+router.get('/komik/populer', (req, res, next) => {
+    req.query.order = 'populer';
+    KomikNewsPage.index(req, res, next);
+});
+router.get('/komik/manhwa', (req, res, next) => {
+    req.query.type = 'manhwa';
+    KomikNewsPage.index(req, res, next);
+});
 
 const KomikUpdatePage = require('../controllers/KomikUpdateController');
 router.get('/komik/terupdate', KomikUpdatePage.index);

@@ -10,75 +10,47 @@
 	<meta property="og:image" content="https://<%= site_url %>/assets/images/og.png">
 	<%- include('partials/head'); %>
 	<style>
-		@keyframes spin-slow {
-			from { transform: rotate(0deg); }
-			to { transform: rotate(360deg); }
-		}
-		.animate-spin-slow {
-			animation: spin-slow 20s linear infinite;
-		}
 		.neo-card {
 			transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 		}
 		.neo-card:hover {
 			transform: translateY(-4px);
-			box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+			box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
 		}
 		.dark .neo-card:hover {
-			box-shadow: 6px 6px 0px 0px rgba(226, 248, 76, 0.3);
+			box-shadow: 5px 5px 0px 0px rgba(250, 204, 21, 0.35);
+		}
+		.slider-track::-webkit-scrollbar {
+			display: none;
 		}
 	</style>
 </head>
 <body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
 	<%- include('partials/header'); %>
+	
+	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-8 md:gap-10">
 		
-	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col gap-10">
-
-		<!-- HERO SECTION: CINEMATIC SPOTLIGHT SLIDER (Like Photo 2) -->
-		<% if (data.baru && data.baru.length > 0) { %>
-		<section class="w-full relative rounded-3xl overflow-hidden border-2 border-black/30 dark:border-white/20 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] bg-[#111216] group">
-			
-			<!-- Slides Container -->
-			<div id="heroSlider" class="relative w-full h-[360px] sm:h-[420px] md:h-[480px]">
-				<% data.baru.slice(0, 8).forEach((item, idx) => { %>
-					<div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out <%= idx === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none' %>" data-slide-index="<%= idx %>">
-						<!-- Full Cover Background Image -->
-						<img src="<%= item.image %>" alt="<%= item.title %>" class="w-full h-full object-cover object-center transform scale-105 group-hover:scale-100 transition-transform duration-1000" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+		<!-- 1. HERO SPOTLIGHT CAROUSEL BANNER -->
+		<section id="heroSpotlight" class="relative w-full aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.5/1] max-h-[460px] rounded-3xl border-2 border-black dark:border-white/20 overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] bg-neutral-900 select-none">
+			<% if (data.spotlight && data.spotlight.length > 0) { %>
+				<% data.spotlight.forEach((item, index) => { %>
+					<div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out <%= index === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none' %>" data-index="<%= index %>">
+						<!-- Background Backdrop Image -->
+						<img src="<%= item.image %>" alt="<%= item.title %>" class="w-full h-full object-cover object-center filter brightness-[0.45] dark:brightness-[0.4]">
 						
-						<!-- Cinematic Gradients -->
-						<div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent"></div>
+						<!-- Gradient Vignette -->
 						<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-						<div class="absolute inset-0 bg-black/25"></div>
+						<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
 
-						<!-- Slide Text Content -->
-						<div class="absolute inset-0 flex flex-col justify-end px-6 sm:px-8 pb-16 pt-6 max-w-3xl z-20 gap-2.5 sm:gap-3">
-							
-							<!-- Spotlight Rank Tag -->
-							<div class="flex items-center gap-2">
-								<span class="w-2.5 h-2.5 rounded-full bg-[#FACC15] border border-black animate-pulse"></span>
-								<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-[#FACC15] text-black border border-black shadow-xs">
-									★ SPOTLIGHT #<%= idx + 1 %>
+						<!-- Banner Content Overlay -->
+						<div class="absolute inset-0 p-5 sm:p-8 md:p-10 flex flex-col justify-end text-white max-w-3xl gap-2 sm:gap-3">
+							<!-- Tags & Badges -->
+							<div class="flex items-center gap-2 text-xs font-black tracking-wider uppercase">
+								<span class="px-2.5 py-0.5 rounded-full bg-[#FACC15] text-black border border-black shadow-xs">
+									★ SPOTLIGHT
 								</span>
-								<span class="text-xs font-bold text-neutral-300">
-									Rekomendasi Anime Hari Ini
-								</span>
-							</div>
-
-							<!-- Title -->
-							<h1 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight leading-snug line-clamp-2 drop-shadow-md">
-								<%= item.title %>
-							</h1>
-
-							<!-- Badges Row (R, HD, CC, Episode) -->
-							<div class="flex flex-wrap items-center gap-2 text-xs font-extrabold">
 								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-white backdrop-blur-xs">
-									R
-								</span>
-								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-[#FACC15] backdrop-blur-xs font-black">
 									HD
-								</span>
-								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-white backdrop-blur-xs">
-									CC
 								</span>
 								<% if (item.episodes) { %>
 									<span class="px-2.5 py-0.5 rounded-full bg-violet-600 text-white font-bold backdrop-blur-xs">
@@ -86,128 +58,192 @@
 									</span>
 								<% } %>
 								<span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-xs">
-									<%= item.type || 'TV' %> • Sub Indo
+									<%= item.type || 'TV' %> • Sub / Dub
 								</span>
 							</div>
 
+							<!-- Title -->
+							<h1 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md line-clamp-2 leading-tight">
+								<%= item.title %>
+							</h1>
+
 							<!-- Synopsis Excerpt -->
 							<p class="text-xs sm:text-sm text-neutral-300 line-clamp-2 leading-relaxed max-w-2xl hidden sm:block">
-								Tonton anime <%= item.title %> dengan subtitle Indonesia kualitas tinggi full HD gratis dan bebas iklan hanya di Sourcream.
+								<%= item.desc || `Tonton anime ${item.title} kualitas tinggi full HD gratis dan bebas iklan hanya di Sourcream.` %>
 							</p>
 
-							<!-- PLAY NOW & DETAIL ANIME CTA Buttons -->
+							<!-- PLAY NOW & DETAIL CTA Buttons -->
 							<div class="flex items-center gap-3 pt-1">
-								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white border-2 border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-colors font-black text-xs sm:text-sm uppercase tracking-wider cursor-pointer">
+								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-black text-white border-2 border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-colors font-black text-xs sm:text-sm uppercase tracking-wider cursor-pointer">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 									  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
 									</svg>
 									<span>PLAY NOW</span>
 								</a>
-								<a href="/anime/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-colors cursor-pointer">
+								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black hover:border-black text-white border border-white/40 transition-colors font-black text-xs uppercase tracking-wider backdrop-blur-xs cursor-pointer">
 									<span>Detail Anime</span>
 									<span>→</span>
 								</a>
 							</div>
-
 						</div>
 					</div>
 				<% }); %>
-			</div>
 
-			<!-- Navigation Controls (Prev / Next Buttons Right Bottom) -->
-			<div class="absolute bottom-5 right-6 sm:right-8 z-30 flex items-center gap-2">
-				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
-					❮
+				<!-- Carousel Navigation Controls -->
+				<button id="heroPrevBtn" aria-label="Slide sebelumnya" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/30 flex items-center justify-center transition-colors backdrop-blur-xs cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+					</svg>
 				</button>
-				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
-					❯
+				<button id="heroNextBtn" aria-label="Slide berikutnya" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/30 flex items-center justify-center transition-colors backdrop-blur-xs cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+					</svg>
 				</button>
-			</div>
 
-			<!-- Pagination Dots (Bottom Left) -->
-			<div id="heroDots" class="absolute bottom-5 left-6 sm:left-8 z-30 flex items-center gap-2">
-				<% data.baru.slice(0, 8).forEach((_, idx) => { %>
-					<button class="hero-dot transition-all duration-300 rounded-full <%= idx === 0 ? 'w-6 h-2 bg-violet-500' : 'w-2 h-2 bg-white/40 hover:bg-white/70' %>" data-slide="<%= idx %>" aria-label="Go to slide <%= idx + 1 %>"></button>
-				<% }); %>
-			</div>
+				<!-- Indicators Dots -->
+				<div class="absolute bottom-3 right-4 sm:right-6 z-20 flex items-center gap-1.5 bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-xs border border-white/20">
+					<% data.spotlight.forEach((_, index) => { %>
+						<button class="hero-dot w-2 h-2 rounded-full transition-all <%= index === 0 ? 'w-5 bg-[#FACC15]' : 'bg-white/40' %>" data-slide="<%= index %>" aria-label="Go to slide <%= index + 1 %>"></button>
+					<% }); %>
+				</div>
+			<% } %>
 		</section>
-		<% } %>
 
-		<!-- SECTION: RILIS TERBARU 🔥 -->
-		<section class="w-full flex flex-col gap-4">
+		<!-- SECTION 1: LATEST EPISODES ⚡ -->
+		<section class="w-full flex flex-col gap-3">
 			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
-				<div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-					<span class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-[#FACC15] border border-black inline-block flex-shrink-0"></span>
-					<h2 class="text-base sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Rilis Terbaru 🔥
+				<div class="flex items-center gap-2 min-w-0">
+					<span class="w-3.5 h-3.5 bg-amber-400 border border-black inline-block flex-shrink-0"></span>
+					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
+						Episode Terbaru ⚡
 					</h2>
 				</div>
-				<a href="/terbaru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
+				<a href="/terbaru?order=baru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
 					<span>Lihat Semua</span>
 					<span>→</span>
 				</a>
 			</div>
 
-			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
-				<% if (data.baru && data.baru.length > 0) { %>
-					<% data.baru.forEach((item, index) => { %>
-						<a href="/anime/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
-							
-							<!-- Thumbnail Wrapper -->
-							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
-								
-								<!-- Episode Pill Badge -->
-								<% if (item.episodes) { %>
-									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
-										<%= item.episodes %>
-									</div>
-								<% } %>
+			<!-- NETFLIX-STYLE SLIDER CONTAINER -->
+			<div class="relative group/slider w-full">
+				<button type="button" aria-label="Geser ke kiri" class="slider-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+				</button>
 
-								<!-- Type Tag -->
-								<% if (item.type) { %>
-									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
-										<%= item.type %>
+				<div class="slider-track flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+					<% if (data.latestEpisodes && data.latestEpisodes.length > 0) { %>
+						<% data.latestEpisodes.slice(0, 10).forEach(item => { %>
+							<div class="flex-shrink-0 w-[140px] xs:w-[155px] sm:w-[175px] md:w-[195px] lg:w-[210px]">
+								<a href="/anime/<%= item.slug %>" class="neo-card flex flex-col h-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] group relative">
+									<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
+											<span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
+											<span>BARU RILIS</span>
+										</div>
+										<% if (item.episodes) { %>
+											<div class="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-[#FACC15] text-[10px] font-mono font-bold uppercase border border-black/50 backdrop-blur-xs shadow-xs">
+												<%= item.episodes %>
+											</div>
+										<% } %>
+										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+											</div>
+										</div>
 									</div>
-								<% } %>
-
-								<!-- Hover play overlay -->
-								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-									<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5">
-										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-										</svg>
+									<div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+										<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+											<%= item.title %>
+										</h3>
+										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+											<span><%= item.status || 'Sub / Dub' %></span>
+											<span class="text-black dark:text-white font-bold">Watch →</span>
+										</div>
 									</div>
-								</div>
+								</a>
 							</div>
+						<% }); %>
+					<% } else { %>
+						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada episode terbaru saat ini.</div>
+					<% } %>
+				</div>
 
-							<!-- Card Footer / Title -->
-							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
-								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
-									<%= item.title %>
-								</h3>
-								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
-									<span><%= item.status || 'Sub Indo' %></span>
-									<span class="text-black dark:text-white font-bold">Watch →</span>
-								</div>
-							</div>
-						</a>
-					<% }); %>
-				<% } else { %>
-					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
-						Tidak ada data anime tersedia saat ini.
-					</div>
-				<% } %>
+				<button type="button" aria-label="Geser ke kanan" class="slider-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+				</button>
 			</div>
 		</section>
 
-		<!-- SECTION: TERPOPULER 🔥 -->
-		<section class="w-full flex flex-col gap-4">
+		<!-- SECTION 2: NEW ANIME (MUSIM BARU) 🌸 -->
+		<section class="w-full flex flex-col gap-3">
 			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
-				<div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-					<span class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-rose-500 border border-black inline-block flex-shrink-0"></span>
-					<h2 class="text-base sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Terpopuler 🔥
+				<div class="flex items-center gap-2 min-w-0">
+					<span class="w-3.5 h-3.5 bg-emerald-400 border border-black inline-block flex-shrink-0"></span>
+					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
+						Anime Musim Baru 🌸
+					</h2>
+				</div>
+				<a href="/musim-baru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
+					<span>Lihat Semua</span>
+					<span>→</span>
+				</a>
+			</div>
+
+			<!-- NETFLIX-STYLE SLIDER CONTAINER -->
+			<div class="relative group/slider w-full">
+				<button type="button" aria-label="Geser ke kiri" class="slider-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+				</button>
+
+				<div class="slider-track flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+					<% if (data.newSeason && data.newSeason.length > 0) { %>
+						<% data.newSeason.slice(0, 10).forEach(item => { %>
+							<div class="flex-shrink-0 w-[140px] xs:w-[155px] sm:w-[175px] md:w-[195px] lg:w-[210px]">
+								<a href="/anime/<%= item.slug %>" class="neo-card flex flex-col h-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] group relative">
+									<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
+											<span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+											<span><%= item.episodes || 'MUSIM INI' %></span>
+										</div>
+										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+											</div>
+										</div>
+									</div>
+									<div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+										<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+											<%= item.title %>
+										</h3>
+										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+											<span><%= item.type || 'TV' %></span>
+											<span class="text-black dark:text-white font-bold">Watch →</span>
+										</div>
+									</div>
+								</a>
+							</div>
+						<% }); %>
+					<% } else { %>
+						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data anime musim baru.</div>
+					<% } %>
+				</div>
+
+				<button type="button" aria-label="Geser ke kanan" class="slider-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+				</button>
+			</div>
+		</section>
+
+		<!-- SECTION 3: POPULAR ANIME 🔥 -->
+		<section class="w-full flex flex-col gap-3">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
+				<div class="flex items-center gap-2 min-w-0">
+					<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block flex-shrink-0"></span>
+					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
+						Anime Terpopuler 🔥
 					</h2>
 				</div>
 				<a href="/populer" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
@@ -216,111 +252,172 @@
 				</a>
 			</div>
 
-			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
-				<% if (data.populer && data.populer.length > 0) { %>
-					<% data.populer.forEach((item, index) => { %>
-						<a href="/anime/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
-							
-							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
-								
-								<!-- Rank Badge -->
-								<div class="absolute top-2 left-2 w-6 h-6 rounded-md flex items-center justify-center font-black text-xs border border-black <%= index === 0 ? 'bg-[#FACC15] text-black shadow-xs' : (index === 1 ? 'bg-slate-300 text-black' : (index === 2 ? 'bg-amber-600 text-white' : 'bg-black text-white')) %>">
-									#<%= index + 1 %>
-								</div>
+			<!-- NETFLIX-STYLE SLIDER CONTAINER -->
+			<div class="relative group/slider w-full">
+				<button type="button" aria-label="Geser ke kiri" class="slider-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+				</button>
 
-								<% if (item.episodes) { %>
-									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
-										<%= item.episodes %>
+				<div class="slider-track flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+					<% if (data.popular && data.popular.length > 0) { %>
+						<% data.popular.slice(0, 10).forEach(item => { %>
+							<div class="flex-shrink-0 w-[140px] xs:w-[155px] sm:w-[175px] md:w-[195px] lg:w-[210px]">
+								<a href="/anime/<%= item.slug %>" class="neo-card flex flex-col h-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] group relative">
+									<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-rose-500 text-white text-[10px] font-black uppercase shadow-xs">
+											POPULER
+										</div>
+										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+											</div>
+										</div>
 									</div>
-								<% } %>
-
-								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-									<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5">
-										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-										</svg>
+									<div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+										<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+											<%= item.title %>
+										</h3>
+										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+											<span><%= item.type || 'TV' %></span>
+											<span class="text-black dark:text-white font-bold">Watch →</span>
+										</div>
 									</div>
-								</div>
+								</a>
 							</div>
+						<% }); %>
+					<% } else { %>
+						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data anime populer.</div>
+					<% } %>
+				</div>
 
-							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
-								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
-									<%= item.title %>
-								</h3>
-								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
-									<span><%= item.type || 'TV' %></span>
-									<span class="text-black dark:text-white font-bold">Watch →</span>
-								</div>
-							</div>
-						</a>
-					<% }); %>
-				<% } else { %>
-					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
-						Tidak ada data anime populer saat ini.
-					</div>
-				<% } %>
+				<button type="button" aria-label="Geser ke kanan" class="slider-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+				</button>
 			</div>
 		</section>
 
-		<!-- SECTION: PERINGKAT 🔥 -->
-		<section class="w-full flex flex-col gap-4">
+		<!-- SECTION 4: NEW ANIME MOVIES 🎬 -->
+		<section class="w-full flex flex-col gap-3">
 			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
-				<div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-					<span class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-amber-400 border border-black inline-block flex-shrink-0"></span>
-					<h2 class="text-base sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Top Rating / Peringkat 🔥
+				<div class="flex items-center gap-2 min-w-0">
+					<span class="w-3.5 h-3.5 bg-indigo-500 border border-black inline-block flex-shrink-0"></span>
+					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
+						Movie Terbaru 🎬
 					</h2>
 				</div>
-				<a href="/peringkat" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
+				<a href="/movies?order=terbaru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
 					<span>Lihat Semua</span>
 					<span>→</span>
 				</a>
 			</div>
 
-			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
-				<% if (data.peringkat && data.peringkat.length > 0) { %>
-					<% data.peringkat.forEach((item, index) => { %>
-						<a href="/anime/<%= item.slug %>" class="neo-card group flex flex-col bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] relative">
-							
-							<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-								<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
-								
-								<% if (item.episodes) { %>
-									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black border border-black text-[10px] font-black uppercase shadow-xs">
-										<%= item.episodes %>
-									</div>
-								<% } %>
+			<!-- NETFLIX-STYLE SLIDER CONTAINER -->
+			<div class="relative group/slider w-full">
+				<button type="button" aria-label="Geser ke kiri" class="slider-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+				</button>
 
-								<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-									<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5">
-										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-										</svg>
+				<div class="slider-track flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+					<% if (data.newMovies && data.newMovies.length > 0) { %>
+						<% data.newMovies.slice(0, 10).forEach(item => { %>
+							<div class="flex-shrink-0 w-[140px] xs:w-[155px] sm:w-[175px] md:w-[195px] lg:w-[210px]">
+								<a href="/anime/<%= item.slug %>" class="neo-card flex flex-col h-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] group relative">
+									<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-indigo-600 text-white text-[10px] font-black uppercase shadow-xs">
+											MOVIE
+										</div>
+										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+											</div>
+										</div>
 									</div>
-								</div>
+									<div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+										<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+											<%= item.title %>
+										</h3>
+										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+											<span><%= item.episodes || 'Rilis Baru' %></span>
+											<span class="text-black dark:text-white font-bold">Watch →</span>
+										</div>
+									</div>
+								</a>
 							</div>
+						<% }); %>
+					<% } else { %>
+						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data movie terbaru.</div>
+					<% } %>
+				</div>
 
-							<div class="p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
-								<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
-									<%= item.title %>
-								</h3>
-								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
-									<span>★ Top Rating</span>
-									<span class="text-black dark:text-white font-bold">Watch →</span>
-								</div>
-							</div>
-						</a>
-					<% }); %>
-				<% } else { %>
-					<div class="col-span-full py-12 text-center text-neutral-500 font-bold">
-						Tidak ada data peringkat saat ini.
-					</div>
-				<% } %>
+				<button type="button" aria-label="Geser ke kanan" class="slider-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+				</button>
 			</div>
 		</section>
 
-		<!-- SECTION: ALPHABET FILTER A-Z -->
+		<!-- SECTION 5: POPULAR ANIME MOVIES ⭐ -->
+		<section class="w-full flex flex-col gap-3">
+			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
+				<div class="flex items-center gap-2 min-w-0">
+					<span class="w-3.5 h-3.5 bg-yellow-400 border border-black inline-block flex-shrink-0"></span>
+					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
+						Movie Terpopuler ⭐
+					</h2>
+				</div>
+				<a href="/movies?order=populer" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
+					<span>Lihat Semua</span>
+					<span>→</span>
+				</a>
+			</div>
+
+			<!-- NETFLIX-STYLE SLIDER CONTAINER -->
+			<div class="relative group/slider w-full">
+				<button type="button" aria-label="Geser ke kiri" class="slider-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+				</button>
+
+				<div class="slider-track flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 select-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+					<% if (data.popularMovies && data.popularMovies.length > 0) { %>
+						<% data.popularMovies.slice(0, 10).forEach(item => { %>
+							<div class="flex-shrink-0 w-[140px] xs:w-[155px] sm:w-[175px] md:w-[195px] lg:w-[210px]">
+								<a href="/anime/<%= item.slug %>" class="neo-card flex flex-col h-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] group relative">
+									<div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
+										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#FACC15] text-black text-[10px] font-black uppercase shadow-xs">
+											TOP RATING
+										</div>
+										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+											</div>
+										</div>
+									</div>
+									<div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between bg-white dark:bg-[#181920] border-t-2 border-black dark:border-white/10">
+										<h3 class="text-xs font-bold text-black dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-[#FACC15] transition-colors">
+											<%= item.title %>
+										</h3>
+										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
+											<span>★ Top Rated</span>
+											<span class="text-black dark:text-white font-bold">Watch →</span>
+										</div>
+									</div>
+								</a>
+							</div>
+						<% }); %>
+					<% } else { %>
+						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data movie populer.</div>
+					<% } %>
+				</div>
+
+				<button type="button" aria-label="Geser ke kanan" class="slider-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-3 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-110 active:scale-95 transition-all opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 cursor-pointer">
+					<svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+				</button>
+			</div>
+		</section>
+
+		<!-- SECTION 6: ALPHABET FILTER A-Z (UNCHANGED / SESUAI ASLI) 🔤 -->
 		<section class="w-full bg-[#E3E0D5] dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 md:p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)]">
 			<div class="flex items-center justify-between mb-5 pb-3 border-b-2 border-black dark:border-white/20">
 				<div class="flex items-center gap-2">
@@ -349,7 +446,10 @@
 	
 	<%- include('partials/footer'); %>
 	<%- include('partials/script'); %>
+
+	<!-- CLIENT-SIDE SLIDERS SCRIPT -->
 	<script>
+		// 1. Hero Spotlight Auto-rotator
 		(function() {
 			const slides = document.querySelectorAll('.hero-slide');
 			const dots = document.querySelectorAll('.hero-dot');
@@ -374,62 +474,90 @@
 				});
 				dots.forEach((dot, i) => {
 					if (i === currentSlide) {
-						dot.className = 'hero-dot transition-all duration-300 rounded-full w-6 h-2.5 bg-violet-500';
+						dot.className = 'hero-dot w-5 h-2 rounded-full bg-[#FACC15] transition-all';
 					} else {
-						dot.className = 'hero-dot transition-all duration-300 rounded-full w-2.5 h-2.5 bg-white/40 hover:bg-white/70';
+						dot.className = 'hero-dot w-2 h-2 rounded-full bg-white/40 transition-all';
 					}
 				});
 			}
 
-			function nextSlide() {
-				showSlide(currentSlide + 1);
-			}
+			function nextSlide() { showSlide(currentSlide + 1); }
+			function prevSlide() { showSlide(currentSlide - 1); }
+			function startAuto() { stopAuto(); autoSlideTimer = setInterval(nextSlide, 6000); }
+			function stopAuto() { if (autoSlideTimer) clearInterval(autoSlideTimer); }
 
-			function prevSlide() {
-				showSlide(currentSlide - 1);
-			}
-
-			function startAutoSlide() {
-				stopAutoSlide();
-				autoSlideTimer = setInterval(nextSlide, 5000);
-			}
-
-			function stopAutoSlide() {
-				if (autoSlideTimer) clearInterval(autoSlideTimer);
-			}
-
-			if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
-			if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
-
-			dots.forEach((dot, i) => {
-				dot.addEventListener('click', () => {
-					showSlide(i);
-					startAutoSlide();
+			if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAuto(); });
+			if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAuto(); });
+			dots.forEach(dot => {
+				dot.addEventListener('click', (e) => {
+					const idx = parseInt(e.target.dataset.slide);
+					if (!isNaN(idx)) { showSlide(idx); startAuto(); }
 				});
 			});
 
-			const sliderContainer = document.getElementById('heroSlider');
-			if (sliderContainer) {
-				sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-				sliderContainer.addEventListener('mouseleave', startAutoSlide);
-
-				let touchStartX = 0;
-				sliderContainer.addEventListener('touchstart', (e) => {
-					touchStartX = e.touches[0].clientX;
-				}, { passive: true });
-				sliderContainer.addEventListener('touchend', (e) => {
-					const touchEndX = e.changedTouches[0].clientX;
-					if (touchStartX - touchEndX > 50) {
-						nextSlide();
-						startAutoSlide();
-					} else if (touchEndX - touchStartX > 50) {
-						prevSlide();
-						startAutoSlide();
-					}
-				}, { passive: true });
+			const banner = document.getElementById('heroSpotlight');
+			if (banner) {
+				banner.addEventListener('mouseenter', stopAuto);
+				banner.addEventListener('mouseleave', startAuto);
 			}
+			startAuto();
+		})();
 
-			startAutoSlide();
+		// 2. Netflix-Style Horizontal Slider Scroll & Drag Controller
+		(function() {
+			document.querySelectorAll('.group\\/slider').forEach(slider => {
+				const track = slider.querySelector('.slider-track');
+				const prevBtn = slider.querySelector('.slider-btn-prev');
+				const nextBtn = slider.querySelector('.slider-btn-next');
+				if (!track) return;
+
+				function updateButtons() {
+					if (prevBtn) {
+						prevBtn.style.visibility = track.scrollLeft <= 10 ? 'hidden' : 'visible';
+					}
+					if (nextBtn) {
+						nextBtn.style.visibility = (track.scrollLeft + track.clientWidth >= track.scrollWidth - 15) ? 'hidden' : 'visible';
+					}
+				}
+
+				if (prevBtn) {
+					prevBtn.addEventListener('click', () => {
+						track.scrollBy({ left: -(track.clientWidth * 0.75), behavior: 'smooth' });
+					});
+				}
+				if (nextBtn) {
+					nextBtn.addEventListener('click', () => {
+						track.scrollBy({ left: track.clientWidth * 0.75, behavior: 'smooth' });
+					});
+				}
+
+				track.addEventListener('scroll', updateButtons, { passive: true });
+				window.addEventListener('resize', updateButtons);
+				setTimeout(updateButtons, 300);
+
+				// Mouse drag scroll
+				let isDown = false;
+				let startX = 0;
+				let scrollLeftPos = 0;
+
+				track.addEventListener('mousedown', (e) => {
+					isDown = true;
+					startX = e.pageX - track.offsetLeft;
+					scrollLeftPos = track.scrollLeft;
+					track.style.cursor = 'grabbing';
+				});
+				window.addEventListener('mouseup', () => {
+					isDown = false;
+					if (track) track.style.cursor = '';
+				});
+				track.addEventListener('mousemove', (e) => {
+					if (!isDown) return;
+					e.preventDefault();
+					const x = e.pageX - track.offsetLeft;
+					const walk = (x - startX) * 1.5;
+					track.scrollLeft = scrollLeftPos - walk;
+				});
+			});
 		})();
 	</script>
 </body>

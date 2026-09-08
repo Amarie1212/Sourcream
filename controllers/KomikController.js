@@ -3,14 +3,35 @@ require('dotenv').config();
 
 exports.index = async (req, res) => {
     try {
-        const orders = ['date', 'modified', 'meta_value_num', 'rand'];
-        const requests = orders.map(order =>
-            axios.get(`${process.env.BASE_URL}/v1/komik/list?order=${order}`, {
-                headers: { 'x-api-key': process.env.API_KEY }
-            })
-        );
-        const responses = await Promise.all(requests);
-        const [date, modified, meta_value_num, rand] = responses.map(res => res.data.data);
+        const fetchSection = async (order, type = '') => {
+            try {
+                let url = `${process.env.BASE_URL}/v1/komik/list?order=${order}&limit=10`;
+                if (type) url += `&type=${type}`;
+                const r = await axios.get(url, {
+                    headers: { 'x-api-key': process.env.API_KEY },
+                    timeout: 10000
+                });
+                return (r.data?.data || []).slice(0, 10);
+            } catch (err) {
+                console.error(`Failed to fetch komik section ${order} ${type}:`, err.message);
+                return [];
+            }
+        };
+
+        // Fetch 5 comic sections in parallel
+        const [
+            latestChapters,
+            newManga,
+            popularManga,
+            topRated,
+            popularManhwa
+        ] = await Promise.all([
+            fetchSection('update'),
+            fetchSection('baru'),
+            fetchSection('populer'),
+            fetchSection('peringkat'),
+            fetchSection('populer', 'manhwa')
+        ]);
 		
         const alphabet = Array.from({ length: 26 }, (_, i) => {
             const letter = String.fromCharCode(65 + i);
@@ -18,19 +39,25 @@ exports.index = async (req, res) => {
         });
 
         res.render('komik', { 
-            site_title: 'Beranda | Komik',
-            site_desc: 'Selamat datang di FuckMik tempat baca komik sub indonesia.',
-            site_keyword: 'komik, baca komik, daftar komik, komik streaming, komik sub indo',
+            site_title: 'Beranda | Sourcream Baca Komik Online',
+            site_desc: 'Baca komik manga, manhwa, dan manhua bahasa Indonesia & English gratis terupdate di Sourcream.',
+            site_keyword: 'komik, baca komik, manga, manhwa, webtoon, komik terbaru, komik populer',
             site_url: req.domain,
-            data: { date, modified, meta_value_num, rand },
+            data: { 
+                latestChapters,
+                newManga,
+                popularManga,
+                topRated,
+                popularManhwa
+            },
             alphabet
         });
 
     } catch (error) {
-        console.error('Error fetching data:', error.response?.data || error.message);
+        console.error('KomikController Error:', error.message);
         res.status(500).render('500', { 
             site_title: 'Terjadi Kesalahan | Komik',
-            site_desc: 'Gagal mendapatkan data, coba lagi nanti',
+            site_desc: 'Gagal memuat katalog komik, coba lagi nanti.',
             site_keyword: 'error',
             site_url: req.domain,
         });

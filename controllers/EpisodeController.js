@@ -44,12 +44,14 @@ exports.index = async (req, res) => {
         }
 
         // Sort episodes in ascending order (Episode 1, 2, 3...)
-        const rawEpisodes = data.episodesList || [];
+        const rawEpisodes = (animeDetail?.episodesList && animeDetail.episodesList.length > 0) 
+            ? animeDetail.episodesList 
+            : (data.episodesList || []);
         const sortedEpisodes = [...rawEpisodes].sort((a, b) => {
-            const matchA = a.title ? a.title.match(/\d+(\.\d+)?/) : null;
-            const matchB = b.title ? b.title.match(/\d+(\.\d+)?/) : null;
-            const numA = matchA ? parseFloat(matchA[0]) : 0;
-            const numB = matchB ? parseFloat(matchB[0]) : 0;
+            const matchA = a.slug ? a.slug.match(/episode-(\d+(\.\d+)?)/i) : (a.title ? a.title.match(/\d+(\.\d+)?/) : null);
+            const matchB = b.slug ? b.slug.match(/episode-(\d+(\.\d+)?)/i) : (b.title ? b.title.match(/\d+(\.\d+)?/) : null);
+            const numA = matchA ? parseFloat(matchA[1] || matchA[0]) : 0;
+            const numB = matchB ? parseFloat(matchB[1] || matchB[0]) : 0;
             return numA - numB;
         });
 

@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const cheerio = require('cheerio');
 const https = require('https');
 const { setCache } = require('../../middlewares/CacheAPI');
@@ -8,15 +8,12 @@ const GOGO_BASE = 'https://ww4.gogoanimes.fi';
 
 exports.index = async (req, res) => {
   try {
-    let { slug } = req.params;
+    const { slug } = req.params;
     if (!slug) {
-      return res.status(400).json({ success: false, message: 'Slug anime diperlukan' });
+      return res.status(400).json({ success: false, message: 'Slug diperlukan' });
     }
 
-    // Clean slug if it contains episode suffix or prefix
-    const cleanSlug = slug.replace(/^nonton-/, '').replace(/-episode-\d+.*$/, '').trim();
-    const url = `${GOGO_BASE}/category/${cleanSlug}`;
-
+    const url = `${GOGO_BASE}/category/${slug}`;
     const response = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -27,7 +24,7 @@ exports.index = async (req, res) => {
 
     const $ = cheerio.load(response.data);
 
-    const title = $('.anime_info_body_bg h1').text().trim() || cleanSlug.replace(/-/g, ' ').toUpperCase();
+    const title = $('.anime_info_body_bg h1').text().trim();
     let imageUrl = $('.anime_info_body_bg img').attr('src') || '';
     if (imageUrl && !imageUrl.startsWith('http')) {
       imageUrl = `${GOGO_BASE}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
@@ -37,7 +34,7 @@ exports.index = async (req, res) => {
     let description = '-';
     let genres = [];
     let releaseDate = '-';
-    let status = 'Sedang Tayang';
+    let status = '-';
 
     $('.anime_info_body_bg p.type').each((i, el) => {
       const text = $(el).text().trim();
@@ -75,16 +72,14 @@ exports.index = async (req, res) => {
       return numA - numB;
     });
 
-    const isDub = title.toLowerCase().includes('(dub)');
-
     const results = {
       title,
-      slug: cleanSlug,
+      slug,
       imageUrl,
       description,
-      status: status.toLowerCase().includes('completed') ? 'Selesai' : 'Sedang Tayang',
+      status,
       releaseDate,
-      type: isDub ? 'ANIME (DUB)' : (type || 'TV'),
+      type: title.toLowerCase().includes('(dub)') ? 'ANIME (DUB)' : 'ANIME (SUB)',
       episodes: episodesList.length.toString(),
       duration: '24 Min',
       author: 'GogoAnime',
@@ -100,7 +95,7 @@ exports.index = async (req, res) => {
     res.json(responseData);
 
   } catch (error) {
-    console.error('AnimeAPI Detail Error:', error.message);
-    res.status(500).json({ success: false, message: 'Gagal mengambil detail anime' });
+    console.error('GogoAPI Detail Error:', error.message);
+    res.status(500).json({ success: false, message: 'Gagal mengambil detail anime dari Gogoanime' });
   }
 };

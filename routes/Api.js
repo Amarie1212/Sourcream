@@ -58,4 +58,17 @@ router.get('/komik/detail/:slug', cacheMiddleware, KomikDetail.index);
 const KomikChapter = require('../controllers/KomikAPI/Chapter');
 router.get('/komik/chapter/:slug', cacheMiddleware, KomikChapter.index);
 
+// GogoAnime API (Sub & Dub English)
+const GogoList = require('../controllers/GogoAPI/List');
+router.get('/en/list', cacheMiddleware, GogoList.index);
+
+const GogoSearch = require('../controllers/GogoAPI/Search');
+router.get('/en/search', cacheMiddleware, GogoSearch.index);
+
+const GogoDetail = require('../controllers/GogoAPI/Detail');
+router.get('/en/detail/:slug', cacheMiddleware, GogoDetail.index);
+
+const GogoEpisode = require('../controllers/GogoAPI/Episode');
+router.get('/en/episode/:slug', cacheMiddleware, GogoEpisode.index);
+
 module.exports = router;
