@@ -1,10 +1,9 @@
 {
     "files.watcherExclude": {
-        "**/.git/**": true,
         "**/node_modules/**": true,
         "**/tmp/**": true
     },
-    "git.enabled": false,
-    "git.autoRefresh": false,
-    "git.autofetch": false
+    "git.enabled": true,
+    "git.autoRefresh": true,
+    "git.autofetch": true
 }
