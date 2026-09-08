@@ -69,13 +69,17 @@ html.dark {
   scrollbar-color: #FACC15 #111216;
 }
 
-/* Utility to hide scrollbars on horizontal tab bars while retaining touch/mouse scroll */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Utility to hide scrollbars on horizontal tab bars & breadcrumbs while retaining touch/mouse scroll */
+.no-scrollbar::-webkit-scrollbar,
+nav[aria-label="Directory Path"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.no-scrollbar,
+nav[aria-label="Directory Path"] {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* Custom aesthetic scrollbar for episode lists and modals */

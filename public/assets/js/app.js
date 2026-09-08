@@ -56,10 +56,50 @@ const menuBtnMenu = document.getElementById('menuBtnMenu');
 const closeBtnMenu = document.getElementById('closeBtnMenu');
 const sidebarMenu = document.getElementById('sidebarMenu');
 
-menuBtnMenu.addEventListener('click', () => {
-	sidebarMenu.classList.remove('translate-x-full');
-});
+if (sidebarMenu) {
+	// Create or get backdrop
+	let sidebarBackdrop = document.getElementById('sidebarBackdrop');
+	if (!sidebarBackdrop) {
+		sidebarBackdrop = document.createElement('div');
+		sidebarBackdrop.id = 'sidebarBackdrop';
+		sidebarBackdrop.className = 'fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-xs transition-opacity duration-300 lg:hidden';
+		document.body.appendChild(sidebarBackdrop);
+	}
 
-closeBtnMenu.addEventListener('click', () => {
-	sidebarMenu.classList.add('translate-x-full');
-});
+	function openSidebar() {
+		sidebarMenu.classList.remove('translate-x-full');
+		if (sidebarBackdrop) sidebarBackdrop.classList.remove('hidden');
+	}
+
+	function closeSidebar() {
+		sidebarMenu.classList.add('translate-x-full');
+		if (sidebarBackdrop) sidebarBackdrop.classList.add('hidden');
+	}
+
+	// Always ensure closed on init
+	closeSidebar();
+
+	if (menuBtnMenu) menuBtnMenu.addEventListener('click', openSidebar);
+	if (closeBtnMenu) closeBtnMenu.addEventListener('click', closeSidebar);
+	if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+	// Close on ESC
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') closeSidebar();
+	});
+
+	// Close on resize to desktop
+	window.addEventListener('resize', () => {
+		if (window.innerWidth >= 1024) {
+			closeSidebar();
+		}
+	});
+
+	// Close on bfcache page restore
+	window.addEventListener('pageshow', closeSidebar);
+
+	// Close when clicking any nav link inside sidebar
+	sidebarMenu.querySelectorAll('a').forEach(link => {
+		link.addEventListener('click', closeSidebar);
+	});
+}

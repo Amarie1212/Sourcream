@@ -29,47 +29,47 @@
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
 		
 		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
-		<div class="w-full flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-4 py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+		<div class="w-full flex items-center justify-between gap-2.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
 			
 			<!-- Left: Back Button & Path -->
-			<div class="flex items-center gap-2.5 flex-wrap min-w-0">
+			<div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
 				
 				<!-- Back Button -->
-				<button onclick="goBack('/komik')" 
-						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[11px] sm:text-xs tracking-wider cursor-pointer">
+				<button onclick="goBack('<%= typeof comicSlug !== 'undefined' && comicSlug ? ('/komik/detail/' + comicSlug) : '/komik' %>')" 
+						class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
 					<span>Kembali</span>
 				</button>
 
-				<span class="text-neutral-300 dark:text-neutral-700 hidden sm:inline select-none">|</span>
+				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 
 				<!-- Explorer Path -->
-				<nav aria-label="Directory Path" class="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[11px] sm:text-xs overflow-x-auto py-0.5 max-w-full">
-					<a href="/" class="flex items-center gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500">
+				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
+					<a href="/" class="flex items-center gap-1 sm:gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0">
 						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
 						</svg>
 						<span>main</span>
 					</a>
 					
-					<span class="text-neutral-400 select-none">/</span>
+					<span class="text-neutral-400 select-none flex-shrink-0">/</span>
 					
 					<a href="/komik" class="hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
 						komik
 					</a>
 					
-					<span class="text-neutral-400 select-none">/</span>
+					<span class="text-neutral-400 select-none flex-shrink-0">/</span>
 
 					<% if (typeof comicSlug !== 'undefined' && comicSlug) { %>
-						<a href="/komik/detail/<%= comicSlug %>" class="hover:text-amber-500 transition-colors truncate max-w-[120px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= typeof comicTitle !== 'undefined' && comicTitle ? comicTitle : comicSlug %>">
+						<a href="/komik/detail/<%= comicSlug %>" class="hover:text-amber-500 transition-colors truncate max-w-[80px] sm:max-w-[200px] flex-shrink-0 font-bold" title="<%= typeof comicTitle !== 'undefined' && comicTitle ? comicTitle : comicSlug %>">
 							<%= typeof comicTitle !== 'undefined' && comicTitle ? comicTitle : comicSlug %>
 						</a>
-						<span class="text-neutral-400 select-none">/</span>
+						<span class="text-neutral-400 select-none flex-shrink-0">/</span>
 					<% } %>
 
-					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[180px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
+					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[110px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
 						<%= site_title.replace(/\|\s*komik/i, '').trim() %>
 					</span>
 				</nav>
@@ -105,6 +105,53 @@
 					</p>
 				</div>
 
+				<!-- Top Chapter Navigation Bar -->
+				<div class="w-full flex items-center justify-between px-2.5 sm:px-5 py-2 sm:py-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl sm:rounded-3xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] gap-1.5 sm:gap-3">
+					
+					<!-- Prev Chapter Button -->
+					<% if (typeof prevChapter !== 'undefined' && prevChapter) { %>
+						<a href="/komik/chapter/<%= prevChapter %>" class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-xs sm:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Chapter Sebelumnya">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+							</svg>
+							<span class="hidden sm:inline">Sebelumnya</span>
+						</a>
+					<% } else { %>
+						<span class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-tight sm:tracking-wider text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-[#121317] border-2 border-neutral-300 dark:border-neutral-700/80 cursor-not-allowed opacity-60 whitespace-nowrap">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+							</svg>
+							<span class="hidden sm:inline">Sebelumnya</span>
+						</span>
+					<% } %>
+
+					<!-- Daftar Chapter Center Button -->
+					<a href="/komik/detail/<%= typeof comicSlug !== 'undefined' && comicSlug ? comicSlug : '' %>" class="flex-shrink-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 w-9 h-9 sm:w-auto sm:h-auto sm:px-4 sm:py-2.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Daftar Chapter">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0 text-amber-500">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+						</svg>
+						<span class="hidden sm:inline text-xs sm:text-sm font-black uppercase tracking-wider">Daftar Chapter</span>
+					</a>
+
+					<!-- Next Chapter Button -->
+					<% if (typeof nextChapter !== 'undefined' && nextChapter) { %>
+						<a href="/komik/chapter/<%= nextChapter %>" class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-amber-400 hover:bg-[#FACC15] hover:text-black hover:border-black text-black font-black text-xs sm:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Chapter Selanjutnya">
+							<span class="hidden sm:inline">Selanjutnya</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+							</svg>
+						</a>
+					<% } else { %>
+						<span class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-tight sm:tracking-wider text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-[#121317] border-2 border-neutral-300 dark:border-neutral-700/80 cursor-not-allowed opacity-60 whitespace-nowrap">
+							<span class="hidden sm:inline">Selanjutnya</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+							</svg>
+						</span>
+					<% } %>
+
+				</div>
+
 				<!-- Manga Images Container -->
 				<section id="comicImagesContainer" class="w-full relative bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-3 sm:p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)]">
 					<div class="flex flex-col items-center justify-center gap-1 sm:gap-2 max-w-3xl mx-auto">
@@ -121,6 +168,53 @@
 						<% } %>
 					</div>
 				</section>
+
+				<!-- Bottom Chapter Navigation Bar -->
+				<div class="w-full flex items-center justify-between px-2.5 sm:px-5 py-2 sm:py-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl sm:rounded-3xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] gap-1.5 sm:gap-3">
+					
+					<!-- Prev Chapter Button -->
+					<% if (typeof prevChapter !== 'undefined' && prevChapter) { %>
+						<a href="/komik/chapter/<%= prevChapter %>" class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-xs sm:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Chapter Sebelumnya">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+							</svg>
+							<span class="hidden sm:inline">Sebelumnya</span>
+						</a>
+					<% } else { %>
+						<span class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-tight sm:tracking-wider text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-[#121317] border-2 border-neutral-300 dark:border-neutral-700/80 cursor-not-allowed opacity-60 whitespace-nowrap">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+							</svg>
+							<span class="hidden sm:inline">Sebelumnya</span>
+						</span>
+					<% } %>
+
+					<!-- Daftar Chapter Center Button -->
+					<a href="/komik/detail/<%= typeof comicSlug !== 'undefined' && comicSlug ? comicSlug : '' %>" class="flex-shrink-0 inline-flex items-center justify-center gap-1.5 sm:gap-2 w-9 h-9 sm:w-auto sm:h-auto sm:px-4 sm:py-2.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Daftar Chapter">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0 text-amber-500">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+						</svg>
+						<span class="hidden sm:inline text-xs sm:text-sm font-black uppercase tracking-wider">Daftar Chapter</span>
+					</a>
+
+					<!-- Next Chapter Button -->
+					<% if (typeof nextChapter !== 'undefined' && nextChapter) { %>
+						<a href="/komik/chapter/<%= nextChapter %>" class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-amber-400 hover:bg-[#FACC15] hover:text-black hover:border-black text-black font-black text-xs sm:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Chapter Selanjutnya">
+							<span class="hidden sm:inline">Selanjutnya</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+							</svg>
+						</a>
+					<% } else { %>
+						<span class="flex-1 min-w-0 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-tight sm:tracking-wider text-neutral-400 dark:text-neutral-500 bg-neutral-100 dark:bg-[#121317] border-2 border-neutral-300 dark:border-neutral-700/80 cursor-not-allowed opacity-60 whitespace-nowrap">
+							<span class="hidden sm:inline">Selanjutnya</span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
+							  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+							</svg>
+						</span>
+					<% } %>
+
+				</div>
 
 				<!-- End of Chapter Action Card -->
 				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
@@ -193,7 +287,7 @@
 	</main>
 
 	<!-- FLOATING ULTRA-SLEEK EXPANDABLE COMIC SCROLLER ("SISTEM MELAR") -->
-	<div id="comicScroller" class="fixed z-50 select-none opacity-90 hover:opacity-100 transition-opacity duration-200 group/scroller pointer-events-auto" style="top: 50%; transform: translateY(-50%); right: 16px;">
+	<div id="comicScroller" class="fixed z-[9999] select-none opacity-95 hover:opacity-100 transition-opacity duration-200 group/scroller pointer-events-auto" style="top: 50%; transform: translateY(-50%); right: 16px;">
 		
 		<!-- Main Fixed-Width Unified Vertical Pillar -->
 		<div class="relative w-10 flex flex-col items-center p-1 rounded-2xl bg-white/95 dark:bg-[#181920]/95 backdrop-blur-md border-2 border-black dark:border-white/20 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] gap-1">
@@ -286,24 +380,22 @@
 			const getStep = () => window.innerHeight * 0.75;
 
 			function alignScroller() {
-				if (!comicContainer || !comicScroller) return;
-				const rect = comicContainer.getBoundingClientRect();
-				const scrollerWidth = comicScroller.offsetWidth || 40;
-				
-				// Align docking over the right border of the comic container box
-				const idealLeft = rect.right - (scrollerWidth / 2);
-				const maxLeft = window.innerWidth - scrollerWidth - 6;
-				const finalLeft = Math.min(maxLeft, Math.max(10, idealLeft));
+				if (!comicScroller) return;
 
-				comicScroller.style.left = `${finalLeft}px`;
-				comicScroller.style.right = 'auto';
+				comicScroller.style.top = '50%';
+				comicScroller.style.transform = 'translateY(-50%)';
+				comicScroller.style.right = '16px';
+				comicScroller.style.left = 'auto';
 
 				// Update reading progress % based on comic container
-				const totalHeight = comicContainer.offsetHeight - window.innerHeight;
-				if (totalHeight > 0) {
-					const scrolled = -rect.top;
-					const percent = Math.min(100, Math.max(0, Math.round((scrolled / totalHeight) * 100)));
-					if (progressBadge) progressBadge.textContent = percent + '%';
+				if (comicContainer) {
+					const rect = comicContainer.getBoundingClientRect();
+					const totalHeight = comicContainer.offsetHeight - window.innerHeight;
+					if (totalHeight > 0) {
+						const scrolled = -rect.top;
+						const percent = Math.min(100, Math.max(0, Math.round((scrolled / totalHeight) * 100)));
+						if (progressBadge) progressBadge.textContent = percent + '%';
+					}
 				}
 			}
 
@@ -408,13 +500,25 @@
 					const idx = Number(e.key) - 1;
 					const targetBtn = document.querySelector(`.speed-btn[data-speed="${speeds[idx]}"]`);
 					targetBtn?.click();
+				} else if (e.key === 'ArrowLeft' || e.key === 'h' || e.key === 'H') {
+					<% if (typeof prevChapter !== 'undefined' && prevChapter) { %>
+						window.location.href = '/komik/chapter/<%= prevChapter %>';
+					<% } %>
+				} else if (e.key === 'ArrowRight' || e.key === 'l' || e.key === 'L') {
+					<% if (typeof nextChapter !== 'undefined' && nextChapter) { %>
+						window.location.href = '/komik/chapter/<%= nextChapter %>';
+					<% } %>
 				}
 			});
 
 			window.addEventListener('scroll', alignScroller, { passive: true });
 			window.addEventListener('resize', alignScroller, { passive: true });
+			window.addEventListener('load', alignScroller);
 			alignScroller();
+			setTimeout(alignScroller, 100);
 			setTimeout(alignScroller, 300);
+			setTimeout(alignScroller, 800);
+			setTimeout(alignScroller, 1500);
 		});
 	</script>
 

@@ -19,12 +19,28 @@ exports.index = async (req, res) => {
             headers: { 'x-api-key': process.env.API_KEY }
         });
 
-        const { title, data } = response.data;
+        const { title, data, prevChapter, nextChapter, comicSlug: apiComicSlug } = response.data;
 
-        const comicSlug = slug.replace(/-chapter-.*$/i, '');
+        const comicSlug = apiComicSlug || slug.replace(/-chapter-.*$/i, '');
         let comicTitle = (title || '').replace(/\s*Chapter\s*\d+.*$/i, '').trim();
         if (!comicTitle || comicTitle === title) {
             comicTitle = comicSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        // Smart fallback if API didn't provide prev/next
+        let resolvedPrevChapter = prevChapter;
+        let resolvedNextChapter = nextChapter;
+
+        if (resolvedPrevChapter === undefined && resolvedNextChapter === undefined) {
+            const match = slug.match(/^(.*)-chapter-(\d+(?:\.\d+)?)$/i);
+            if (match) {
+                const prefix = match[1];
+                const chapterNum = parseFloat(match[2]);
+                if (chapterNum > 1) {
+                    resolvedPrevChapter = `${prefix}-chapter-${chapterNum - 1}`;
+                }
+                resolvedNextChapter = `${prefix}-chapter-${chapterNum + 1}`;
+            }
         }
 
         const responseSidebar = await axios.get(`${process.env.BASE_URL}/v1/komik/list?order=rand`, {
@@ -45,6 +61,8 @@ exports.index = async (req, res) => {
             data,
             comicSlug,
             comicTitle,
+            prevChapter: resolvedPrevChapter || null,
+            nextChapter: resolvedNextChapter || null,
             getDataSidebar 
         });
     } catch (error) {

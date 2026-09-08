@@ -6,7 +6,11 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '7xl': '100rem', // 1600px for comfortable wide/ultrawide displays
+      },
+    },
   },
   plugins: [],
 }

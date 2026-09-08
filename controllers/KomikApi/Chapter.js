@@ -20,6 +20,29 @@ exports.index = async (req, res) => {
       || $('title').text().replace(/[-–|]\s*komiku.*$/i, '').trim()
       || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
+    const cleanSlug = (urlStr) => {
+      if (!urlStr) return null;
+      let s = urlStr.replace(/^https?:\/\/[^\/]+/i, '').replace(/^\/|\/$/g, '');
+      s = s.replace(/^manga\//, '').replace(/^chapter\//, '');
+      return s || null;
+    };
+
+    let prevUrl = $('a[aria-label="Prev"]').attr('href')
+      || $('a.rl').filter((i, el) => $(el).find('.fa-caret-left, svg[class*="caret-left"]').length > 0).attr('href')
+      || $('a.buttprev, a.prev').attr('href');
+
+    let nextUrl = $('a[aria-label="Next"]').attr('href')
+      || $('a.buttnext').attr('href')
+      || $('a.rl').filter((i, el) => $(el).find('.fa-caret-right, svg[class*="caret-right"]').length > 0).attr('href')
+      || $('a.next').attr('href');
+
+    let comicUrl = $('.nxpr a[href*="/manga/"]').attr('href')
+      || $('a').filter((i, el) => $(el).text().includes('Daftar Chapter')).attr('href');
+
+    const prevChapter = cleanSlug(prevUrl);
+    const nextChapter = cleanSlug(nextUrl);
+    const comicSlug = cleanSlug(comicUrl);
+
     const results = [];
 
     $('#Baca_Komik img').each((index, element) => {
@@ -34,6 +57,9 @@ exports.index = async (req, res) => {
     const responseData = { 
       success: true, 
       title,
+      prevChapter,
+      nextChapter,
+      comicSlug,
       data: results
     };
 

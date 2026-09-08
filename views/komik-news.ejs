@@ -28,17 +28,17 @@
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
 		
 		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
-		<div class="w-full flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-4 py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
-			<div class="flex items-center gap-2.5 flex-wrap min-w-0">
+		<div class="w-full flex items-center justify-between gap-2 sm:gap-2.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+			<div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
 				<button onclick="goBack('/komik')" 
-						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[11px] sm:text-xs tracking-wider cursor-pointer">
+						class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer whitespace-nowrap">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
 					<span>Kembali</span>
 				</button>
-				<span class="text-neutral-300 dark:text-neutral-700 hidden sm:inline select-none">|</span>
-				<nav aria-label="Directory Path" class="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[11px] sm:text-xs overflow-x-auto py-0.5 max-w-full">
+				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
+				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
 					<a href="/" class="flex items-center gap-1.5 hover:text-black dark:hover:text-white transition-colors flex-shrink-0 font-bold">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-amber-500">
 						  <path d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 0 0 .177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 16.25 17H3.75A1.75 1.75 0 0 1 2 15.25V4.75Z" />
