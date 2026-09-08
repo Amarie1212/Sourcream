@@ -94,13 +94,13 @@
 
 							<!-- READ NOW & DETAIL KOMIK CTA Buttons -->
 							<div class="flex items-center gap-3 pt-1">
-								<a href="/komik/detail/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FACC15] hover:bg-amber-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
+								<a href="/komik/detail/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FACC15] hover:bg-amber-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-colors">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 									  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
 									</svg>
 									<span>BACA SEKARANG</span>
 								</a>
-								<a href="/komik/detail/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-black/80 hover:bg-black text-white font-black text-xs uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
+								<a href="/komik/detail/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-black/80 hover:bg-[#FACC15] text-white hover:text-black hover:border-black font-black text-xs uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-colors">
 									<span>Detail Komik</span>
 									<span>→</span>
 								</a>
@@ -113,10 +113,10 @@
 
 			<!-- Navigation Controls (Prev / Next Buttons Right Bottom) -->
 			<div class="absolute bottom-5 right-6 sm:right-8 z-30 flex items-center gap-2">
-				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-amber-500 hover:text-black text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
 					❮
 				</button>
-				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-amber-500 hover:text-black text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
 					❯
 				</button>
 			</div>
@@ -383,13 +383,13 @@
 			<div class="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5">
 				<% if (typeof alphabet !== 'undefined' && alphabet && alphabet.length > 0) { %>
 					<% alphabet.forEach(item => { %>
-						<a href="/komik/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:-translate-y-1 transition-all">
+						<a href="/komik/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:border-black transition-colors">
 							<%= item.title %>
 						</a>
 					<% }) %>
 				<% } else { %>
 					<% ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'].forEach(letter => { %>
-						<a href="/komik/alphabet?show=<%= letter %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:-translate-y-1 transition-all">
+						<a href="/komik/alphabet?show=<%= letter %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:border-black transition-colors">
 							<%= letter %>
 						</a>
 					<% }) %>

@@ -97,13 +97,13 @@
 
 							<!-- PLAY NOW & DETAIL ANIME CTA Buttons -->
 							<div class="flex items-center gap-3 pt-1">
-								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
+								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-colors">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 									  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
 									</svg>
 									<span>PLAY NOW</span>
 								</a>
-								<a href="/anime/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-black/80 hover:bg-black text-white font-black text-xs uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
+								<a href="/anime/<%= item.slug %>" class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-black/80 hover:bg-[#FACC15] text-white hover:text-black hover:border-black font-black text-xs uppercase tracking-wider border-2 border-white backdrop-blur-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-colors">
 									<span>Detail Anime</span>
 									<span>→</span>
 								</a>
@@ -116,10 +116,10 @@
 
 			<!-- Navigation Controls (Prev / Next Buttons Right Bottom) -->
 			<div class="absolute bottom-5 right-6 sm:right-8 z-30 flex items-center gap-2">
-				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-violet-600 text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+				<button id="heroPrevBtn" aria-label="Previous Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
 					❮
 				</button>
-				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-violet-600 text-white border border-white/20 flex items-center justify-center transition-all backdrop-blur-md hover:scale-110 active:scale-95 shadow-md text-xs">
+				<button id="heroNextBtn" aria-label="Next Slide" class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/20 hover:border-black flex items-center justify-center transition-colors backdrop-blur-md shadow-md text-xs cursor-pointer">
 					❯
 				</button>
 			</div>
@@ -337,7 +337,7 @@
 			<div class="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5">
 				<% if (alphabet && alphabet.length > 0) { %>
 					<% alphabet.forEach(item => { %>
-						<a href="/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:-translate-y-1 transition-all">
+						<a href="/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:border-black transition-colors">
 							<%= item.title %>
 						</a>
 					<% }) %>

@@ -36,8 +36,8 @@
 				
 				<!-- Back Button -->
 				<button onclick="window.history.length > 1 ? window.history.back() : window.location.href='/komik'" 
-						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all font-black uppercase text-[11px] sm:text-xs tracking-wider group hover:scale-105 active:scale-95 cursor-pointer">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform">
+						class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-colors font-black uppercase text-[11px] sm:text-xs tracking-wider cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
 					<span>Kembali</span>
@@ -129,10 +129,10 @@
 						<p class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Ingin kembali ke katalog atau mencari komik lainnya?</p>
 					</div>
 					<div class="flex items-center gap-3">
-						<a href="/komik" class="px-4 py-2 rounded-xl bg-amber-400 text-black font-black text-xs border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-all">
+						<a href="/komik" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-[#FACC15] text-black font-black text-xs border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-colors">
 							Katalog Komik
 						</a>
-						<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 text-black dark:text-white font-bold text-xs border-2 border-black dark:border-white/30 hover:bg-neutral-200 transition-all">
+						<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 hover:bg-[#FACC15] hover:text-black hover:border-black text-black dark:text-white font-bold text-xs border-2 border-black dark:border-white/30 transition-colors cursor-pointer">
 							↑ Ke Atas
 						</button>
 					</div>
@@ -199,14 +199,14 @@
 		<div class="relative w-10 flex flex-col items-center p-1 rounded-2xl bg-white/95 dark:bg-[#181920]/95 backdrop-blur-md border-2 border-black dark:border-white/20 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] gap-1">
 			
 			<!-- Go to Top -->
-			<button id="btnScrollTop" title="Paling Atas" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-all cursor-pointer active:scale-90">
+			<button id="btnScrollTop" title="Paling Atas" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-colors cursor-pointer">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
 				  <path fill-rule="evenodd" d="M10 17a.75.75 0 0 1-.75-.75V5.612L5.29 9.77a.75.75 0 0 1-1.08-1.04l5.25-5.5a.75.75 0 0 1 1.08 0l5.25 5.5a.75.75 0 1 1-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0 1 10 17Z" clip-rule="evenodd" />
 				</svg>
 			</button>
 
 			<!-- Step Up (Page Up) -->
-			<button id="btnScrollPageUp" title="Naik (K)" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-all cursor-pointer active:scale-90">
+			<button id="btnScrollPageUp" title="Naik (K)" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-colors cursor-pointer">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
 				  <path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 0 1-1.06-.02L10 8.832 6.29 12.77a.75.75 0 1 1-1.08-1.04l4.25-4.5a.75.75 0 0 1 1.08 0l4.25 4.5a.75.75 0 0 1-.02 1.06Z" clip-rule="evenodd" />
 				</svg>
@@ -217,15 +217,15 @@
 				<!-- Speed Drawer (Anchored to the left of Auto button, expands only on Auto hover) -->
 				<div id="speedDrawer" class="absolute right-full top-1/2 -translate-y-1/2 flex items-center max-w-0 opacity-0 overflow-hidden transition-all duration-300 ease-out group-hover/auto:max-w-[200px] group-hover/auto:opacity-100 group-hover/auto:pr-2 pointer-events-none group-hover/auto:pointer-events-auto">
 					<div class="flex items-center gap-1 p-1 rounded-2xl bg-white/95 dark:bg-[#181920]/95 backdrop-blur-md border-2 border-black dark:border-white/20 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-[10px] font-mono font-black">
-						<button class="speed-btn px-2 py-1 rounded-xl bg-[#FACC15] text-black font-black border border-black cursor-pointer transition-all active:scale-95 text-[10px]" data-speed="1">1x</button>
-						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-all active:scale-95 text-[10px]" data-speed="2">2x</button>
-						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-all active:scale-95 text-[10px]" data-speed="3">3x</button>
-						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-all active:scale-95 text-[10px]" data-speed="5">5x</button>
+						<button class="speed-btn px-2 py-1 rounded-xl bg-[#FACC15] text-black font-black border border-black cursor-pointer transition-colors text-[10px]" data-speed="1">1x</button>
+						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-colors text-[10px]" data-speed="2">2x</button>
+						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-colors text-[10px]" data-speed="3">3x</button>
+						<button class="speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-colors text-[10px]" data-speed="5">5x</button>
 					</div>
 				</div>
 
 				<!-- Auto Toggle Button (Aligned exactly in line with up/down buttons) -->
-				<button id="btnAutoScroll" title="Auto Scroll (A) - Klik Play/Pause, Hover untuk pilih Speed" class="w-8 h-9 rounded-xl flex-shrink-0 flex flex-col items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/15 dark:border-white/15 transition-all font-mono font-black text-[9px] cursor-pointer active:scale-90">
+				<button id="btnAutoScroll" title="Auto Scroll (A) - Klik Play/Pause, Hover untuk pilih Speed" class="w-8 h-9 rounded-xl flex-shrink-0 flex flex-col items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/15 dark:border-white/15 transition-colors font-mono font-black text-[9px] cursor-pointer">
 					<svg id="iconPlayAuto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-emerald-500">
 					  <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
 					</svg>
@@ -237,14 +237,14 @@
 			</div>
 
 			<!-- Step Down (Page Down) -->
-			<button id="btnScrollPageDown" title="Turun (J / Space)" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-all cursor-pointer active:scale-90">
+			<button id="btnScrollPageDown" title="Turun (J / Space)" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-colors cursor-pointer">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
 				  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1-.02-1.06Z" clip-rule="evenodd" />
 				</svg>
 			</button>
 
 			<!-- Go to Bottom -->
-			<button id="btnScrollBottom" title="Paling Bawah" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-all cursor-pointer active:scale-90">
+			<button id="btnScrollBottom" title="Paling Bawah" class="w-8 h-8 rounded-xl flex items-center justify-center bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white transition-colors cursor-pointer">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
 				  <path fill-rule="evenodd" d="M10 3a.75.75 0 0 1 .75.75v10.638l3.96-4.158a.75.75 0 1 1 1.08 1.04l-5.25 5.5a.75.75 0 0 1-1.08 0l-5.25-5.5a.75.75 0 1 1 1.08-1.04l3.96 4.158V3.75A.75.75 0 0 1 10 3Z" clip-rule="evenodd" />
 				</svg>
@@ -378,9 +378,9 @@
 					currentSpeed = speedVal;
 
 					speedBtns.forEach(b => {
-						b.className = 'speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-all active:scale-95 text-[10px]';
+						b.className = 'speed-btn px-2 py-1 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white hover:bg-[#FACC15] hover:text-black border border-black/10 dark:border-white/10 cursor-pointer transition-colors text-[10px]';
 					});
-					btn.className = 'speed-btn px-2 py-1 rounded-xl bg-[#FACC15] text-black font-black border border-black cursor-pointer transition-all active:scale-95 text-[10px]';
+					btn.className = 'speed-btn px-2 py-1 rounded-xl bg-[#FACC15] text-black font-black border border-black cursor-pointer transition-colors text-[10px]';
 
 					if (isAutoScrolling) {
 						startAutoScroll();
