@@ -1,6 +1,7 @@
 const axios = require('axios');
 const https = require('https');
 const dns = require('dns');
+const cheerio = require('cheerio');
 
 // Custom DNS lookup to bypass Indonesian ISP (XL Axiata, Indihome, etc.) blocking on mangadex.org
 function mangadexLookup(hostname, options, callback) {
@@ -23,6 +24,68 @@ const httpsAgent = new https.Agent({
 });
 
 const MD_BASE = 'https://api.mangadex.org';
+const KOMIKCAST_BASE = 'https://v1.komikcast.ac';
+
+function normalizeKomikcastImage(image) {
+  if (!image || image === '/assets/images/no-img.jpg') return '/assets/images/no-img.jpg';
+  if (/komiktap\.info|komiku\.org|komikcast\.ac/i.test(image)) {
+    return `/komik/page-proxy?url=${encodeURIComponent(image)}`;
+  }
+  return image;
+}
+
+function getChapterNumber(chapter) {
+  const value = chapter?.chapter ?? chapter?.title ?? chapter?.slug ?? '';
+  const match = String(value).match(/\d+(?:\.\d+)?/);
+  return match ? parseFloat(match[0]) : 0;
+}
+
+function formatKomikcastChapter(chapter, mangaSlug) {
+  const language = chapter.lang || 'unknown';
+  const languageNames = {
+    id: 'Indonesia', en: 'English', ja: '日本語', ko: '한국어', zh: '中文',
+    es: 'Español', 'es-419': 'Español (Latinoamérica)', fr: 'Français',
+    pt: 'Português', de: 'Deutsch', it: 'Italiano', ru: 'Русский'
+  };
+  const languageName = languageNames[language] || language.toUpperCase();
+  const titleNumber = String(chapter.title || '').match(/^\s*(?:chapter\s*)?(\d+(?:\.\d+)?)/i);
+  const number = titleNumber?.[1] || chapter.chapter || '0';
+  return {
+    slug: `${mangaSlug}/${chapter.slug}`,
+    chapter: String(number),
+    title: `${language === 'id' ? '🇮🇩 ' : language === 'en' ? '🇬🇧 ' : `[${language.toUpperCase()}] `}Chapter ${number}${chapter.title && chapter.title !== String(number) ? `: ${chapter.title}` : ''}`,
+    date: chapter.releaseDate ? new Date(chapter.releaseDate).toLocaleDateString('id-ID') : 'Terbaru',
+    pages: chapter.pages || 0,
+    language: 'id',
+    languageName: 'Indonesia',
+    complete: chapter.pages !== 0,
+    externalUrl: null
+  };
+}
+
+async function fetchKomikcast(path) {
+  const response = await axios.get(`${KOMIKCAST_BASE}${path}`, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36' },
+    timeout: 15000
+  });
+  return cheerio.load(response.data);
+}
+
+function parseKomikcastChapterLinks($, mangaSlug) {
+  const chapters = [];
+  const seen = new Set();
+  $('a').filter((index, element) => String($(element).attr('href') || '').includes('chapter-')).each((index, element) => {
+    const href = ($(element).attr('href') || '').replace(/^https?:\/\/[^/]+/, '').replace(/^\//, '');
+    const parts = href.split('/');
+    const chapterSlug = parts[parts.length - 1];
+    const numberMatch = chapterSlug.match(/chapter-(\d+(?:\.\d+)?)/i) || $(element).text().match(/\d+(?:\.\d+)?/);
+    if (!chapterSlug || !numberMatch || seen.has(chapterSlug)) return;
+    seen.add(chapterSlug);
+    const number = numberMatch[1] || numberMatch[0];
+    chapters.push(formatKomikcastChapter({ slug: chapterSlug, chapter: number, title: $(element).text().trim() || `Chapter ${number}` }, mangaSlug));
+  });
+  return chapters;
+}
 
 /**
  * Format MangaDex manga object into Sourcream standard manga format
@@ -84,6 +147,46 @@ function formatManga(m) {
  */
 async function getMangaList({ order = 'date', limit = 24, page = 1, title = '', letter = '', type = '', originalLanguage = '' } = {}) {
   try {
+    const sourcePath = order === 'peringkat'
+      ? '/ranking'
+      : (type === 'manhwa' || type === 'manhua' ? `/manga?type=${type}` : '/');
+    const $ = await fetchKomikcast(sourcePath);
+    const seen = new Set();
+    const mangaList = [];
+    $('a[href^="/manga/"]').each((index, element) => {
+      const href = $(element).attr('href') || '';
+      const parts = href.split('/').filter(Boolean);
+      if (parts.length !== 2 || seen.has(parts[1])) return;
+      const slug = parts[1];
+      const card = $(element);
+      const cardText = card.text().replace(/\s+/g, ' ').trim();
+      const image = normalizeKomikcastImage(card.find('img').attr('src') || card.find('img').attr('data-src') || '/assets/images/no-img.jpg');
+      const cardTitle = card.find('h2,h3,h4').first().text().trim() || card.attr('title') || cardText || slug.replace(/-/g, ' ');
+      seen.add(slug);
+      mangaList.push({
+        id: slug,
+        slug,
+        title: cardTitle,
+        image,
+        type: type === 'manhwa' ? 'MANHWA' : type === 'manhua' ? 'MANHUA' : 'MANGA',
+        genre: 'Komik Indonesia',
+        genres: ['Komik Indonesia'],
+        status: 'Ongoing',
+        synopsis: 'Baca komik Indonesia di Komikcast.',
+        latestChapter: 'Terbaru'
+      });
+    });
+
+    if (mangaList.length > 0) {
+      const filtered = title || letter
+        ? mangaList.filter(item => item.title.toLowerCase().includes((title || letter).toLowerCase()))
+        : mangaList;
+      const categoryOffset = order === 'baru' ? 20 : order === 'populer' ? 40 : 0;
+      const start = Math.max(0, (page - 1) * limit + categoryOffset);
+      return { success: true, data: filtered.slice(start, start + limit), total: filtered.length, page };
+    }
+
+    // Keep the legacy request as an emergency fallback if Komikcast is unavailable.
     const offset = Math.max(0, (page - 1) * limit);
     const params = new URLSearchParams();
 
@@ -133,10 +236,10 @@ async function getMangaList({ order = 'date', limit = 24, page = 1, title = '', 
       timeout: 15000
     });
 
-    const mangaList = (res.data?.data || []).map(formatManga);
+    const legacyMangaList = (res.data?.data || []).map(formatManga);
     return {
       success: true,
-      data: mangaList,
+      data: legacyMangaList,
       total: res.data?.total || 0,
       page
     };
@@ -151,30 +254,26 @@ async function getMangaList({ order = 'date', limit = 24, page = 1, title = '', 
  */
 async function getMangaDetail(id) {
   try {
-    const res = await axios.get(`${MD_BASE}/manga/${id}?includes[]=cover_art&includes[]=author&includes[]=artist`, {
-      headers: { 'User-Agent': 'Sourcream/1.0' },
-      httpsAgent,
-      timeout: 15000
-    });
-
-    if (!res.data?.data) return null;
-    const formatted = formatManga(res.data.data);
-
-    // Fetch chapters for this manga (translated in Indonesian or English, and others)
-    const chapters = await getMangaChapters(id);
+    const mangaSlug = String(id).replace(/^\/+|\/+$/g, '');
+    const $ = await fetchKomikcast(`/manga/${mangaSlug}`);
+    const title = $('h1').first().text().trim() || mangaSlug.replace(/-/g, ' ');
+    const image = normalizeKomikcastImage($('img[src*="thumbnail"], img[alt*="' + title + '"]').first().attr('src') || '/assets/images/no-img.jpg');
+    const chapters = parseKomikcastChapterLinks($, mangaSlug)
+      .sort((a, b) => getChapterNumber(a) - getChapterNumber(b));
+    if (!chapters.length) return null;
 
     return {
       data: {
-        title: formatted.title,
-        image: formatted.image,
-        status: formatted.status,
-        type: formatted.type,
-        description: formatted.fullSynopsis,
-        story: formatted.artist,
-        read: 'MangaDex',
-        age: formatted.year ? `Rilis: ${formatted.year}` : 'Umum',
-        author: formatted.author,
-        genres: formatted.genres
+        title,
+        image,
+        status: 'Ongoing',
+        type: 'MANGA',
+        description: $('meta[name="description"]').attr('content') || 'Baca komik Indonesia di Komikcast.',
+        story: '-',
+        read: 'Komikcast',
+        age: 'Umum',
+        author: '-',
+        genres: []
       },
       chapters
     };
@@ -189,14 +288,11 @@ async function getMangaDetail(id) {
  */
 async function getMangaChapters(mangaId) {
   try {
-    // We order by chapter desc, volume desc
+    // Fetch every available translation; the UI separates languages into sections.
     const params = new URLSearchParams();
-    params.append('limit', '100');
+    params.append('limit', '500');
     params.append('order[chapter]', 'desc');
     params.append('order[volume]', 'desc');
-    // Prefer Indonesian & English translations first
-    params.append('translatedLanguage[]', 'id');
-    params.append('translatedLanguage[]', 'en');
 
     const res = await axios.get(`${MD_BASE}/manga/${mangaId}/feed?${params.toString()}`, {
       headers: { 'User-Agent': 'Sourcream/1.0' },
@@ -204,17 +300,7 @@ async function getMangaChapters(mangaId) {
       timeout: 15000
     });
 
-    let chapterData = res.data?.data || [];
-
-    // If no Indonesian or English chapters, fetch all languages
-    if (chapterData.length === 0) {
-      const fallbackRes = await axios.get(`${MD_BASE}/manga/${mangaId}/feed?limit=100&order[chapter]=desc`, {
-        headers: { 'User-Agent': 'Sourcream/1.0' },
-        httpsAgent,
-        timeout: 15000
-      });
-      chapterData = fallbackRes.data?.data || [];
-    }
+    const chapterData = res.data?.data || [];
 
     // Filter out duplicate chapters and external chapters with 0 pages
     const seen = new Set();
@@ -229,6 +315,22 @@ async function getMangaChapters(mangaId) {
       if (!seen.has(key)) {
         seen.add(key);
         const titleText = attrs.title ? `: ${attrs.title}` : '';
+        const languageNames = {
+          id: 'Indonesia',
+          en: 'English',
+          ja: '日本語',
+          ko: '한국어',
+          zh: '中文',
+          es: 'Español',
+          fr: 'Français',
+          pt: 'Português',
+          de: 'Deutsch',
+          it: 'Italiano',
+          ru: 'Русский',
+          tr: 'Türkçe',
+          vi: 'Tiếng Việt'
+        };
+        const language = languageNames[lang] || (lang ? lang.toUpperCase() : 'Unknown');
         const langBadge = lang === 'id' ? '🇮🇩 ' : (lang === 'en' ? '🇬🇧 ' : `[${lang.toUpperCase()}] `);
 
         chapters.push({
@@ -238,6 +340,8 @@ async function getMangaChapters(mangaId) {
           date: attrs.publishAt ? new Date(attrs.publishAt).toLocaleDateString('id-ID') : 'Terbaru',
           pages: attrs.pages || 0,
           language: lang,
+          languageName: language,
+          complete: Boolean(attrs.pages) && !attrs.externalUrl,
           externalUrl: attrs.externalUrl || null
         });
       }
@@ -255,6 +359,17 @@ async function getMangaChapters(mangaId) {
  */
 async function getChapterPages(chapterId) {
   try {
+    if (String(chapterId).includes('/')) {
+      const chapterPath = chapterId.startsWith('manga/') ? `/${chapterId}` : `/manga/${chapterId}`;
+      const $ = await fetchKomikcast(chapterPath);
+      const pages = [];
+      $('img[src*="img.komiku.org"], img[data-src*="img.komiku.org"]').each((index, element) => {
+        const img = $(element).attr('data-src') || $(element).attr('src');
+        if (img && !pages.some(page => page.img === img)) pages.push({ img, alt: `Halaman ${index + 1}` });
+      });
+      return { pages, baseUrl: '', hash: '', total: pages.length };
+    }
+
     const atHomeRes = await axios.get(`${MD_BASE}/at-home/server/${chapterId}`, {
       headers: { 'User-Agent': 'Sourcream/1.0' },
       httpsAgent,
@@ -293,6 +408,26 @@ async function getChapterPages(chapterId) {
  */
 async function getChapterInfo(chapterId) {
   try {
+    if (String(chapterId).includes('/')) {
+      const mangaId = String(chapterId).split('/')[0];
+      const $ = await fetchKomikcast(`/manga/${mangaId}`);
+      const comicTitle = $('h1').first().text().trim() || mangaId.replace(/-/g, ' ');
+      const chapterList = parseKomikcastChapterLinks($, mangaId).sort((a, b) => getChapterNumber(a) - getChapterNumber(b));
+      const currentIdx = chapterList.findIndex(chapter => chapter.slug === chapterId);
+      const current = chapterList[currentIdx];
+      const { pages } = await getChapterPages(chapterId);
+
+      return {
+        title: `${comicTitle} - Chapter ${current?.chapter || '1'}`,
+        comicSlug: mangaId,
+        comicTitle,
+        prevChapter: currentIdx > 0 ? chapterList[currentIdx - 1].slug : null,
+        nextChapter: currentIdx >= 0 && currentIdx < chapterList.length - 1 ? chapterList[currentIdx + 1].slug : null,
+        pages,
+        chapterList
+      };
+    }
+
     const res = await axios.get(`${MD_BASE}/chapter/${chapterId}?includes[]=manga`, {
       headers: { 'User-Agent': 'Sourcream/1.0' },
       httpsAgent,

@@ -1,49 +1,17 @@
 <footer class="flex items-center w-full rounded-t shadow-sm justify-center p-4 bg-white dark:bg-neutral-900 transition-all duration-200 mt-12 border-t border-black/10 dark:border-white/10">
-  <span class="text-center text-xs font-semibold">© <script>document.write(new Date().getFullYear());</script> <a class="hover:underline transition-all duration-200" href="/">Sourcream</a>. All right reserved.</span>
+  <span class="text-center text-xs font-semibold">© <script>document.write(new Date().getFullYear());</script> <a class="hover:underline transition-all duration-200" href="/">Sourcream</a>. All rights reserved.</span>
 </footer>
 
 <div id="searchModal" class="z-50 hidden fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-xs transition-opacity duration-300 p-6">
     <div id="searchModalContent" class="bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 p-6 rounded-2xl shadow-xl w-full md:max-w-md transform scale-75 opacity-0 transition-all duration-300">
         		<form action="/pencarian">
-			<h2 class="text-lg font-black uppercase mb-4">Cari Anime</h2>
-			<input name="q" type="text" placeholder="Masukkan judul anime..." class="bg-white dark:bg-black w-full p-3 border-2 border-black dark:border-white/20 rounded-xl focus:outline-none text-sm font-semibold">
+			<h2 class="text-lg font-black uppercase mb-4">Search Anime</h2>
+			<input name="q" type="text" placeholder="Enter anime title..." class="bg-white dark:bg-black w-full p-3 border-2 border-black dark:border-white/20 rounded-xl focus:outline-none text-sm font-semibold">
 			<div class="mt-4 flex gap-2 justify-end">
-				<button type="button" id="closeSearchModal" class="px-4 py-2 bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white rounded-xl font-bold text-xs hover:bg-neutral-300">Tutup</button>
-				<button type="submit" class="px-5 py-2 bg-[#FACC15] text-black border border-black rounded-xl font-black text-xs hover:bg-black hover:text-[#FACC15] transition-all">Cari</button>
+				<button type="button" id="closeSearchModal" class="px-4 py-2 bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white rounded-xl font-bold text-xs hover:bg-neutral-300">Close</button>
+				<button type="submit" class="px-5 py-2 bg-[#FACC15] text-black border border-black rounded-xl font-black text-xs hover:bg-black hover:text-[#FACC15] transition-all">Search</button>
 			</div>
 		</form>
     </div>
 </div>
 
-<div id="sidebarMenu" class="fixed z-50 top-0 right-0 h-full border-l-2 border-black dark:border-neutral-700 w-64 bg-white dark:bg-neutral-900 transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
-	<button id="closeBtnMenu" class="absolute top-4 right-4 focus:outline-none p-2">
-		<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-			<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-		</svg>
-	</button>
-	<nav class="mt-16 flex flex-col space-y-2 p-4 text-sm font-bold uppercase">
-		<a href="/" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Beranda
-		</a>
-		<a href="/terbaru" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Terbaru
-		</a>
-		<a href="/terlama" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Terlama
-		</a>
-		<a href="/populer" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Populer
-		</a>
-		<a href="/peringkat" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Peringkat
-		</a>
-		<a href="/filter" class="px-3 py-2 rounded-xl hover:bg-[#FACC15] hover:text-black transition-all">
-			Filter
-		</a>
-		<a href="/komik" class="px-3 py-2 rounded-xl bg-[#FACC15] text-black border border-black transition-all">
-			Baca Komik →
-		</a>
-
-
-	</nav>
-</div>

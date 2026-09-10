@@ -55,6 +55,26 @@ function resolvePoster(slug, rawImg) {
   return rawImg;
 }
 
+exports.resolvePoster = resolvePoster;
+
+function dedupeMovieResults(items) {
+  const seenSlugs = new Set();
+  const seenPosters = new Set();
+
+  return items.filter(item => {
+    const slug = (item.slug || '').trim().toLowerCase();
+    const poster = (item.image || '').trim();
+    const hasUsablePoster = poster && !poster.includes('/no-img.jpg');
+
+    if (slug && seenSlugs.has(slug)) return false;
+    if (hasUsablePoster && seenPosters.has(poster)) return false;
+
+    if (slug) seenSlugs.add(slug);
+    if (hasUsablePoster) seenPosters.add(poster);
+    return true;
+  });
+}
+
 // -------------------------------------------------------------
 // 3. POPULAR ANIME SERIES (SERIAL TV ANIME TERPOPULER / RATING TINGGI - BUKAN MOVIE)
 // -------------------------------------------------------------
@@ -646,7 +666,10 @@ exports.index = async (req, res) => {
       });
     }
 
-    const responseData = { success: true, data: results, page };
+    const normalizedResults = results.some(item => item.type === 'MOVIE')
+      ? dedupeMovieResults(results)
+      : results;
+    const responseData = { success: true, data: normalizedResults, page };
     setCache(res.cacheKey, responseData);
     res.json(responseData);
 

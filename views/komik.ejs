@@ -52,7 +52,7 @@
 									<%= item.type || 'MANGA' %>
 								</span>
 								<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-500 text-black">
-									<%= item.latestChapter || 'Chapter Terbaru' %>
+										<%= item.latestChapter ? item.latestChapter.replace(/^[\s\S]*?Updated:\s*/i, '') : 'Latest Chapters' %>
 								</span>
 							</div>
 
@@ -61,7 +61,7 @@
 							</h1>
 
 							<p class="text-xs sm:text-sm text-neutral-300 line-clamp-2 leading-relaxed max-w-2xl hidden sm:block">
-								<%= item.synopsis || 'Baca komik manga dan manhwa seru ini secara gratis di Sourcream.' %>
+								<%= item.synopsis || 'Read komik manga dan manhwa seru ini secara gratis di Sourcream.' %>
 							</p>
 
 							<div class="flex items-center gap-3 pt-2">
@@ -69,7 +69,7 @@
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
 									  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
 									</svg>
-									<span>BACA SEKARANG</span>
+									<span>READ NOW</span>
 								</a>
 							</div>
 						</div>
@@ -100,11 +100,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-amber-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Chapter Terbaru 📖
+						Latest Chapters 📖
 					</h2>
 				</div>
 				<a href="/komik/terbaru?order=update" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -126,7 +126,7 @@
 											<%= item.type || 'MANGA' %>
 										</div>
 										<div class="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-amber-400 text-black text-[10px] font-mono font-bold uppercase border border-black/50 shadow-xs">
-											<%= item.latestChapter || 'Up' %>
+														<%= item.latestChapter ? item.latestChapter.replace(/^[\s\S]*?Updated:\s*/i, '') : 'Up' %>
 										</div>
 										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
 											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -140,14 +140,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span><%= item.status || 'Ongoing' %></span>
-											<span class="text-black dark:text-white font-bold">Baca →</span>
+											<span class="text-black dark:text-white font-bold">Read →</span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada chapter terbaru saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No latest chapters available.</div>
 					<% } %>
 				</div>
 
@@ -163,11 +163,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-emerald-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Komik Rilis Baru ✨
+						Comics New Release ✨
 					</h2>
 				</div>
 				<a href="/komik/baru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -200,14 +200,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span><%= item.type || 'MANGA' %></span>
-											<span class="text-black dark:text-white font-bold">Baca →</span>
+											<span class="text-black dark:text-white font-bold">Read →</span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada komik baru saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No new comics available.</div>
 					<% } %>
 				</div>
 
@@ -223,11 +223,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Komik Terpopuler 🔥
+						Popular Comics 🔥
 					</h2>
 				</div>
 				<a href="/komik/populer" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -260,14 +260,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span><%= item.type || 'MANGA' %></span>
-											<span class="text-black dark:text-white font-bold">Baca →</span>
+											<span class="text-black dark:text-white font-bold">Read →</span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada komik populer saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No popular comics found.</div>
 					<% } %>
 				</div>
 
@@ -283,11 +283,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-yellow-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Peringkat Tertinggi ⭐
+						Top Ranking ⭐
 					</h2>
 				</div>
 				<a href="/komik/peringkat" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -320,14 +320,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span>★ Top Rated</span>
-											<span class="text-black dark:text-white font-bold">Baca →</span>
+											<span class="text-black dark:text-white font-bold">Read →</span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada peringkat komik saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No comic rankings available.</div>
 					<% } %>
 				</div>
 
@@ -343,11 +343,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-sky-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Manhwa & Webtoon Populer 🇰🇷
+						Manhwa & Webtoon Popular 🇰🇷
 					</h2>
 				</div>
 				<a href="/komik/manhwa" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -380,14 +380,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span>Webtoon</span>
-											<span class="text-black dark:text-white font-bold">Baca →</span>
+											<span class="text-black dark:text-white font-bold">Read →</span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada manhwa populer saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No popular manhwa available.</div>
 					<% } %>
 				</div>
 
@@ -403,11 +403,11 @@
 				<div class="flex items-center gap-2">
 					<span class="text-xl">🔤</span>
 					<h3 class="text-lg font-black uppercase tracking-wider text-black dark:text-white">
-						Indeks Komik A - Z
+						Indeks Comics A - Z
 					</h3>
 				</div>
 				<span class="text-xs font-extrabold uppercase text-neutral-500 dark:text-neutral-400">
-					Filter Abjad
+					Filter Alphabet
 				</span>
 			</div>
 

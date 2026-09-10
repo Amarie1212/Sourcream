@@ -40,7 +40,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
@@ -91,6 +91,17 @@
 						<iframe src="<%= data.videoEmbedUrl %>" id="my-video" class="w-full h-full border-0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
 					</div>
 
+					<!-- Keep subtitle and dub for the same episode in one player. -->
+					<div class="flex items-center gap-2 px-3 sm:px-6 py-2.5 bg-black border-t border-white/10" id="variantSwitcher">
+						<span class="text-[10px] font-black uppercase tracking-wider text-white/60">Audio</span>
+						<% if (variantOptions && variantOptions.sub) { %>
+							<button type="button" class="variant-option px-3 py-1 rounded-full border border-white/30 text-[10px] font-black uppercase tracking-wider <%= currentVariant === 'sub' ? 'bg-[#FACC15] text-black border-black' : 'text-white hover:bg-white hover:text-black' %>" data-variant="sub" data-video-url="<%= variantOptions.sub.videoEmbedUrl %>">SUB</button>
+						<% } %>
+						<% if (variantOptions && variantOptions.dub) { %>
+							<button type="button" class="variant-option px-3 py-1 rounded-full border border-white/30 text-[10px] font-black uppercase tracking-wider <%= currentVariant === 'dub' ? 'bg-[#FACC15] text-black border-black' : 'text-white hover:bg-white hover:text-black' %>" data-variant="dub" data-video-url="<%= variantOptions.dub.videoEmbedUrl %>">DUB</button>
+						<% } %>
+					</div>
+
 					<!-- Player Navigation & Controls Bar -->
 					<div class="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-[#F5F3EF] dark:bg-[#14151b] border-t-2 border-black dark:border-white/10 gap-2 sm:gap-3">
 						
@@ -121,7 +132,7 @@
 
 						<!-- Next Episode Button -->
 						<% if (data.nextEpisode) { %>
-							<a href="/episode/<%= data.nextEpisode %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Episode Selanjutnya">
+							<a href="/episode/<%= data.nextEpisode %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white font-black text-xs sm:text-sm uppercase tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap" title="Next Episode">
 								<span class="hidden sm:inline">Selanjutnya</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 flex-shrink-0">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -138,7 +149,7 @@
 					</div>
 				</div>
 
-				<!-- Anime Title & Sinopsis Card -->
+				<!-- Anime Title & Synopsis Card -->
 				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-4">
 					
 					<div class="flex flex-wrap items-center justify-between gap-2">
@@ -147,8 +158,7 @@
 								✨ Full HD
 							</span>
 							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-violet-600 text-white">
-								💬 Sub Indo
-								💬 Sub / Dub
+								💬 <%= (variantOptions && variantOptions.dub) ? 'Sub / Dub' : 'Indonesian Sub' %>
 							</span>
 							<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
 								⚡ Fast Stream
@@ -156,9 +166,11 @@
 						</div>
 
 						<% if (typeof animeSlug !== 'undefined' && animeSlug) { %>
-							<a href="/anime/<%= animeSlug %>" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border border-black/20 dark:border-white/20 transition-all">
-								<span>Detail Anime</span>
-								<span>→</span>
+							<a href="/anime/<%= animeSlug %>" class="group inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-black uppercase tracking-wide bg-[#F5F3EF] dark:bg-[#121317] hover:bg-[#FACC15] hover:text-black text-black dark:text-white border-2 border-black/25 dark:border-white/25 hover:border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,0.7)] transition-all">
+								<span>Anime Details</span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+								</svg>
 							</a>
 						<% } %>
 					</div>
@@ -175,7 +187,7 @@
 						} else if (data.description && data.description !== '-') {
 							// Clean up boilerplate SEO phrases if present
 							displayDesc = data.description
-								.replace(/Nonton streaming & download Nonton/gi, 'Nonton')
+								.replace(/Watch streaming & download Watch/gi, 'Watch')
 								.replace(/Download & streaming anime gratis bebas iklan pop-up sampah dan tampilan nyaman untuk penikmat anime online hanya di Sourcream\./gi, '')
 								.replace(/Animasu/gi, 'Sourcream')
 								.trim();
@@ -184,7 +196,7 @@
 
 					<% if (displayDesc) { %>
 						<div class="pt-3 border-t-2 border-black/10 dark:border-white/10">
-							<h3 class="text-[10px] uppercase tracking-wider font-black text-neutral-500 dark:text-neutral-400 mb-2">Sinopsis Anime</h3>
+							<h3 class="text-[10px] uppercase tracking-wider font-black text-neutral-500 dark:text-neutral-400 mb-2">Anime Synopsis</h3>
 							<div id="synopsis-box" class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed max-h-24 overflow-hidden relative transition-all duration-300">
 								<p><%- displayDesc %></p>
 								<div id="synopsis-gradient" class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white dark:from-[#181920] to-transparent pointer-events-none"></div>
@@ -199,6 +211,14 @@
 					<% } %>
 				</div>
 
+				<% const currentEpisodeMatch = (currentSlug || '').match(/episode-(\d+(?:\.\d+)?)/i); const currentEpisodeNumber = currentEpisodeMatch ? Number(currentEpisodeMatch[1]) : null; const isCurrentWatched = currentEpisodeNumber !== null && watchedEpisodeNumbers.includes(currentEpisodeNumber); %>
+				<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+					<div class="flex items-center justify-between gap-3 rounded-2xl border-2 border-black bg-white p-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)]">
+						<p class="text-xs font-bold text-neutral-600 dark:text-neutral-300">Episode <%= currentEpisodeMatch ? currentEpisodeMatch[1] : '-' %></p>
+						<button id="progressButton" type="button" data-anime-slug="<%= animeSlug %>" data-anime-title="<%= animeTitle %>" data-episode-slug="<%= currentSlug %>" data-episode-number="<%= currentEpisodeMatch ? currentEpisodeMatch[1] : '' %>" <%= isCurrentWatched ? 'disabled' : '' %> class="rounded-xl border-2 border-black px-3 py-2 text-[10px] font-black uppercase text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all <%= isCurrentWatched ? 'cursor-default bg-emerald-400' : 'bg-[#FACC15] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' %>"><%= isCurrentWatched ? 'Sudah Ditonton' : 'Tandai Sudah Ditonton' %></button>
+					</div>
+				<% } %>
+
 				<!-- Episode Navigator Card -->
 				<section id="episode-section" class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-5">
 					
@@ -206,7 +226,7 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
 							<h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-black dark:text-white">
-								Pilih Episode
+								Select Episode
 							</h2>
 							<span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-black text-[#FACC15] border border-black">
 								<%= episodes.length %> Total
@@ -217,14 +237,14 @@
 						<div class="flex flex-wrap items-center gap-2">
 							<!-- Search filter -->
 							<div class="relative">
-								<input type="text" id="epSearchInput" placeholder="Cari episode..." class="w-32 sm:w-40 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
+								<input type="text" id="epSearchInput" placeholder="Search episode..." class="w-32 sm:w-40 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 								</svg>
 							</div>
 							
 							<!-- Sort Order Toggle -->
-							<button id="btnSortOrder" type="button" class="px-2.5 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border border-black/20 dark:border-white/20 text-xs font-black text-black dark:text-white hover:bg-[#FACC15] hover:text-black transition-all flex items-center gap-1" title="Urutkan Episode">
+							<button id="btnSortOrder" type="button" class="episode-control-button px-2.5 py-1.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border-2 border-black dark:border-white/20 text-xs font-black text-black dark:text-white hover:bg-[#FACC15] hover:text-black transition-all flex items-center gap-1" title="Urutkan Episode">
 								<span id="sortOrderLabel">1 → <%= episodes.length %></span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
@@ -232,11 +252,11 @@
 							</button>
 
 							<!-- View Mode Toggle (Grid vs List) -->
-							<div class="flex items-center rounded-xl bg-[#F5F3EF] dark:bg-[#121317] p-1 border border-black/20 dark:border-white/20 text-xs font-black">
-								<button id="btnGridMode" class="px-2.5 py-1 rounded-lg bg-black text-[#FACC15] shadow-xs transition-all" title="Tampilan Grid Nomor">
+							<div class="flex items-center rounded-xl bg-[#F5F3EF] dark:bg-[#121317] p-1 border-2 border-black dark:border-white/20 text-xs font-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.2)]">
+								<button id="btnGridMode" class="episode-mode-button px-2.5 py-1 rounded-lg bg-black text-[#FACC15] shadow-xs transition-all" title="Tampilan Grid Nomor">
 									Grid
 								</button>
-								<button id="btnListMode" class="px-2.5 py-1 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all" title="Tampilan List Lengkap">
+								<button id="btnListMode" class="episode-mode-button px-2.5 py-1 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all" title="Tampilan List Lengkap">
 									List
 								</button>
 							</div>
@@ -260,7 +280,7 @@
 					<% if (episodes.length > EP_CHUNK_SIZE) { %>
 						<div id="rangeTabsEpisodeContainer" class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
 							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 flex-shrink-0 mr-1">
-								Pilih Range:
+								Select Range:
 							</span>
 							<% for (let c = 0; c < totalEpChunks; c++) { 
 								const startEp = c * EP_CHUNK_SIZE + 1;
@@ -278,7 +298,7 @@
 									data-start="all" 
 									data-end="all"
 									class="ep-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-[#FACC15] hover:text-black">
-								Semua
+								All
 							</button>
 						</div>
 					<% } %>
@@ -290,6 +310,7 @@
 								const isCurrent = typeof currentSlug !== 'undefined' && (currentSlug === episode.slug || (data.slug && data.slug === episode.slug));
 								const epNumMatch = episode.title.match(/\d+(\.\d+)?/);
 								const epNum = epNumMatch ? parseFloat(epNumMatch[0]) : (idx + 1);
+								const isWatched = watchedEpisodeNumbers.includes(epNum);
 							%>
 								<a href="/episode/<%= episode.slug %>" 
 								   data-title="<%= episode.title.toLowerCase() %>"
@@ -302,6 +323,8 @@
 											<span class="w-1 h-1 rounded-full bg-[#FACC15] animate-ping"></span>
 											Playing
 										</span>
+									<% } else if (isWatched) { %>
+										<span class="text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-400">✓ Done</span>
 									<% } else { %>
 										<span class="text-[9px] opacity-60 uppercase font-bold group-hover:opacity-100">Ep</span>
 									<% } %>
@@ -315,6 +338,7 @@
 								const isCurrent = typeof currentSlug !== 'undefined' && (currentSlug === episode.slug || (data.slug && data.slug === episode.slug));
 								const epNumMatch = episode.title.match(/\d+(\.\d+)?/);
 								const epNum = epNumMatch ? parseFloat(epNumMatch[0]) : (idx + 1);
+								const isWatched = watchedEpisodeNumbers.includes(epNum);
 							%>
 								<a href="/episode/<%= episode.slug %>" 
 								   data-title="<%= episode.title.toLowerCase() %>"
@@ -328,11 +352,13 @@
 										<h3 class="text-xs sm:text-sm font-bold truncate">
 											<%= episode.title %>
 										</h3>
-										<% if (isCurrent) { %>
+									<% if (isCurrent) { %>
 											<span class="text-[10px] font-black text-[#FACC15] flex items-center gap-1 mt-0.5">
 												<span class="w-1.5 h-1.5 rounded-full bg-[#FACC15] animate-ping"></span>
 												Sedang Diputar
 											</span>
+										<% } else if (isWatched) { %>
+											<span class="text-[10px] font-black text-emerald-700 dark:text-emerald-400 mt-0.5">✓ Sudah ditonton</span>
 										<% } %>
 									</div>
 									<div class="text-current opacity-70">
@@ -361,7 +387,7 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3 h-3 bg-violet-600 border border-black inline-block"></span>
 							<h3 class="text-base font-black uppercase text-black dark:text-white">
-								Populer Minggu Ini 🔥
+								Popular Minggu Ini 🔥
 							</h3>
 						</div>
 					</div>
@@ -393,7 +419,7 @@
 							<% }) %>
 						</div>
 					<% } else { %>
-						<p class="text-neutral-500 text-xs text-center py-4">Belum ada anime populer tersedia.</p>
+						<p class="text-neutral-500 text-xs text-center py-4">Belum ada anime popular tersedia.</p>
 					<% } %>
 
 				</div>
@@ -550,6 +576,21 @@
 				}
 			}, { passive: false });
 		}
+
+		// Switch Sub/Dub in the same player without leaving the episode page.
+		const playerFrame = document.getElementById('my-video');
+		document.querySelectorAll('.variant-option').forEach((option) => {
+			option.addEventListener('click', () => {
+				if (!playerFrame || !option.dataset.videoUrl) return;
+				playerFrame.src = option.dataset.videoUrl;
+				document.querySelectorAll('.variant-option').forEach((item) => {
+					item.classList.remove('bg-[#FACC15]', 'text-black', 'border-black');
+					item.classList.add('text-white');
+				});
+				option.classList.remove('text-white');
+				option.classList.add('bg-[#FACC15]', 'text-black', 'border-black');
+			});
+		});
 
 		// Initial filter
 		if (tabs.length > 0) {

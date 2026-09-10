@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const http = require('http');
 const path = require('path');
 const ApiKeyMiddleware = require('./middlewares/AuthApiKey');
 const { setupSocket } = require('./middlewares/Socket');
+const AuthController = require('./controllers/AuthController');
 
 // Global crash prevention guards
 process.on('uncaughtException', (err) => {
@@ -20,6 +22,7 @@ const server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +32,7 @@ app.use((req, res, next) => {
   req.domain = req.headers.host;
   next();
 });
+app.use(AuthController.attachUser);
 
 const Web = require('./routes/Web');
 app.use('/', Web);

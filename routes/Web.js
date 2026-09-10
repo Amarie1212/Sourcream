@@ -1,5 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const AuthController = require('../controllers/AuthController');
+const WatchlistController = require('../controllers/WatchlistController');
+const ProgressController = require('../controllers/ProgressController');
+
+router.get('/login', AuthController.loginPage);
+router.post('/login', AuthController.login);
+router.get('/register', AuthController.registerPage);
+router.post('/register', AuthController.register);
+router.post('/logout', AuthController.logout);
+router.get('/watchlist', WatchlistController.index);
+router.post('/api/watchlist', WatchlistController.add);
+router.delete('/api/watchlist/:slug', WatchlistController.remove);
+router.get('/api/watchlist/:slug/status', WatchlistController.status);
+router.post('/api/progress', ProgressController.mark);
+router.get('/notifications', ProgressController.notifications);
+router.post('/api/notifications/read-all', ProgressController.readAll);
 
 // --- 1. Anime Web Routes (Original UI Views powered by Gogoanime) ---
 const HomePage = require('../controllers/HomeController');
@@ -14,6 +30,7 @@ router.get('/episode/:slug', EpisodePage.index);
 const SearchPage = require('../controllers/SearchController');
 router.get('/pencarian', SearchPage.index);
 router.get('/search', SearchPage.index);
+router.get('/api/anime-suggestions', SearchPage.suggestions);
 
 const NewsPage = require('../controllers/NewsController');
 router.get('/terbaru', NewsPage.index);
@@ -51,6 +68,9 @@ router.get('/en/episode/:slug', (req, res) => res.redirect(`/episode/${req.param
 router.get('/en/search', (req, res) => res.redirect(`/search?q=${encodeURIComponent(req.query.q || '')}`));
 
 // --- 2. Komik Web Routes (MangaDex) ---
+// Comics are no longer part of the streaming platform.
+router.use('/komik', (req, res) => res.redirect('/'));
+
 const KomikProxy = require('../controllers/KomikProxyController');
 router.get('/komik/cover/:mangaId/:fileName', KomikProxy.cover);
 router.get('/komik/page-proxy', KomikProxy.pageProxy);

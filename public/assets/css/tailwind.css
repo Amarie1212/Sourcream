@@ -2,9 +2,300 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
+.header-search-form {
+  width: min(58vw, 280px);
+  max-width: 0;
+  transform-origin: right center;
+  transition: max-width 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease-out, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-search-form.is-open {
+  max-width: min(58vw, 280px);
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.search-suggestions {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top center;
+  transition: opacity 180ms ease-out, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-suggestions.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+body .header-account-button {
+  transition: transform 160ms ease-out, background-color 160ms ease-out, color 160ms ease-out, box-shadow 160ms ease-out;
+  box-shadow: 1.5px 1.5px 0 #1a1a1a;
+}
+
+body .header-account-button:hover {
+  transform: translate(-2px, -2px);
+  background-color: #facc15;
+  color: #000;
+  box-shadow: 4px 4px 0 #1a1a1a;
+}
+
+body .header-account-button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 transparent;
+}
+
+body .watchlist-menu {
+  opacity: 0;
+  transform: translate(-50%, -8px) scale(0.96);
+  transform-origin: top center;
+  transition: opacity 180ms ease-out, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body .watchlist-menu.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+body .app-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 100;
+  max-width: min(90vw, 360px);
+  padding: 0.75rem 1rem;
+  border: 2px solid #000;
+  border-radius: 0.75rem;
+  background: #facc15;
+  color: #000;
+  box-shadow: 3px 3px 0 #1a1a1a;
+  font-size: 0.75rem;
+  font-weight: 900;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 180ms ease-out, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body .app-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Fast, tactile motion for the neo-brutalist surface. */
+body .neo-card {
+  position: relative;
+  transform: translate(0, 0);
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out, border-color 160ms ease-out;
+  will-change: transform;
+}
+
+body .neo-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 6px 6px 0 #1a1a1a;
+}
+
+.dark body .neo-card:hover,
+html.dark body .neo-card:hover {
+  box-shadow: 6px 6px 0 rgba(250, 204, 21, 0.55);
+}
+
+body .neo-card:active,
+body button:active,
+body a.rounded-full:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 transparent;
+  transition-duration: 80ms;
+}
+
+body .neo-card > div:first-child {
+  overflow: hidden;
+}
+
+body .neo-card:not(.ep-card) > div:first-child::after {
+  content: '';
+  position: absolute;
+  inset: -30% auto -30% -80%;
+  width: 35%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0ms;
+}
+
+body .neo-card:not(.ep-card):hover > div:first-child::after {
+  left: 145%;
+  transition: left 300ms ease-out;
+}
+
+body .neo-card.ep-card > div:first-child::after {
+  display: none;
+}
+
+body .ep-card,
+body .ep-item {
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out, border-color 160ms ease-out, background-color 160ms ease-out, color 160ms ease-out;
+  will-change: transform;
+}
+
+body .ep-card:hover,
+body .ep-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #1a1a1a;
+}
+
+html.dark body .ep-card:hover,
+html.dark body .ep-item:hover {
+  box-shadow: 4px 4px 0 rgba(250, 204, 21, 0.55);
+}
+
+body .ep-card:active,
+body .ep-item:active,
+body .episode-control-button:active,
+body .episode-mode-button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 transparent;
+}
+
+body .episode-control-button,
+body .episode-mode-button {
+  border-color: rgba(0, 0, 0, 0.85);
+  box-shadow: 1.5px 1.5px 0 #1a1a1a;
+}
+
+html.dark body .episode-control-button,
+html.dark body .episode-mode-button {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 1.5px 1.5px 0 rgba(255, 255, 255, 0.2);
+}
+
+body .pagination-button {
+  transition: transform 160ms ease-out, background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+body .pagination-button:hover {
+  transform: translate(-2px, -2px);
+  background-color: #facc15;
+  color: #000;
+  border-color: #000;
+  box-shadow: 3px 3px 0 #1a1a1a;
+}
+
+html.dark body .pagination-button:hover {
+  box-shadow: 3px 3px 0 rgba(250, 204, 21, 0.55);
+}
+
+body .pagination-button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 transparent;
+}
+
+body .alphabet-letter {
+  transition: transform 150ms ease-out, background-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out;
+}
+
+body .alphabet-letter:not(.is-active):hover {
+  transform: translate(-2px, -2px);
+  background-color: #facc15;
+  color: #000;
+  border-color: #000;
+  box-shadow: 4px 4px 0 #1a1a1a;
+}
+
+html.dark body .alphabet-letter:not(.is-active):hover {
+  box-shadow: 4px 4px 0 rgba(250, 204, 21, 0.55);
+}
+
+body .alphabet-letter:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 transparent;
+}
+
+body .neo-card img {
+  transition: transform 180ms ease-out;
+}
+
+body .neo-card:hover img {
+  transform: scale(1.05);
+}
+
+body .neo-card:hover .bg-emerald-400 {
+  animation: badge-wiggle 260ms ease-out;
+}
+
+@keyframes badge-wiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  45% { transform: rotate(-4deg) scale(1.06); }
+  75% { transform: rotate(3deg) scale(1.02); }
+}
+
+body button,
+body a.rounded-full {
+  transition: transform 90ms ease-out, box-shadow 160ms ease-out, background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out;
+}
+
+body #theme-toggle svg {
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out;
+}
+
+body #theme-toggle:hover svg {
+  transform: rotate(-180deg) scale(1.08);
+}
+
+body header a:first-child img {
+  transform-origin: center bottom;
+  transition: transform 180ms ease-out;
+}
+
+body header a:first-child:hover img {
+  transform: rotate(-4deg) translateY(-1px);
+}
+
+body .hero-slide {
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), clip-path 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+body .hero-slide.opacity-0 {
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 70% 100%);
+}
+
+body .hero-slide.opacity-100 h1,
+body .hero-slide.opacity-100 p,
+body .hero-slide.opacity-100 .flex.items-center {
+  animation: hero-stagger 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body .hero-slide.opacity-100 p { animation-delay: 45ms; }
+body .hero-slide.opacity-100 .flex.items-center { animation-delay: 80ms; }
+
+@keyframes hero-stagger {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body .hero-dot {
+  transition: width 180ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+body .hero-dot:hover {
+  transform: scale(1.2);
+}
+
+body .hero-slide a.bg-violet-600 {
+  animation: play-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes play-pulse {
+  0%, 100% { box-shadow: 1.5px 1.5px 0 #000, 0 0 0 rgba(124, 58, 237, 0); }
+  50% { box-shadow: 1.5px 1.5px 0 #000, 0 0 0 5px rgba(124, 58, 237, 0.16); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 #theme-toggle {

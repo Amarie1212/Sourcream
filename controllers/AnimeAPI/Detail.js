@@ -2,6 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const https = require('https');
 const { setCache } = require('../../middlewares/CacheAPI');
+const { resolvePoster } = require('./List');
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 const GOGO_BASE = 'https://ww4.gogoanimes.fi';
@@ -32,6 +33,7 @@ exports.index = async (req, res) => {
     if (imageUrl && !imageUrl.startsWith('http')) {
       imageUrl = `${GOGO_BASE}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
     }
+    imageUrl = resolvePoster(cleanSlug, imageUrl);
 
     let type = 'TV';
     let description = '-';

@@ -32,6 +32,19 @@ exports.index = async (req, res) => {
             fetchSection('peringkat'),
             fetchSection('populer', 'manhwa')
         ]);
+
+        const cleanLatestChapter = (items) => items.map(item => ({
+            ...item,
+            latestChapter: typeof item.latestChapter === 'string'
+                ? item.latestChapter.replace(/^[\s\S]*?Updated:\s*/i, '').trim()
+                : item.latestChapter
+        }));
+
+        const cleanedLatestChapters = cleanLatestChapter(latestChapters);
+        const cleanedNewManga = cleanLatestChapter(newManga);
+        const cleanedPopularManga = cleanLatestChapter(popularManga);
+        const cleanedTopRated = cleanLatestChapter(topRated);
+        const cleanedPopularManhwa = cleanLatestChapter(popularManhwa);
 		
         const alphabet = Array.from({ length: 26 }, (_, i) => {
             const letter = String.fromCharCode(65 + i);
@@ -44,11 +57,11 @@ exports.index = async (req, res) => {
             site_keyword: 'komik, baca komik, manga, manhwa, webtoon, komik terbaru, komik populer',
             site_url: req.domain,
             data: { 
-                latestChapters,
-                newManga,
-                popularManga,
-                topRated,
-                popularManhwa
+                latestChapters: cleanedLatestChapters,
+                newManga: cleanedNewManga,
+                popularManga: cleanedPopularManga,
+                topRated: cleanedTopRated,
+                popularManhwa: cleanedPopularManhwa
             },
             alphabet
         });

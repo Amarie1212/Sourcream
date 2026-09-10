@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -66,10 +66,10 @@
 				</div>
 				<div>
 					<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
-						Filter Komik
+						Filter Comics
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						Gunakan filter untuk menemukan komik sesuai tipe, genre, status, dan urutan
+						Use filters to find comics by type, genre, status, and order
 					</p>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 
 				<!-- Order -->
 				<div class="flex flex-col gap-1">
-					<label for="order" class="text-[11px] font-black uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Urutan</label>
+					<label for="order" class="text-[11px] font-black uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Order</label>
 					<div class="relative">
 						<select name="order" id="order" class="w-full p-2.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border-2 border-black dark:border-white/20 text-xs font-bold text-black dark:text-white focus:outline-none focus:border-[#FACC15] cursor-pointer appearance-none shadow-xs">
 							<% if (Array.isArray(filterOrder) && filterOrder.length > 0) { %>
@@ -178,7 +178,7 @@
 								<!-- Latest Chapter Badge -->
 								<% if (item.latestChapter) { %>
 									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
-										<%= item.latestChapter %>
+										<%= item.latestChapter.replace(/^[\s\S]*?Updated:\s*/i, '') %>
 									</div>
 								<% } %>
 
@@ -199,7 +199,7 @@
 								</h3>
 								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 									<span class="truncate max-w-[90px]"><%= item.genre || item.type || 'Manga' %></span>
-									<span class="text-black dark:text-white font-bold flex-shrink-0">Baca →</span>
+									<span class="text-black dark:text-white font-bold flex-shrink-0">Read →</span>
 								</div>
 							</div>
 
@@ -221,7 +221,7 @@
 					<% } %>
 
 					<div class="px-4 py-2 rounded-xl bg-[#FACC15] text-black border-2 border-black font-mono font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-						Halaman <%= currentPage %>
+						Page <%= currentPage %>
 					</div>
 
 					<% if (nextPageUrl) { %>
@@ -242,10 +242,10 @@
 						📭
 					</div>
 					<h3 class="text-xl font-black uppercase text-black dark:text-white mt-2">
-						Tidak Ada Komik Ditemukan
+						No Comics Found
 					</h3>
 					<p class="text-xs sm:text-sm text-neutral-500 max-w-md font-semibold">
-						Tidak ada komik yang cocok dengan kombinasi filter yang Anda pilih. Coba sesuaikan filter di atas.
+						No comics match the selected filters. Try adjusting the filters above.
 					</p>
 				</div>
 			<% } %>

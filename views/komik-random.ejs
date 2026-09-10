@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -65,16 +65,16 @@
 				</div>
 				<div>
 					<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
-						Komik Pilihan Acak
+						Comics Selectan Random
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						Temukan komik, manga, dan manhwa baru secara acak untuk dibaca
+						Discover new comics, manga, and manhwa to read at random
 					</p>
 				</div>
 			</div>
 			<div class="flex items-center gap-2">
 				<a href="/komik/acak" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FACC15] hover:bg-black hover:text-[#FACC15] text-black border-2 border-black font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
-					<span>🎲 Acak Lagi</span>
+					<span>🎲 Random Lagi</span>
 				</a>
 			</div>
 		</section>
@@ -100,7 +100,7 @@
 								<!-- Latest Chapter Badge -->
 								<% if (item.latestChapter) { %>
 									<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-white text-[9px] font-bold uppercase backdrop-blur-xs">
-										<%= item.latestChapter %>
+										<%= item.latestChapter.replace(/^[\s\S]*?Updated:\s*/i, '') %>
 									</div>
 								<% } %>
 
@@ -121,7 +121,7 @@
 								</h3>
 								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 									<span class="truncate max-w-[90px]"><%= item.genre || item.type || 'Manga' %></span>
-									<span class="text-black dark:text-white font-bold flex-shrink-0">Baca →</span>
+									<span class="text-black dark:text-white font-bold flex-shrink-0">Read →</span>
 								</div>
 							</div>
 
@@ -143,7 +143,7 @@
 					<% } %>
 
 					<div class="px-4 py-2 rounded-xl bg-[#FACC15] text-black border-2 border-black font-mono font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-						Halaman <%= currentPage %>
+						Page <%= currentPage %>
 					</div>
 
 					<% if (nextPage) { %>
@@ -164,7 +164,7 @@
 						📭
 					</div>
 					<h3 class="text-xl font-black uppercase text-black dark:text-white mt-2">
-						Tidak Ada Komik Ditemukan
+						No Comics Found
 					</h3>
 					<p class="text-xs sm:text-sm text-neutral-500 max-w-md font-semibold">
 						Belum ada data komik acak saat ini. Silakan klik tombol acak lagi.

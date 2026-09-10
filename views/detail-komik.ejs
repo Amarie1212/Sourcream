@@ -40,7 +40,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 flex-shrink-0">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
@@ -125,14 +125,14 @@
 							<!-- Action Button: Start Reading -->
 							<% if (chapters.length > 0) { %>
 								<div class="flex items-center gap-2 sm:gap-3 pt-1 w-full sm:w-auto">
-									<a href="/komik/chapter/<%= chapters[0].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-amber-500 hover:bg-black dark:hover:bg-black text-black hover:text-white dark:hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap min-w-0">
+									<a href="/komik/chapter/<%= encodeURIComponent(chapters[0].slug) %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-amber-500 hover:bg-black dark:hover:bg-black text-black hover:text-white dark:hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap min-w-0">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0">
 										  <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
 										</svg>
-										<span><span class="hidden sm:inline">Baca </span>Chapter 1</span>
+										<span><span class="hidden sm:inline">Read </span>Chapter 1</span>
 									</a>
-									<a href="/komik/chapter/<%= chapters[chapters.length - 1].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap min-w-0">
-										<span><span class="sm:hidden">Ch. </span><span class="hidden sm:inline">Chapter </span>Terbaru</span>
+									<a href="/komik/chapter/<%= encodeURIComponent(chapters[chapters.length - 1].slug) %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap min-w-0">
+										<span><span class="sm:hidden">Ch. </span><span class="hidden sm:inline">Chapter </span>Latest</span>
 										<span class="flex-shrink-0">→</span>
 									</a>
 								</div>
@@ -156,7 +156,7 @@
 									<span class="font-bold text-black dark:text-white truncate block"><%= data.story || '-' %></span>
 								</div>
 								<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
-									<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Pembaca</span>
+									<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Readers</span>
 									<span class="font-bold text-black dark:text-white truncate block"><%= data.read || '-' %></span>
 								</div>
 								<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
@@ -202,7 +202,7 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3.5 h-3.5 bg-amber-500 border border-black inline-block"></span>
 							<h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
-								Semua Chapter 🔥
+								All Chapter 🔥
 							</h2>
 							<span class="px-3 py-1 rounded-full text-xs font-black uppercase bg-black text-amber-400 border border-black">
 								Total: <%= chapters.length %> Chapter
@@ -212,7 +212,7 @@
 						<div class="flex flex-wrap items-center gap-2">
 							<!-- Search Input -->
 							<div class="relative">
-								<input type="text" id="chDetailSearch" placeholder="Cari chapter..." class="w-32 sm:w-44 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#181920] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+								<input type="text" id="chDetailSearch" placeholder="Search chapter..." class="w-32 sm:w-44 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#181920] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 								</svg>
@@ -228,16 +228,29 @@
 						</div>
 					</div>
 
-					<!-- Range / Chunk Pagination Tabs for Large Chapter Count (Skat-skat) -->
+					<!-- Language filter comes first; chapter ranges filter the selected language. -->
+					<% if (languageGroups && languageGroups.length > 0) { %>
+						<div id="languageChaptersContainer" class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
+							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 flex-shrink-0 mr-1">Language:</span>
+							<% languageGroups.forEach((group, index) => { %>
+								<button type="button" data-language="<%= group.code %>" class="language-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all <%= index === 0 ? 'bg-amber-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-amber-400 hover:text-black' %>">
+									<%= group.name %> <span class="opacity-60">(<%= group.chapters.length %>)</span>
+								</button>
+							<% }) %>
+						</div>
+					<% } %>
+
+					<!-- Chapter range filter for the selected language. -->
 					<% 
 						const CH_CHUNK_SIZE = 50;
-						const totalChChunks = Math.ceil(chapters.length / CH_CHUNK_SIZE);
+						const maxLanguageChapters = languageGroups && languageGroups.length > 0 ? Math.max(...languageGroups.map(group => group.chapters.length)) : chapters.length;
+						const totalChChunks = Math.ceil(maxLanguageChapters / CH_CHUNK_SIZE);
 					%>
 
-					<% if (chapters.length > CH_CHUNK_SIZE) { %>
+					<% if (maxLanguageChapters > CH_CHUNK_SIZE) { %>
 						<div id="rangeChaptersContainer" class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
 							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 flex-shrink-0 mr-1">
-								Pilih Range:
+								Select Range:
 							</span>
 							<% for (let c = 0; c < totalChChunks; c++) { 
 								const startCh = c * CH_CHUNK_SIZE + 1;
@@ -254,28 +267,37 @@
 									data-start="all" 
 									data-end="all"
 									class="ch-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-amber-400 hover:text-black">
-								Semua
+								All
 							</button>
 						</div>
 					<% } %>
 
 					<% if (chapters.length > 0) { %>
 						<div id="detailChaptersContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[600px] overflow-y-auto pr-1.5 custom-scrollbar">
-							<% chapters.forEach((item, idx) => { 
-								const chNumMatch = item.title ? item.title.match(/\d+(\.\d+)?/) : null;
-								const chNum = chNumMatch ? parseFloat(chNumMatch[0]) : (idx + 1);
+							<% chapters.forEach((item, idx) => {
+								const chapterSources = [item.chapter, item.title, item.slug].filter(value => value !== undefined && value !== null && String(value).trim() !== '');
+								let chNumMatch = null;
+								for (const source of chapterSources) {
+									chNumMatch = String(source).match(/(?:chapter|ch)[^\d]*(\d+(\.\d+)?)/i) || String(source).match(/\d+(\.\d+)?/);
+									if (chNumMatch) break;
+								}
+								const chNum = chNumMatch ? parseFloat(chNumMatch[1] || chNumMatch[0]) : (idx + 1);
 							%>
-								<a href="/komik/chapter/<%= item.slug %>" 
+								<% const languageIndex = chapters.slice(0, idx + 1).filter(chapter => chapter.language === item.language).length; %>
+								<% if (item.complete !== false) { %><a href="/komik/chapter/<%= encodeURIComponent(item.slug) %>"<% } else { %><div<% } %>
 								   data-ch="<%= chNum %>"
+								   data-index="<%= idx + 1 %>"
+								   data-language="<%= item.language || 'unknown' %>"
+								   data-language-index="<%= languageIndex %>"
 								   data-title="<%= item.title ? item.title.toLowerCase() : '' %>"
-								   class="ch-card neo-card group flex items-center justify-between p-3.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] hover:border-amber-500 transition-all">
+								   class="ch-card neo-card group flex items-center justify-between p-3.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] hover:border-amber-500 transition-all <%= item.complete === false ? 'opacity-60 cursor-not-allowed' : '' %>">
 									<div class="flex items-center gap-3 min-w-0">
 										<div class="w-9 h-9 flex-shrink-0 flex items-center justify-center bg-amber-400 text-black border border-black font-black rounded-xl text-xs shadow-xs">
 											<%= chNum %>
 										</div>
 										<div class="min-w-0">
 											<h3 class="text-xs sm:text-sm font-bold text-black dark:text-white truncate group-hover:text-amber-500 transition-colors">
-												<%= item.title %>
+														<%= item.title %><%= item.complete === false ? ' (Tidak lengkap)' : '' %>
 											</h3>
 											<div class="flex items-center gap-3 mt-0.5 text-[10px] text-neutral-500 dark:text-neutral-400 font-medium">
 												<% if (item.views) { %>
@@ -303,7 +325,7 @@
 										  <path fill-rule="evenodd" d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
 										</svg>
 									</div>
-								</a>
+								<% if (item.complete !== false) { %></a><% } else { %></div><% } %>
 							<% }) %>
 						</div>
 					<% } else { %>
@@ -324,7 +346,7 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3 h-3 bg-amber-400 border border-black inline-block"></span>
 							<h3 class="text-base font-black uppercase text-black dark:text-white">
-								Komik Rekomendasi 🔥
+								Comics Rekomendasi 🔥
 							</h3>
 						</div>
 					</div>
@@ -380,34 +402,52 @@
 			if (!container) return;
 
 			const allCards = Array.from(container.querySelectorAll('.ch-card'));
+			const languageTabs = document.querySelectorAll('.language-chunk-tab');
 			let activeStart = tabs.length > 0 ? parseFloat(tabs[0].getAttribute('data-start')) : 1;
 			let activeEnd = tabs.length > 0 ? parseFloat(tabs[0].getAttribute('data-end')) : Infinity;
+			let activeLanguage = languageTabs.length > 0 ? languageTabs[0].getAttribute('data-language') : 'all';
 			let isAscending = true;
 
 			function filterCards() {
 				const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
 
 				allCards.forEach(card => {
-					const ch = parseFloat(card.getAttribute('data-ch')) || 0;
+					const language = card.getAttribute('data-language') || 'unknown';
+					const position = parseFloat(card.getAttribute('data-language-index')) || 0;
 					const title = card.getAttribute('data-title') || '';
 
+					let matchLanguage = activeLanguage === 'all' || language === activeLanguage;
 					let matchRange = true;
 					if (query === '' && activeStart !== 'all') {
-						matchRange = ch >= activeStart && ch <= activeEnd;
+						matchRange = position >= activeStart && position <= activeEnd;
 					}
 
 					let matchQuery = true;
 					if (query) {
-						matchQuery = title.includes(query) || ch.toString() === query || ch.toString().includes(query);
+						const chapterNumber = card.getAttribute('data-ch') || '';
+						matchQuery = title.includes(query) || chapterNumber === query || chapterNumber.includes(query);
 					}
 
-					if (matchRange && matchQuery) {
+					if (matchLanguage && matchRange && matchQuery) {
 						card.classList.remove('hidden');
 					} else {
 						card.classList.add('hidden');
 					}
 				});
+
 			}
+
+			languageTabs.forEach(tab => {
+				tab.addEventListener('click', () => {
+					languageTabs.forEach(item => {
+						item.className = 'language-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-amber-400 hover:text-black';
+					});
+					tab.className = 'language-chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-amber-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]';
+					activeLanguage = tab.getAttribute('data-language') || 'all';
+					if (searchInput) searchInput.value = '';
+					filterCards();
+				});
+			});
 
 			// Handle range chunk tabs
 			tabs.forEach(tab => {

@@ -3,7 +3,7 @@ require('dotenv').config();
 
 exports.index = async (req, res) => {
     try {
-        const { slug } = req.params;
+        const slug = decodeURIComponent(req.params.slug || '');
         
         if (!slug) {
             return res.status(400).render('404', { 
@@ -14,7 +14,7 @@ exports.index = async (req, res) => {
             });
         }
 
-        const apiUrl = `${process.env.BASE_URL}/v1/komik/chapter/${slug}`;
+        const apiUrl = `${process.env.BASE_URL}/v1/komik/chapter/${encodeURIComponent(slug)}`;
         const response = await axios.get(apiUrl, {
             headers: { 'x-api-key': process.env.API_KEY }
         });

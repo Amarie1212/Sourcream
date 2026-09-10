@@ -22,24 +22,24 @@
 		}
 	</style>
 </head>
-<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans">
+<body class="bg-[#EAE7DE] dark:bg-[#111216] text-black dark:text-white min-h-screen flex flex-col font-sans overflow-x-hidden">
     <%- include('partials/header'); %>
 
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-6">
 		
 		<!-- BREADCRUMB & BACK DIRECTORY BAR (File Explorer Style) -->
-		<div class="w-full flex items-center justify-between gap-2 sm:gap-2.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
+		<div class="w-full min-w-0 overflow-hidden flex items-center justify-between gap-2 sm:gap-2.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] text-xs font-bold">
 			
 			<!-- Left: Back Button & Path -->
 			<div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
 				
 				<!-- Back Button -->
-				<button onclick="goBack('/')" 
-						class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer whitespace-nowrap">
+				<button onclick="goBack('/')" aria-label="Kembali"
+						class="flex-shrink-0 inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer whitespace-nowrap">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 flex-shrink-0">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span class="hidden sm:inline">Back</span>
 				</button>
 
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
@@ -70,35 +70,38 @@
 
 		</div>
 
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start min-w-0">
 			
 			<!-- MAIN CONTENT AREA (Left) -->
-			<div class="lg:col-span-8 flex flex-col gap-8">
+			<div class="lg:col-span-8 flex flex-col gap-8 min-w-0">
 				
 				<!-- ANIME HERO DETAIL CARD -->
-				<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] relative overflow-hidden">
+				<section class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] relative overflow-visible">
 					
 					<div class="flex flex-col sm:flex-row gap-6 md:gap-8 items-center sm:items-start">
 						
 						<!-- Cover Poster Image -->
-						<div class="w-48 sm:w-56 md:w-64 flex-shrink-0 relative group">
+						<div class="w-48 sm:w-56 md:w-64 flex-shrink-0 relative group flex flex-col items-center">
 							<div class="w-full aspect-[3/4] rounded-2xl overflow-hidden border-2 border-black dark:border-white/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] bg-neutral-200 dark:bg-neutral-800">
 								<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="<%= data.imageUrl %>" alt="<%= data.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
 							</div>
 							
-							<!-- Status Pill Badge -->
-							<% if (data.status) { %>
-								<div class="mt-3 text-center">
-									<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase <%= data.status.toLowerCase().includes('selesai') || data.status.toLowerCase().includes('completed') ? 'bg-slate-200 text-slate-800 border border-slate-400' : 'bg-[#FACC15] text-black border border-black shadow-xs' %>">
-										<span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-										<%= data.status %>
-									</span>
+							<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+								<div class="relative mt-3 w-full">
+									<button id="watchlistButton" type="button" data-slug="<%= data.slug %>" data-title="<%= data.title %>" data-image="<%= data.imageUrl %>" aria-expanded="false" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-black bg-[#F5F3EF] px-4 py-2.5 text-xs font-black uppercase text-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 hover:border-black hover:bg-[#FACC15] hover:text-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:bg-[#181920] dark:text-white">
+										<span>+ Watchlist</span><span class="text-[10px]">▾</span>
+									</button>
+									<div id="watchlistMenu" class="watchlist-menu absolute left-1/2 top-full z-30 mt-2 hidden w-full -translate-x-1/2 overflow-hidden rounded-xl border-2 border-black bg-white text-left shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920]">
+										<% [['planned', 'Planned'], ['watching', 'Watching'], ['on_hold', 'On Hold'], ['dropped', 'Dropped']].forEach(([value, label]) => { %>
+											<button type="button" data-watchlist-status="<%= value %>" class="watchlist-status-option block w-full border-b border-black/10 px-3 py-2 text-left text-xs font-black last:border-0 hover:bg-[#FACC15] hover:text-black dark:border-white/10"><%= label %></button>
+										<% }) %>
+									</div>
 								</div>
 							<% } %>
 						</div>
 
 						<!-- Details & Metadata -->
-						<div class="flex-1 flex flex-col gap-4">
+						<div class="flex-1 min-w-0 flex flex-col gap-4">
 							
 							<!-- Title -->
 							<div>
@@ -106,32 +109,33 @@
 									<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-black text-[#FACC15] border border-black">
 										<%= data.type || 'ANIME' %>
 									</span>
+									<% if (data.status) { %>
+										<span class="inline-flex items-center gap-1 rounded-md px-2.5 py-0.5 text-[10px] font-black uppercase <%= data.status.toLowerCase().includes('selesai') || data.status.toLowerCase().includes('completed') ? 'border border-slate-400 bg-slate-200 text-slate-800' : 'border border-black bg-[#FACC15] text-black shadow-xs' %>">
+											<span class="h-1.5 w-1.5 rounded-full bg-current"></span><%= data.status %>
+										</span>
+									<% } %>
 									<% if (data.episodes) { %>
 										<span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-violet-600 text-white">
 											<%= data.episodes %> Episode
 										</span>
 									<% } %>
-									<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
-										HD Sub Indo
-										HD Sub / Dub
-									</span>
 								</div>
 
-								<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white leading-tight">
+								<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white leading-tight break-words">
 									<%= data.title %>
 								</h1>
 							</div>
 
 							<!-- Action Button: Start Watching -->
 							<% if (episodes.length > 0) { %>
-								<div class="flex items-center gap-2 sm:gap-3 pt-1 w-full sm:w-auto">
-									<a href="/episode/<%= episodes[0].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap min-w-0">
+								<div class="grid w-full min-w-0 max-w-full grid-cols-2 gap-2 pt-1 sm:gap-3">
+									<a href="/episode/<%= episodes[0].slug %>" class="inline-flex min-w-0 max-w-full items-center justify-center gap-1 overflow-hidden px-2 py-2 sm:gap-2 sm:px-4 sm:py-2.5 rounded-full bg-violet-600 hover:bg-black dark:hover:bg-black text-white hover:text-white hover:border-black dark:hover:border-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black text-[10px] sm:text-xs uppercase tracking-tight sm:tracking-wider cursor-pointer whitespace-nowrap">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0">
 										  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
 										</svg>
 										<span><span class="hidden sm:inline">Tonton </span>Episode 1</span>
 									</a>
-									<a href="/episode/<%= episodes[episodes.length - 1].slug %>" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[11px] sm:text-xs md:text-sm uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap min-w-0">
+									<a href="/episode/<%= episodes[episodes.length - 1].slug %>" class="inline-flex min-w-0 max-w-full items-center justify-center gap-1 overflow-hidden px-2 py-2 sm:gap-1.5 sm:px-4 sm:py-2.5 rounded-full bg-white dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white font-black text-[10px] sm:text-xs uppercase tracking-tight sm:tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors cursor-pointer whitespace-nowrap">
 										<span><span class="sm:hidden">Ep </span><span class="hidden sm:inline">Episode </span>Terakhir</span>
 										<span class="flex-shrink-0">→</span>
 									</a>
@@ -139,14 +143,14 @@
 							<% } %>
 
 							<!-- Description -->
-							<div class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed bg-[#F5F3EF] dark:bg-[#121317] p-4 rounded-2xl border-2 border-black/10 dark:border-white/10">
+							<div class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed break-words bg-[#F5F3EF] dark:bg-[#121317] p-4 rounded-2xl border-2 border-black/10 dark:border-white/10">
 								<%= data.description.replace(/Animasu/gi, 'Sourcream') %>
 							</div>
 
 							<!-- Metadata Info Grid -->
 							<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
 								<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
-									<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Rilis</span>
+									<span class="text-neutral-500 dark:text-neutral-400 block text-[10px] uppercase font-extrabold">Release</span>
 									<span class="font-bold text-black dark:text-white truncate block"><%= data.releaseDate || '-' %></span>
 								</div>
 								<div class="bg-[#F5F3EF] dark:bg-[#121317] p-2.5 rounded-xl border border-black/10 dark:border-white/10">
@@ -200,17 +204,20 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
 							<h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-black dark:text-white">
-								Semua Episode 🔥
+								All Episode 🔥
 							</h2>
 							<span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-black text-[#FACC15] border border-black">
 								<%= episodes.length %> Total
 							</span>
+							<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+								<span class="text-[10px] font-black uppercase text-violet-600 dark:text-[#FACC15]">Progress <%= watchedEpisodeNumbers.length %>/<%= episodes.length %></span>
+							<% } %>
 						</div>
 
 						<div class="flex flex-wrap items-center gap-2">
 							<!-- Search Input -->
 							<div class="relative">
-								<input type="text" id="epDetailSearch" placeholder="Cari episode..." class="w-32 sm:w-44 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#181920] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
+								<input type="text" id="epDetailSearch" placeholder="Search episode..." class="w-32 sm:w-44 text-xs px-3 py-1.5 pl-8 rounded-xl bg-[#F5F3EF] dark:bg-[#181920] border border-black/20 dark:border-white/20 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-1/2 -translate-y-1/2">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 								</svg>
@@ -235,7 +242,7 @@
 					<% if (episodes.length > CHUNK_SIZE) { %>
 						<div id="rangeTabsContainer" class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-0.5 custom-scrollbar">
 							<span class="text-xs font-black uppercase text-neutral-500 dark:text-neutral-400 flex-shrink-0 mr-1">
-								Pilih Range:
+								Select Range:
 							</span>
 							<% for (let c = 0; c < totalChunks; c++) { 
 								const startEp = c * CHUNK_SIZE + 1;
@@ -252,7 +259,7 @@
 									data-start="all" 
 									data-end="all"
 									class="chunk-tab flex-shrink-0 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all bg-white dark:bg-[#181920] text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black hover:bg-[#FACC15] hover:text-black">
-								Semua
+								All
 							</button>
 						</div>
 					<% } %>
@@ -262,11 +269,12 @@
 							<% episodes.forEach((episode, idx) => { 
 								const epNumMatch = episode.title.match(/\d+(\.\d+)?/);
 								const epNum = epNumMatch ? parseFloat(epNumMatch[0]) : (idx + 1);
+								const isWatched = watchedEpisodeNumbers.includes(epNum);
 							%>
 								<a href="/episode/<%= episode.slug %>" 
 								   data-ep="<%= epNum %>"
 								   data-title="<%= episode.title.toLowerCase() %>"
-								   class="ep-card neo-card group flex items-center justify-between p-3.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] hover:border-violet-500 transition-all">
+								   class="ep-card neo-card group flex items-center justify-between p-3.5 bg-white dark:bg-[#181920] border-2 <%= isWatched ? 'border-emerald-500 dark:border-emerald-400' : 'border-black dark:border-white/20' %> rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)] hover:border-violet-500 transition-all">
 									<div class="flex items-center gap-3 min-w-0">
 										<div class="w-9 h-9 flex-shrink-0 flex items-center justify-center bg-[#FACC15] text-black border border-black font-black rounded-xl text-xs shadow-xs">
 											<%= epNum %>
@@ -274,6 +282,7 @@
 										<h3 class="text-xs sm:text-sm font-bold text-black dark:text-white truncate group-hover:text-violet-500 transition-colors">
 											<%= episode.title %>
 										</h3>
+										<% if (isWatched) { %><span class="hidden sm:inline text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400">Sudah ditonton</span><% } %>
 									</div>
 									<div class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-black text-[#FACC15] border border-black group-hover:bg-violet-600 group-hover:text-white transition-all ml-2 shadow-xs">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ml-0.5">
@@ -293,7 +302,7 @@
 			</div>
 
 			<!-- SIDEBAR AREA (Right) -->
-			<aside class="lg:col-span-4 w-full flex flex-col gap-4 lg:sticky lg:top-24">
+			<aside class="lg:col-span-4 w-full min-w-0 flex flex-col gap-4 lg:sticky lg:top-24">
 				
 				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] flex flex-col gap-4">
 					
@@ -301,11 +310,11 @@
 						<div class="flex items-center gap-2">
 							<span class="w-3 h-3 bg-amber-400 border border-black inline-block"></span>
 							<h3 class="text-lg font-black uppercase tracking-tight text-black dark:text-white">
-								Populer 🔥
+								Popular 🔥
 							</h3>
 						</div>
 						<a href="/populer" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-							<span>Lihat Semua</span>
+							<span>View All</span>
 							<span>→</span>
 						</a>
 					</div>

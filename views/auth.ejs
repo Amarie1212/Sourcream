@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <title><%= site_title %></title>
+  <%- include('partials/head'); %>
+</head>
+<body class="min-h-screen bg-[#EAE7DE] text-black dark:bg-[#111216] dark:text-white font-sans flex items-center justify-center px-4 transition-colors duration-200">
+  <main class="w-full max-w-md rounded-3xl border-2 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)]">
+    <a href="/" class="text-xs font-black uppercase text-violet-600 dark:text-[#FACC15]">← Sourcream</a>
+    <h1 class="mt-6 text-3xl font-black uppercase"> <%= mode === 'login' ? 'Login' : 'Buat Akun' %></h1>
+    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"><%= mode === 'login' ? 'Simpan anime dan lanjutkan tontonanmu.' : 'Buat akun untuk memakai watchlist.' %></p>
+    <% if (error) { %><div class="mt-5 rounded-xl border-2 border-rose-400/60 bg-rose-400/10 p-3 text-xs font-bold text-rose-700 dark:text-rose-200"><%= error %></div><% } %>
+    <form action="/<%= mode === 'login' ? 'login' : 'register' %>" method="POST" class="mt-6 flex flex-col gap-4">
+      <% if (mode === 'register') { %><label class="text-xs font-black uppercase">Username<input name="username" type="text" minlength="3" maxlength="32" required autocomplete="username" class="mt-1 w-full rounded-xl border-2 border-black/20 bg-[#F5F3EF] px-3 py-3 text-sm text-black outline-none focus:border-[#FACC15] dark:border-white/20 dark:bg-[#111216] dark:text-white"></label><% } %>
+      <label class="text-xs font-black uppercase">Email<input name="email" type="email" required class="mt-1 w-full rounded-xl border-2 border-black/20 bg-[#F5F3EF] px-3 py-3 text-sm text-black outline-none focus:border-[#FACC15] dark:border-white/20 dark:bg-[#111216] dark:text-white"></label>
+      <label class="text-xs font-black uppercase">Password<input name="password" type="password" minlength="6" required class="mt-1 w-full rounded-xl border-2 border-black/20 bg-[#F5F3EF] px-3 py-3 text-sm text-black outline-none focus:border-[#FACC15] dark:border-white/20 dark:bg-[#111216] dark:text-white"></label>
+      <button class="rounded-xl border-2 border-black bg-[#FACC15] px-4 py-3 text-sm font-black uppercase text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"><%= mode === 'login' ? 'Login' : 'Daftar' %></button>
+    </form>
+    <p class="mt-6 text-center text-xs text-neutral-600 dark:text-neutral-400"><%= mode === 'login' ? 'Belum punya akun?' : 'Sudah punya akun?' %> <a href="/<%= mode === 'login' ? 'register' : 'login' %>" class="font-black text-violet-600 hover:underline dark:text-[#FACC15]"><%= mode === 'login' ? 'Daftar' : 'Login' %></a></p>
+  </main>
+</body>
+</html>

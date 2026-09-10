@@ -20,14 +20,32 @@ exports.index = async (req, res) => {
         });
         const { data, chapters } = response.data;
 		
-        // Sort chapters ascending (1 to N)
+        // Normalize chapter numbers before sorting so range tabs match API variants.
         const rawChapters = chapters || data?.chapters || [];
+        const getChapterNumber = (chapter, fallback = 0) => {
+            const sources = [chapter.chapter, chapter.title, chapter.slug]
+                .filter(value => value !== undefined && value !== null && String(value).trim() !== '');
+            for (const source of sources) {
+                const match = String(source).match(/(?:chapter|ch)[^\d]*(\d+(\.\d+)?)/i) || String(source).match(/\d+(\.\d+)?/);
+                if (match) return parseFloat(match[1] || match[0]);
+            }
+            return fallback;
+        };
+
         const sortedChapters = [...rawChapters].sort((a, b) => {
-            const matchA = a.title ? a.title.match(/\d+(\.\d+)?/) : null;
-            const matchB = b.title ? b.title.match(/\d+(\.\d+)?/) : null;
-            const numA = matchA ? parseFloat(matchA[0]) : 0;
-            const numB = matchB ? parseFloat(matchB[0]) : 0;
-            return numA - numB;
+            const languageCompare = String(a.languageName || a.language || 'Unknown').localeCompare(String(b.languageName || b.language || 'Unknown'));
+            return languageCompare || getChapterNumber(a) - getChapterNumber(b);
+        });
+        const languageGroups = [];
+        const groupsByLanguage = new Map();
+        sortedChapters.forEach((chapter) => {
+            const key = chapter.language || 'unknown';
+            if (!groupsByLanguage.has(key)) {
+                const group = { code: key, name: chapter.languageName || key.toUpperCase(), chapters: [] };
+                groupsByLanguage.set(key, group);
+                languageGroups.push(group);
+            }
+            groupsByLanguage.get(key).chapters.push(chapter);
         });
 
         const responseSidebar = await axios.get(`${process.env.BASE_URL}/v1/komik/list?order=rand`, {
@@ -46,6 +64,7 @@ exports.index = async (req, res) => {
         res.render('detail-komik', { 
 			data, 
 			chapters: sortedChapters, 
+            languageGroups,
 			getDataSidebar 
 		});
     } catch (error) {

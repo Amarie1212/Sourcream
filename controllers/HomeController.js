@@ -1,72 +1,24 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const SPOTLIGHT_ITEMS = [
-    {
-        title: 'Solo Leveling',
-        slug: 'solo-leveling',
-        image: 'https://ww4.gogoanimes.fi/poster/1725181705-5539-142390.jpg',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Kisah Sung Jin-woo, hunter peringkat E terlemah yang mendapatkan kesempatan kedua melalui sistem rahasia yang memungkinkannya naik level tanpa batas.'
-    },
-    {
-        title: 'One Piece',
-        slug: 'one-piece',
-        image: 'https://ww4.gogoanimes.fi/poster/One-Piece-Elbaph-arc-Key-Visual-9anime.webp',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Petualangan Monkey D. Luffy dan Bajak Laut Topi Jerami mengarungi Grand Line untuk menemukan harta karun legendaris One Piece dan menjadi Raja Bajak Laut.'
-    },
-    {
-        title: 'Demon Slayer: Kimetsu no Yaiba Infinity Castle',
-        slug: 'demon-slayer-kimetsu-no-yaiba-infinity-castle',
-        image: 'https://ww4.gogoanimes.fi/poster/1725694452-4636-143891.jpg',
-        type: 'MOVIE',
-        episodes: 'Full HD',
-        desc: 'Pertarungan klimaks Tanjiro Kamado dan Korps Pembasmi Iblis melawan Kibutsuji Muzan di dalam dimensi kastil tak terbatas yang misterius.'
-    },
-    {
-        title: 'Attack on Titan: Final Season – The Final Chapters',
-        slug: 'attack-on-titan-final-season-the-final-chapters',
-        image: 'https://ww4.gogoanimes.fi/poster/1730867536-7044-131078.jpg',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Babak akhir peperangan dahsyat antara Pulau Paradis dan Marley, mengiringi tekad Eren Yeager dalam menentukan takdir dunia melalui Rumbling.'
-    },
-    {
-        title: 'Jujutsu Kaisen: Hidden Inventory / Premature Death',
-        slug: 'jujutsu-kaisen-hidden-inventory-premature-death',
-        image: 'https://ww4.gogoanimes.fi/poster/1766491847-1366-JUJUTSU-KAISEN-Hidden-Inventory-Premature-Death-E28093-The-Movie.webp',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Masa lalu Satoru Gojo dan Suguru Geto saat masih menjadi murid di SMA Jujutsu Tokyo dalam menjalankan misi rahasia pengawalan Wadah Plasma Bintang.'
-    },
-    {
-        title: 'Chainsaw Man',
-        slug: 'chainsaw-man',
-        image: 'https://ww4.gogoanimes.fi/poster/1725304180-9889-126216.jpg',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Denji, seorang pemuda miskin yang hidup bersama iblis gergaji Pochita, terlahir kembali sebagai Chainsaw Man setelah membuat kontrak rahasia pemburu iblis.'
-    },
-    {
-        title: 'Spy x Family',
-        slug: 'spy-x-family',
-        image: 'https://ww4.gogoanimes.fi/poster/1725300783-3995-122795.jpg',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Agen rahasia Twilight menyamar sebagai Loid Forger dan membangun keluarga palsu bersama seorang pembunuh bayaran Yor dan anak cenayang pembaca pikiran Anya.'
-    },
-    {
-        title: 'Hunter x Hunter',
-        slug: 'hunter-x-hunter',
-        image: 'https://ww4.gogoanimes.fi/poster/1727716569-1664-99013.jpg',
-        type: 'TV',
-        episodes: 'Full HD',
-        desc: 'Gon Freecss memulai petualangan epik menjadi Pro Hunter demi menemukan ayahnya, Ging, menghadapi berbagai musuh mematikan dan ujian tak terduga.'
-    }
+const DAILY_SPOTLIGHT_PROMPTS = [
+    'cinematic futuristic city at blue hour, neon reflections, atmospheric architecture, no text',
+    'beautiful anime-inspired traveler on a quiet hill above a glowing city, cinematic sunset, no text',
+    'coastal city after rain, glass towers, warm windows, dramatic clouds, high detail, no text',
+    'anime-inspired character under a red umbrella in a lantern-lit street, cinematic composition, no text',
+    'peaceful mountain city in spring, soft mist, vivid colors, detailed environment concept art, no text',
+    'night train crossing a luminous modern city, cinematic wide shot, atmospheric, no text',
+    'anime-inspired swordswoman overlooking a floating city, golden sky, polished illustration, no text',
+    'quiet cyberpunk alley with flowering trees and rain reflections, cinematic, no text'
 ];
+
+function getDailySpotlights() {
+    const daySeed = Math.floor(Date.now() / 86400000);
+    return DAILY_SPOTLIGHT_PROMPTS.map((prompt, index) => ({
+        title: '',
+        image: `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1920&height=800&nologo=true&seed=${daySeed + index}`
+    }));
+}
 
 exports.index = async (req, res) => {
     try {
@@ -112,18 +64,25 @@ exports.index = async (req, res) => {
             fetchAlphabet()
         ]);
 
+        const cleanEpisodeLabels = (items) => items.map(item => ({
+            ...item,
+            episodes: typeof item.episodes === 'string'
+                ? item.episodes.replace(/^[\s\S]*?Updated:\s*/i, '').trim()
+                : item.episodes
+        }));
+
         res.render('home', { 
             site_title: 'Beranda | Sourcream Anime Streaming',
             site_desc: 'Nonton streaming anime dan film bioskop anime sub indo full HD gratis bebas iklan di Sourcream.',
             site_keyword: 'anime, nonton anime, anime sub indo, episode terbaru, anime movie, stream anime',
             site_url: req.domain,
             data: { 
-                spotlight: SPOTLIGHT_ITEMS,
-                latestEpisodes,
-                newSeason,
-                popular,
-                newMovies,
-                popularMovies
+                spotlight: getDailySpotlights(),
+                latestEpisodes: cleanEpisodeLabels(latestEpisodes),
+                newSeason: cleanEpisodeLabels(newSeason),
+                popular: cleanEpisodeLabels(popular),
+                newMovies: cleanEpisodeLabels(newMovies),
+                popularMovies: cleanEpisodeLabels(popularMovies)
             },
             alphabet 
         });

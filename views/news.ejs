@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -51,7 +51,7 @@
 					</a>
 					<span class="text-neutral-400 select-none">/</span>
 					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[180px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
-						terbaru
+						latest
 					</span>
 				</nav>
 			</div>
@@ -65,29 +65,14 @@
 				</div>
 				<div>
 					<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
-						<%= (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) ? 'Anime Musim Baru' : 'Episode Terbaru' %>
+						<%= (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) ? 'New Season Anime' : 'Latest Episodes' %>
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						<%= (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) ? 'Daftar anime serial yang rilis pada musim saat ini' : 'Update episode anime ongoing dan rilis terbaru hari ini' %>
+						<%= (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) ? 'Anime series released this season' : 'Latest updates for ongoing anime episodes' %>
 					</p>
 				</div>
 			</div>
 
-			<!-- SORTING TABS -->
-			<div class="flex flex-wrap items-center gap-2 bg-[#F5F3EF] dark:bg-[#111216] p-1.5 rounded-2xl border-2 border-black dark:border-white/20 self-start md:self-auto">
-				<a href="/terbaru?order=baru" 
-				   class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all <%= (typeof order === 'undefined' || order === 'baru' || order === 'publikasi') ? 'bg-[#FACC15] text-black border border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]' : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white' %>">
-					⚡ Episode Baru
-				</a>
-				<a href="/terbaru?order=season" 
-				   class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all <%= (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) ? 'bg-[#FACC15] text-black border border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]' : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white' %>">
-					🌸 Musim Baru
-				</a>
-				<a href="/populer" 
-				   class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white">
-					🔥 Terpopuler
-				</a>
-			</div>
 		</section>
 
 		<!-- LATEST GRID -->
@@ -105,12 +90,12 @@
 								<% if (typeof order !== 'undefined' && (order === 'season' || order === 'musim-baru')) { %>
 									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
 										<span class="w-1.5 h-1.5 rounded-full bg-black"></span>
-										<span><%= item.episodes || 'MUSIM INI' %></span>
+										<span><%= item.episodes || 'THIS SEASON' %></span>
 									</div>
 								<% } else { %>
 									<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
 										<span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
-										<span>BARU RILIS</span>
+										<span>NEW RELEASE</span>
 									</div>
 									<% if (item.episodes) { %>
 										<div class="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-[#FACC15] text-[10px] font-mono font-bold uppercase border border-black/50 backdrop-blur-xs shadow-xs">
@@ -135,7 +120,7 @@
 									<%= item.title %>
 								</h3>
 								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
-									<span class="truncate">Terbaru</span>
+									<span class="truncate">Latest</span>
 									<span class="text-black dark:text-white font-bold flex-shrink-0">Tonton →</span>
 								</div>
 							</div>
@@ -144,7 +129,7 @@
 				</div>
 			<% } else { %>
 				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-12 text-center flex flex-col items-center justify-center gap-3 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]">
-					<p class="text-neutral-500 dark:text-neutral-400 font-bold">Tidak ada data anime terbaru tersedia saat ini.</p>
+					<p class="text-neutral-500 dark:text-neutral-400 font-bold">No latest anime data available.</p>
 				</div>
 			<% } %>
 		</section>
@@ -178,7 +163,7 @@
 				<% } %>
 
 				<span class="px-3 py-1 text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400">
-					Halaman <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
+					Page <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
 				</span>
 
 				<% if (nextPage) { %>

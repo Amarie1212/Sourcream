@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -51,7 +51,7 @@
 					</a>
 					<span class="text-neutral-400 select-none">/</span>
 					<span class="text-black dark:text-[#FACC15] font-black truncate max-w-[180px] sm:max-w-[320px] flex-shrink-0 bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded border border-black/10 dark:border-white/10">
-						peringkat
+						ranking
 					</span>
 				</nav>
 			</div>
@@ -65,10 +65,10 @@
 				</div>
 				<div>
 					<h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black dark:text-white">
-						Peringkat Komik
+						Ranking Comics
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						Daftar judul komik, manga, dan manhwa dengan rating & pembaca terbanyak
+						Comics, manga, and manhwa with the highest ratings and readership
 					</p>
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 								</h3>
 								<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 									<span class="truncate max-w-[90px]"><%= item.genre || item.type || 'Manga' %></span>
-									<span class="text-black dark:text-white font-bold flex-shrink-0">Baca →</span>
+									<span class="text-black dark:text-white font-bold flex-shrink-0">Read →</span>
 								</div>
 							</div>
 
@@ -157,7 +157,7 @@
 						<% } %>
 
 						<span class="px-3 py-1 text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400">
-							Halaman <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
+							Page <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
 						</span>
 
 						<% if (nextPage) { %>
@@ -185,7 +185,7 @@
 					<% } %>
 
 					<div class="px-4 py-2 rounded-xl bg-[#FACC15] text-black border-2 border-black font-mono font-black text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-						Halaman <%= currentPage %>
+						Page <%= currentPage %>
 					</div>
 
 					<% if (nextPage) { %>
@@ -206,10 +206,10 @@
 						📭
 					</div>
 					<h3 class="text-xl font-black uppercase text-black dark:text-white mt-2">
-						Tidak Ada Komik Ditemukan
+						No Comics Found
 					</h3>
 					<p class="text-xs sm:text-sm text-neutral-500 max-w-md font-semibold">
-						Belum ada data peringkat komik saat ini. Silakan cek kembali beberapa saat lagi.
+						Belum ada data ranking komik saat ini. Silakan cek kembali beberapa saat lagi.
 					</p>
 				</div>
 			<% } %>

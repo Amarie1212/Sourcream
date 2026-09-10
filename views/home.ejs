@@ -30,97 +30,17 @@
 	
 	<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 md:py-6 flex flex-col gap-8 md:gap-10">
 		
-		<!-- 1. HERO SPOTLIGHT CAROUSEL BANNER -->
-		<section id="heroSpotlight" class="relative w-full aspect-[16/9] sm:aspect-[21/9] md:aspect-[2.5/1] max-h-[460px] rounded-3xl border-2 border-black dark:border-white/20 overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] bg-neutral-900 select-none">
-			<% if (data.spotlight && data.spotlight.length > 0) { %>
-				<% data.spotlight.forEach((item, index) => { %>
-					<div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out <%= index === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none' %>" data-index="<%= index %>">
-						<!-- Background Backdrop Image -->
-						<img src="<%= item.image %>" alt="<%= item.title %>" class="w-full h-full object-cover object-center filter brightness-[0.45] dark:brightness-[0.4]">
-						
-						<!-- Gradient Vignette -->
-						<div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-						<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-
-						<!-- Banner Content Overlay -->
-						<div class="absolute inset-0 p-5 sm:p-8 md:p-10 flex flex-col justify-end text-white max-w-3xl gap-2 sm:gap-3">
-							<!-- Tags & Badges -->
-							<div class="flex items-center gap-2 text-xs font-black tracking-wider uppercase">
-								<span class="px-2.5 py-0.5 rounded-full bg-[#FACC15] text-black border border-black shadow-xs">
-									★ SPOTLIGHT
-								</span>
-								<span class="px-2 py-0.5 rounded border border-white/40 bg-black/50 text-white backdrop-blur-xs">
-									HD
-								</span>
-								<% if (item.episodes) { %>
-									<span class="px-2.5 py-0.5 rounded-full bg-violet-600 text-white font-bold backdrop-blur-xs">
-										<%= item.episodes %>
-									</span>
-								<% } %>
-								<span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-xs">
-									<%= item.type || 'TV' %> • Sub / Dub
-								</span>
-							</div>
-
-							<!-- Title -->
-							<h1 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white drop-shadow-md line-clamp-2 leading-tight">
-								<%= item.title %>
-							</h1>
-
-							<!-- Synopsis Excerpt -->
-							<p class="text-xs sm:text-sm text-neutral-300 line-clamp-2 leading-relaxed max-w-2xl hidden sm:block">
-								<%= item.desc || `Tonton anime ${item.title} kualitas tinggi full HD gratis dan bebas iklan hanya di Sourcream.` %>
-							</p>
-
-							<!-- PLAY NOW & DETAIL CTA Buttons -->
-							<div class="flex items-center gap-3 pt-1">
-								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-black text-white border-2 border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-colors font-black text-xs sm:text-sm uppercase tracking-wider cursor-pointer">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-									  <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-									</svg>
-									<span>PLAY NOW</span>
-								</a>
-								<a href="/anime/<%= item.slug %>" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black hover:border-black text-white border border-white/40 transition-colors font-black text-xs uppercase tracking-wider backdrop-blur-xs cursor-pointer">
-									<span>Detail Anime</span>
-									<span>→</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				<% }); %>
-
-				<!-- Carousel Navigation Controls -->
-				<button id="heroPrevBtn" aria-label="Slide sebelumnya" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/30 flex items-center justify-center transition-colors backdrop-blur-xs cursor-pointer">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">
-					  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-					</svg>
-				</button>
-				<button id="heroNextBtn" aria-label="Slide berikutnya" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-[#FACC15] hover:text-black text-white border border-white/30 flex items-center justify-center transition-colors backdrop-blur-xs cursor-pointer">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5">
-					  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-					</svg>
-				</button>
-
-				<!-- Indicators Dots -->
-				<div class="absolute bottom-3 right-4 sm:right-6 z-20 flex items-center gap-1.5 bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-xs border border-white/20">
-					<% data.spotlight.forEach((_, index) => { %>
-						<button class="hero-dot w-2 h-2 rounded-full transition-all <%= index === 0 ? 'w-5 bg-[#FACC15]' : 'bg-white/40' %>" data-slide="<%= index %>" aria-label="Go to slide <%= index + 1 %>"></button>
-					<% }); %>
-				</div>
-			<% } %>
-		</section>
-
 		<!-- SECTION 1: LATEST EPISODES ⚡ -->
 		<section class="w-full flex flex-col gap-3">
 			<div class="flex items-center justify-between pb-2 border-b-2 border-black dark:border-white/20 gap-2">
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-amber-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Episode Terbaru ⚡
+						Latest Episodes ⚡
 					</h2>
 				</div>
 				<a href="/terbaru?order=baru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -140,13 +60,8 @@
 										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
 										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
 											<span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span>
-											<span>BARU RILIS</span>
+											<span>NEW RELEASE</span>
 										</div>
-										<% if (item.episodes) { %>
-											<div class="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-[#FACC15] text-[10px] font-mono font-bold uppercase border border-black/50 backdrop-blur-xs shadow-xs">
-												<%= item.episodes %>
-											</div>
-										<% } %>
 										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
 											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
 												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
@@ -159,14 +74,14 @@
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
 											<span><%= item.status || 'Sub / Dub' %></span>
-											<span class="text-black dark:text-white font-bold">Watch →</span>
+											<span class="text-black dark:text-white font-bold"><%= item.episodes || 'Episode' %></span>
 										</div>
 									</div>
 								</a>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada episode terbaru saat ini.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No latest episodes available.</div>
 					<% } %>
 				</div>
 
@@ -182,11 +97,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-emerald-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Anime Musim Baru 🌸
+						New Season Anime 🌸
 					</h2>
 				</div>
 				<a href="/musim-baru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -206,7 +121,7 @@
 										<img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="<%= item.image %>" alt="<%= item.title %>" onerror="this.onerror=null; this.src='/assets/images/no-img.jpg';">
 										<div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-400 text-black text-[10px] font-black uppercase shadow-xs flex items-center gap-1 border border-black/40">
 											<span class="w-1.5 h-1.5 rounded-full bg-black"></span>
-											<span><%= item.episodes || 'MUSIM INI' %></span>
+											<span><%= item.episodes || 'THIS SEASON' %></span>
 										</div>
 										<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
 											<div class="w-10 h-10 rounded-full bg-[#FACC15] text-black border-2 border-black flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
@@ -227,7 +142,7 @@
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data anime musim baru.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No new season anime found.</div>
 					<% } %>
 				</div>
 
@@ -243,11 +158,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Anime Terpopuler 🔥
+						Popular Anime 🔥
 					</h2>
 				</div>
 				<a href="/populer" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -287,7 +202,7 @@
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data anime populer.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No popular anime found.</div>
 					<% } %>
 				</div>
 
@@ -303,11 +218,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-indigo-500 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Movie Terbaru 🎬
+						Movie Latest 🎬
 					</h2>
 				</div>
 				<a href="/movies?order=terbaru" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -339,7 +254,7 @@
 											<%= item.title %>
 										</h3>
 										<div class="flex items-center justify-between mt-2 pt-2 border-t border-dashed border-neutral-200 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 font-semibold">
-											<span><%= item.episodes || 'Rilis Baru' %></span>
+											<span><%= item.episodes || 'New Release' %></span>
 											<span class="text-black dark:text-white font-bold">Watch →</span>
 										</div>
 									</div>
@@ -347,7 +262,7 @@
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data movie terbaru.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No latest movies found.</div>
 					<% } %>
 				</div>
 
@@ -363,11 +278,11 @@
 				<div class="flex items-center gap-2 min-w-0">
 					<span class="w-3.5 h-3.5 bg-yellow-400 border border-black inline-block flex-shrink-0"></span>
 					<h2 class="text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-black dark:text-white truncate">
-						Movie Terpopuler ⭐
+						Movie Most Popular ⭐
 					</h2>
 				</div>
 				<a href="/movies?order=populer" class="flex-shrink-0 whitespace-nowrap inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#F5F3EF] dark:bg-[#181920] hover:bg-[#FACC15] hover:text-black hover:border-black dark:hover:bg-[#FACC15] dark:hover:text-black dark:hover:border-black text-black dark:text-white border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.25)] transition-colors font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer">
-					<span>Lihat Semua</span>
+					<span>View All</span>
 					<span>→</span>
 				</a>
 			</div>
@@ -407,7 +322,7 @@
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="py-8 text-neutral-500 font-bold text-sm">Tidak ada data movie populer.</div>
+						<div class="py-8 text-neutral-500 font-bold text-sm">No popular movie data available.</div>
 					<% } %>
 				</div>
 
@@ -427,14 +342,14 @@
 					</h3>
 				</div>
 				<span class="text-xs font-extrabold uppercase text-neutral-500 dark:text-neutral-400">
-					Filter Abjad
+					Filter Alphabet
 				</span>
 			</div>
 
 			<div class="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5">
 				<% if (alphabet && alphabet.length > 0) { %>
 					<% alphabet.forEach(item => { %>
-						<a href="/alphabet?show=<%= item.slug %>" class="w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:border-black transition-colors">
+						<a href="/alphabet?show=<%= item.slug %>" class="alphabet-letter w-10 h-10 sm:w-11 sm:h-11 font-black text-sm sm:text-base flex justify-center items-center rounded-xl bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:bg-[#FACC15] hover:text-black hover:border-black transition-colors">
 							<%= item.title %>
 						</a>
 					<% }) %>

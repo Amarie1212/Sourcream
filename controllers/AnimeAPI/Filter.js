@@ -180,10 +180,10 @@ exports.Status = async (req, res) => {
 
 exports.Alphabet = async (req, res) => {
   try {
-    const data = Array.from({ length: 26 }, (_, i) => {
+    const data = [{ slug: '#', title: '#' }, ...Array.from({ length: 26 }, (_, i) => {
       const letter = String.fromCharCode(65 + i);
       return { slug: letter, title: letter };
-    });
+    })];
     const responseData = { success: true, data };
     setCache(res.cacheKey, responseData);
     res.json(responseData);

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><title><%= site_title %></title><%- include('partials/head'); %></head>
+<body class="min-h-screen bg-[#EAE7DE] text-black dark:bg-[#111216] dark:text-white font-sans">
+  <%- include('partials/header'); %>
+  <main class="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8">
+    <section class="rounded-3xl border-2 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]">
+      <div class="flex items-center justify-between border-b-2 border-black/10 pb-4 dark:border-white/10"><h1 class="text-2xl font-black uppercase">Notifikasi</h1><button id="readNotifications" class="rounded-xl border-2 border-black px-3 py-2 text-[10px] font-black uppercase hover:bg-[#FACC15] transition-colors dark:border-white/20">Tandai Dibaca</button></div>
+      <div class="mt-4 flex flex-col gap-2"><% if (data.length) { data.forEach(item => { %><a href="/anime/<%= item.anime_slug %>" class="rounded-xl border-2 p-3 transition-colors <%= item.is_read ? 'border-black/10 dark:border-white/10' : 'border-[#FACC15] bg-[#FACC15]/10' %> hover:bg-[#FACC15] hover:text-black"><p class="text-sm font-black"><%= item.title %></p><p class="text-xs font-semibold opacity-70"><%= item.message %></p></a><% }) } else { %><p class="py-12 text-center text-sm font-bold text-neutral-500">Belum ada notifikasi baru.</p><% } %></div>
+    </section>
+  </main>
+  <script>document.getElementById('readNotifications')?.addEventListener('click', async () => { await fetch('/api/notifications/read-all', { method: 'POST' }); location.reload(); });</script>
+</body>
+</html>

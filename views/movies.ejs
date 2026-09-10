@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -64,22 +64,11 @@
 						Anime Movies
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						Koleksi film anime bioskop, blockbuster terpopuler, dan rilisan movie terbaru
+						A collection of theatrical anime films, popular blockbusters, and the latest movie releases
 					</p>
 				</div>
 			</div>
 
-			<!-- SORTING TABS -->
-			<div class="flex items-center gap-2 bg-[#F5F3EF] dark:bg-[#111216] p-1.5 rounded-2xl border-2 border-black dark:border-white/20 self-start md:self-auto">
-				<a href="/movies?order=populer" 
-				   class="px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all <%= order === 'populer' ? 'bg-[#FACC15] text-black border border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]' : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white' %>">
-					⭐ Terpopuler
-				</a>
-				<a href="/movies?order=terbaru" 
-				   class="px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all <%= order === 'terbaru' ? 'bg-[#FACC15] text-black border border-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]' : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white' %>">
-					⚡ Rilis Terbaru
-				</a>
-			</div>
 		</section>
 
 		<!-- MOVIES GRID -->
@@ -141,7 +130,7 @@
 				<div class="w-full flex justify-center items-center py-6">
 					<nav aria-label="Page Navigation" class="inline-flex items-center gap-2 p-1.5 bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)]">
 						<% if (prevPage) { %>
-							<a href="<%= buildPageUrl(prevPage) %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
+							<a href="<%= buildPageUrl(prevPage) %>" class="pagination-button inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
 								</svg>
@@ -157,11 +146,11 @@
 						<% } %>
 
 						<span class="px-3 py-1 text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400">
-							Halaman <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
+							Page <%= typeof currentPage !== 'undefined' ? currentPage : 1 %>
 						</span>
 
 						<% if (nextPage) { %>
-							<a href="<%= buildPageUrl(nextPage) %>" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
+							<a href="<%= buildPageUrl(nextPage) %>" class="pagination-button inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] text-black dark:text-white border border-black/20 dark:border-white/20 hover:bg-[#FACC15] hover:text-black font-black text-xs transition-all shadow-xs">
 								<span>Selanjutnya</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
 								  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -180,7 +169,7 @@
 				<% } %>
 			<% } else { %>
 				<div class="py-20 text-center text-neutral-500 font-bold">
-					Tidak ada data anime movie tersedia saat ini.
+					No anime movies are currently available.
 				</div>
 			<% } %>
 		</section>

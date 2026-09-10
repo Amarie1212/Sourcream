@@ -35,7 +35,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
 					  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 					</svg>
-					<span>Kembali</span>
+					<span>Back</span>
 				</button>
 				<span class="text-neutral-300 dark:text-neutral-700 select-none flex-shrink-0">|</span>
 				<nav aria-label="Directory Path" class="flex items-center gap-1 sm:gap-1.5 text-neutral-600 dark:text-neutral-400 font-mono text-[10px] sm:text-xs overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1 whitespace-nowrap">
@@ -69,7 +69,7 @@
 						Filter Anime 🔥
 					</h1>
 					<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-semibold mt-0.5">
-						Saring daftar anime berdasarkan genre, status tayang, tipe rilis, dan urutan
+						Filter anime by genre, airing status, release type, and order
 					</p>
 				</div>
 			</div>
@@ -115,7 +115,7 @@
 
 				<!-- Order -->
 				<div class="flex flex-col gap-1.5">
-					<label for="order" class="font-black text-[11px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Urutan</label>
+					<label for="order" class="font-black text-[11px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Order</label>
 					<select name="order" id="order" class="w-full px-3 py-2.5 rounded-xl bg-[#F5F3EF] dark:bg-[#121317] border-2 border-black dark:border-white/20 text-black dark:text-white text-xs font-bold focus:outline-none focus:border-[#FACC15] shadow-xs cursor-pointer">
 						<% if (Array.isArray(filterOrder) && filterOrder.length > 0) { %>
 							<% filterOrder.forEach(item => { %>
@@ -181,7 +181,7 @@
 				</div>
 			<% } else { %>
 				<div class="w-full bg-white dark:bg-[#181920] border-2 border-black dark:border-white/20 rounded-3xl p-12 text-center flex flex-col items-center justify-center gap-3 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.15)]">
-					<p class="text-neutral-500 dark:text-neutral-400 font-bold">Tidak ada data anime yang sesuai dengan filter.</p>
+					<p class="text-neutral-500 dark:text-neutral-400 font-bold">No anime matches the selected filters.</p>
 				</div>
 			<% } %>
 		</section>

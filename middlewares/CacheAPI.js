@@ -2,7 +2,7 @@ const NodeCache = require('node-cache');
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 320 });
 
 const cacheMiddleware = (req, res, next) => {
-  const key = req.originalUrl;
+  const key = `v7:${req.originalUrl}`;
   const cachedData = cache.get(key);
   
   if (cachedData) {

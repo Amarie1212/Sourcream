@@ -16,7 +16,10 @@ exports.cover = async (req, res) => {
 
   try {
     const upstream = await axios.get(url, {
-      headers: { 'User-Agent': 'Sourcream/1.0' },
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Referer': 'https://v1.komikcast.ac/'
+      },
       httpsAgent,
       responseType: 'stream',
       timeout: 10000
@@ -45,7 +48,10 @@ exports.pageProxy = async (req, res) => {
 
   try {
     const upstream = await axios.get(url, {
-      headers: { 'User-Agent': 'Sourcream/1.0' },
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Referer': 'https://v1.komikcast.ac/'
+      },
       httpsAgent,
       responseType: 'stream',
       timeout: 12000

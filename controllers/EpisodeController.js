@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getSupabase } = require('../helpers/SupabaseHelper');
 require('dotenv').config();
 
 exports.index = async (req, res) => {
@@ -19,6 +20,26 @@ exports.index = async (req, res) => {
             headers: { 'x-api-key': process.env.API_KEY }
         });
         const { data } = response.data;
+		const displayData = { ...data, title: (data.title || '').replace(/\s*\(dub\)\s*/i, '').trim() };
+        const cleanSlug = slug.replace(/^nonton-/, '').trim();
+        const episodeVariantMatch = cleanSlug.match(/^(.*)-episode-(\d+(?:\.\d+)?)(.*)$/i);
+        let companionData = null;
+        let currentVariant = /-dub-episode-/i.test(cleanSlug) || /\(dub\)/i.test(data.title || '') ? 'dub' : 'sub';
+
+        if (episodeVariantMatch) {
+            const prefix = episodeVariantMatch[1];
+            const companionPrefix = /-dub$/i.test(prefix) ? prefix.replace(/-dub$/i, '') : `${prefix}-dub`;
+            const companionSlug = `${companionPrefix}-episode-${episodeVariantMatch[2]}${episodeVariantMatch[3] || ''}`;
+            try {
+                const companionResponse = await axios.get(`${process.env.BASE_URL}/v1/episode/${companionSlug}`, {
+                    headers: { 'x-api-key': process.env.API_KEY },
+                    timeout: 6000
+                });
+                if (companionResponse.data?.data?.videoEmbedUrl) companionData = companionResponse.data.data;
+            } catch (error) {
+                // A missing dub must not block the subtitle player.
+            }
+        }
 		
         // Derive anime slug to fetch real synopsis & metadata
         let animeSlug = '';
@@ -61,21 +82,45 @@ exports.index = async (req, res) => {
 		const dataSidebar = responseSidebar.data?.data || [];
 		const getDataSidebar = dataSidebar.sort(() => 0.8 - Math.random()).slice(0, 8);
 		
+        const currentUser = res.locals.currentUser;
+        let watchedEpisodeNumbers = [];
+        if (currentUser && animeSlug) {
+            try {
+                const { data: progressRows, error: progressError } = await getSupabase(req.cookies?.sb_access_token)
+                    .from('watch_progress')
+                    .select('episode_number')
+                    .eq('user_id', currentUser.id)
+                    .eq('anime_slug', animeSlug);
+                if (progressError) throw progressError;
+                watchedEpisodeNumbers = (progressRows || []).map(row => Number(row.episode_number)).filter(Number.isFinite);
+            } catch (error) {
+                // Progress display is optional; keep the episode page available if it fails.
+                console.error('Episode progress lookup error:', error.message);
+            }
+        }
         res.locals = {
             site_title: `${data.title} | Anime`,
             site_desc: 'Tonton episode anime favorit Anda dengan kualitas terbaik.',
 			site_keyword: 'nonton anime, streaming anime, anime episode, anime sub indo, anime HD',
             site_url: req.domain,
+            currentUser
         };
 
         res.render('episode', { 
-			data, 
+            data: displayData,
 			animeDetail,
 			animeSlug,
 			animeTitle,
 			episodes: sortedEpisodes, 
+            variantOptions: {
+                sub: currentVariant === 'sub' ? data : companionData,
+                dub: currentVariant === 'dub' ? data : companionData
+            },
+            currentVariant,
 			getDataSidebar,
-			currentSlug: slug
+            currentSlug: slug,
+			currentUser,
+			watchedEpisodeNumbers
 		});
     } catch (error) {
         console.error('Error fetching data:', error.response?.data || error.message);
