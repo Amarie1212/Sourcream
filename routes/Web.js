@@ -14,8 +14,6 @@ router.post('/api/watchlist', WatchlistController.add);
 router.delete('/api/watchlist/:slug', WatchlistController.remove);
 router.get('/api/watchlist/:slug/status', WatchlistController.status);
 router.post('/api/progress', ProgressController.mark);
-router.get('/notifications', ProgressController.notifications);
-router.post('/api/notifications/read-all', ProgressController.readAll);
 
 // --- 1. Anime Web Routes (Original UI Views powered by Gogoanime) ---
 const HomePage = require('../controllers/HomeController');

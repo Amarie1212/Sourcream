@@ -215,7 +215,7 @@
 				<% if (typeof currentUser !== 'undefined' && currentUser) { %>
 					<div class="flex items-center justify-between gap-3 rounded-2xl border-2 border-black bg-white p-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.15)]">
 						<p class="text-xs font-bold text-neutral-600 dark:text-neutral-300">Episode <%= currentEpisodeMatch ? currentEpisodeMatch[1] : '-' %></p>
-						<button id="progressButton" type="button" data-anime-slug="<%= animeSlug %>" data-anime-title="<%= animeTitle %>" data-episode-slug="<%= currentSlug %>" data-episode-number="<%= currentEpisodeMatch ? currentEpisodeMatch[1] : '' %>" <%= isCurrentWatched ? 'disabled' : '' %> class="rounded-xl border-2 border-black px-3 py-2 text-[10px] font-black uppercase text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all <%= isCurrentWatched ? 'cursor-default bg-emerald-400' : 'bg-[#FACC15] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' %>"><%= isCurrentWatched ? 'Sudah Ditonton' : 'Tandai Sudah Ditonton' %></button>
+						<button id="progressButton" type="button" data-anime-slug="<%= animeSlug %>" data-anime-title="<%= animeTitle %>" data-episode-slug="<%= currentSlug %>" data-episode-number="<%= currentEpisodeMatch ? currentEpisodeMatch[1] : '' %>" data-saved="<%= isCurrentWatched ? 'true' : 'false' %>" <%= isCurrentWatched ? 'disabled' : '' %> class="rounded-xl border-2 border-black px-3 py-2 text-[10px] font-black uppercase text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all <%= isCurrentWatched ? 'cursor-default bg-emerald-400' : 'bg-[#FACC15] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' %>"><%= isCurrentWatched ? 'Sudah Ditonton' : 'Tandai Sudah Ditonton' %></button>
 					</div>
 				<% } %>
 
@@ -579,6 +579,35 @@
 
 		// Switch Sub/Dub in the same player without leaving the episode page.
 		const playerFrame = document.getElementById('my-video');
+		// Providers that expose player events use postMessage. Only accept messages
+		// coming from this episode's iframe, then persist progress after "ended".
+		const markEpisodeFinished = () => {
+			if (typeof saveEpisodeProgress === 'function') saveEpisodeProgress({ automatic: true });
+		};
+		const playerMessageMeansEnded = (message) => {
+			if (typeof message === 'string') {
+				try { message = JSON.parse(message); } catch (_) { return /^(ended|complete|completed|videoended)$/i.test(message); }
+			}
+			if (!message || typeof message !== 'object') return false;
+			const eventName = String(message.event || message.type || message.action || message.name || '').toLowerCase();
+			return ['ended', 'complete', 'completed', 'videoended', 'video_ended'].includes(eventName)
+				|| (eventName === 'onstatechange' && Number(message.info) === 0);
+		};
+		window.addEventListener('message', (event) => {
+			if (playerFrame && event.source === playerFrame.contentWindow && playerMessageMeansEnded(event.data)) markEpisodeFinished();
+		});
+		// This event also supports a same-origin/custom player that can dispatch a
+		// browser event instead of postMessage.
+		document.addEventListener('sourcream:video-ended', markEpisodeFinished);
+		const bindNativePlayerEnd = () => {
+			try {
+				playerFrame?.contentDocument?.querySelector('video')?.addEventListener('ended', markEpisodeFinished, { once: true });
+			} catch (_) {
+				// Cross-origin iframe: its completion event is handled by postMessage.
+			}
+		};
+		playerFrame?.addEventListener('load', bindNativePlayerEnd);
+		bindNativePlayerEnd();
 		document.querySelectorAll('.variant-option').forEach((option) => {
 			option.addEventListener('click', () => {
 				if (!playerFrame || !option.dataset.videoUrl) return;

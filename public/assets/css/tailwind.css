@@ -404,3 +404,17 @@ nav[aria-label="Directory Path"] {
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #FACC15;
 }
+
+/* Watchlist status colours are shared by the menu, filters, and card labels. */
+.status-planned { color: #1d4ed8; }
+.status-watching { color: #7e22ce; }
+.status-watched { color: #047857; }
+.status-on-hold { color: #b45309; }
+.status-dropped { color: #be123c; }
+.watchlist-status-option:hover { background: currentColor; color: #fff; }
+.watchlist-filter { border-color: currentColor; background: #fff; }
+.watchlist-filter[aria-pressed="true"] { background: currentColor; color: #fff; box-shadow: 2px 2px 0 #111; }
+.watchlist-filter[data-watchlist-filter="all"] { color: #111; border-color: #111; }
+.watchlist-filter[data-watchlist-filter="all"][aria-pressed="true"] { background: #111; color: #fff; }
+html.dark .watchlist-filter { background: #181920; }
+html.dark .watchlist-filter[aria-pressed="true"] { box-shadow: 2px 2px 0 rgba(255,255,255,.22); }

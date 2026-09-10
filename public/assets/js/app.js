@@ -107,7 +107,7 @@ const watchlistButton = document.getElementById('watchlistButton');
 if (watchlistButton) {
 	const watchlistMenu = document.getElementById('watchlistMenu');
 	let watchlistCloseTimer;
-	const statusLabels = { planned: 'Planned', watching: 'Watching', on_hold: 'On Hold', dropped: 'Dropped' };
+	const statusLabels = { planned: 'Planned', watching: 'On Watch', watched: 'Watched', on_hold: 'On Hold', dropped: 'Dropped' };
 	fetch(`/api/watchlist/${encodeURIComponent(watchlistButton.dataset.slug)}/status`)
 		.then(response => response.ok ? response.json() : null)
 		.then(result => {
@@ -162,9 +162,10 @@ if (watchlistButton) {
 }
 
 const progressButton = document.getElementById('progressButton');
-if (progressButton) {
-	progressButton.addEventListener('click', async () => {
-		progressButton.disabled = true;
+async function saveEpisodeProgress({ automatic = false } = {}) {
+	if (!progressButton || progressButton.dataset.saved === 'true') return true;
+	progressButton.disabled = true;
+	try {
 		const response = await fetch('/api/progress', {
 			method: 'POST', headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -179,9 +180,20 @@ if (progressButton) {
 		if (result.success) {
 			progressButton.textContent = 'Sudah Ditonton';
 			progressButton.classList.add('bg-emerald-400');
+			progressButton.dataset.saved = 'true';
+			if (automatic) showToast('Episode selesai — progres tersimpan otomatis.');
 		}
+		return Boolean(result.success);
+	} catch (error) {
+		if (!automatic) showToast('Gagal menyimpan progres.');
+		return false;
+	} finally {
 		progressButton.disabled = false;
-	});
+	}
+}
+
+if (progressButton) {
+	progressButton.addEventListener('click', () => saveEpisodeProgress());
 }
 
 function openModal() {
@@ -271,7 +283,7 @@ const watchlistFilters = document.querySelectorAll('[data-watchlist-filter]');
 const watchlistItems = document.querySelectorAll('[data-watchlist-item]');
 if (watchlistFilters.length && watchlistItems.length) {
 	let activeFilter = 'all';
-	const labels = { planned: 'Planned', watching: 'Watching', on_hold: 'On hold', dropped: 'Dropped' };
+	const labels = { planned: 'Planned', watching: 'On Watch', watched: 'Watched', on_hold: 'On hold', dropped: 'Dropped' };
 	const summary = document.getElementById('watchlistFilterSummary');
 	const visibleCount = document.getElementById('watchlistVisibleCount');
 	const filteredEmpty = document.getElementById('watchlistFilteredEmpty');

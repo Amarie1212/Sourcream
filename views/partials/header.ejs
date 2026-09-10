@@ -27,10 +27,10 @@
 				</button>
 			</div>
 
-			<!-- Theme Toggle Button -->
 			<% if (typeof currentUser !== 'undefined' && currentUser) { %>
-				<a href="/watchlist" class="header-account-button hidden sm:inline-flex items-center rounded-full border-2 border-black bg-[#F5F3EF] px-3 py-2 text-[10px] font-black uppercase text-black dark:border-white/20 dark:bg-[#181920] dark:text-white">Watchlist</a>
-				<a href="/notifications" class="header-account-button hidden sm:inline-flex items-center rounded-full border-2 border-black bg-[#F5F3EF] px-3 py-2 text-[10px] font-black uppercase text-black dark:border-white/20 dark:bg-[#181920] dark:text-white">Notifikasi</a>
+				<a href="/watchlist" aria-label="Open watchlist" title="Watchlist" class="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-white text-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-colors hover:border-black hover:bg-[#FACC15] hover:text-black dark:border-white/20 dark:bg-neutral-800 dark:text-white dark:shadow-[1.5px_1.5px_0px_0px_rgba(255,255,255,0.2)] dark:hover:bg-[#FACC15] dark:hover:text-black">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.25" stroke="currentColor" class="h-4 w-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c-1.1-.562-2.37-.822-3.593-.822-1.555 0-3.053.423-4.358 1.13A8.962 8.962 0 0 0 5.25 3.75v16.5a8.963 8.963 0 0 1 4.392-.997c1.555 0 3.053.423 4.358 1.13A8.962 8.962 0 0 1 18.75 19.25V3.75a8.962 8.962 0 0 0-1.157-.428Z" /></svg>
+				</a>
 			<% } else { %>
 				<a href="/login" class="hidden sm:inline-flex items-center rounded-full border-2 border-black bg-white px-3 py-2 text-[10px] font-black uppercase text-black shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] hover:bg-[#FACC15] hover:-translate-y-0.5 transition-all">Login</a>
 			<% } %>

@@ -92,8 +92,8 @@
 										<span>+ Watchlist</span><span class="text-[10px]">▾</span>
 									</button>
 									<div id="watchlistMenu" class="watchlist-menu absolute left-1/2 top-full z-30 mt-2 hidden w-full -translate-x-1/2 overflow-hidden rounded-xl border-2 border-black bg-white text-left shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:bg-[#181920]">
-										<% [['planned', 'Planned'], ['watching', 'Watching'], ['on_hold', 'On Hold'], ['dropped', 'Dropped']].forEach(([value, label]) => { %>
-											<button type="button" data-watchlist-status="<%= value %>" class="watchlist-status-option block w-full border-b border-black/10 px-3 py-2 text-left text-xs font-black last:border-0 hover:bg-[#FACC15] hover:text-black dark:border-white/10"><%= label %></button>
+										<% [['planned', 'Planned'], ['watching', 'On Watch'], ['watched', 'Watched'], ['on_hold', 'On Hold'], ['dropped', 'Dropped']].forEach(([value, label]) => { %>
+											<button type="button" data-watchlist-status="<%= value %>" class="watchlist-status-option status-<%= value.replace('_', '-') %> block w-full border-b border-black/10 px-3 py-2 text-left text-xs font-black last:border-0 dark:border-white/10"><%= label %></button>
 										<% }) %>
 									</div>
 								</div>

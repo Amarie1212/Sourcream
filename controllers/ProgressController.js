@@ -23,26 +23,3 @@ exports.mark = async (req, res) => {
   }
 };
 
-exports.notifications = async (req, res) => {
-  try {
-    const user = await getUserFromRequest(req);
-    if (!user) return res.redirect('/login');
-    const { data, error } = await userClient(req).from('notifications').select('*').order('created_at', { ascending: false }).limit(50);
-    if (error) throw error;
-    res.render('notifications', { site_title: 'Notifikasi | Sourcream', site_desc: 'Notifikasi anime dari watchlist.', site_keyword: 'notifikasi anime', site_url: req.domain, data: data || [] });
-  } catch (error) {
-    res.status(500).render('500', { site_title: 'Notifikasi | Sourcream', site_desc: 'Notifikasi tidak tersedia.', site_keyword: 'notifikasi', site_url: req.domain });
-  }
-};
-
-exports.readAll = async (req, res) => {
-  try {
-    const user = await getUserFromRequest(req);
-    if (!user) return res.status(401).json({ success: false });
-    const { error } = await userClient(req).from('notifications').update({ is_read: true }).eq('user_id', user.id);
-    if (error) throw error;
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ success: false });
-  }
-};
